@@ -188,6 +188,12 @@ export function renderDashboard({ story = false } = {}) {
     </div>
 
     ${story ? `
+    <div class="db-story-scan"></div>
+    <div class="db-story-marks">
+      <div class="db-story-mark" style="left:748px;top:130px;width:255px;height:112px"><span>Tendance +28 %</span></div>
+      <div class="db-story-mark" style="left:720px;top:292px;width:196px;height:180px"><span>Pic inhabituel</span></div>
+      <div class="db-story-mark" style="left:230px;top:562px;width:373px;height:220px"><span>Anomalie : délais</span></div>
+    </div>
     <div class="db-toasts">
       <div class="db-toast"><span class="db-toast-ic">${icon('bolt', 13)}</span><div><b>Relances envoyées</b><small>12 devis · il y a 1 s</small></div></div>
       <div class="db-toast"><span class="db-toast-ic">${icon('doc', 13)}</span><div><b>Rapport prêt</b><small>Envoyé à la direction</small></div></div>

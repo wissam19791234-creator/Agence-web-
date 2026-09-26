@@ -1,0 +1,814 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Ordra — Dashboard IA</title>
+  <meta name="description" content="Ordra réunit vos données, vos tâches et vos opérations dans un dashboard piloté par l'IA. Centralisez, automatisez, analysez, décidez." />
+  <meta name="theme-color" content="#06070a" />
+  <meta property="og:title" content="Ordra — Votre entreprise, pilotée par l'IA" />
+  <meta property="og:description" content="Un dashboard intelligent qui transforme vos données, vos tâches et vos opérations en un système simple, automatisé et exploitable." />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2306070a'/%3E%3Crect x='7' y='7' width='8' height='8' rx='2' fill='%23e9edf4'/%3E%3Crect x='17' y='7' width='8' height='8' rx='2' fill='%23e9edf4' fill-opacity='.35'/%3E%3Crect x='7' y='17' width='8' height='8' rx='2' fill='%23e9edf4' fill-opacity='.35'/%3E%3Crect x='17' y='17' width='8' height='8' rx='2' fill='%23a9c8ff'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@1,6..72,300;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Aller au contenu</a>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="cursor" aria-hidden="true"></div>
+  <div class="cursor-dot" aria-hidden="true"></div>
+
+  <!-- ═════════════ NAVIGATION ═════════════ -->
+  <header class="nav" id="nav">
+    <div class="nav-inner">
+      <a class="nav-logo" href="#top" aria-label="Ordra — retour en haut">
+        <span class="nav-logo-mark" data-logo></span>
+        <span class="nav-logo-name" data-brand>Ordra</span>
+      </a>
+      <nav class="nav-links" aria-label="Navigation principale">
+        <a href="#produit">Produit</a>
+        <a href="#fonctionnalites">Fonctionnalités</a>
+        <a href="#comment">Comment ça marche</a>
+        <a href="#tarifs">Tarifs</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="btn btn--primary btn--sm magnetic" href="#tarifs" data-cta>Commencer maintenant</a>
+        <button class="nav-burger" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Ouvrir le menu">
+          <span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="nav-progress" aria-hidden="true"><i></i></div>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu" hidden>
+    <nav aria-label="Navigation mobile">
+      <a href="#produit">Produit</a>
+      <a href="#fonctionnalites">Fonctionnalités</a>
+      <a href="#comment">Comment ça marche</a>
+      <a href="#tarifs">Tarifs</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn btn--primary btn--lg" href="#tarifs" data-cta>Commencer maintenant</a>
+  </div>
+
+  <main id="main">
+
+    <!-- ═════════════ 1. HERO ═════════════ -->
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="hero-sticky">
+        <div class="hero-bg" aria-hidden="true">
+          <div class="hero-beam hero-beam--1"></div>
+          <div class="hero-beam hero-beam--2"></div>
+          <div class="hero-horizon"></div>
+          <div class="hero-floor"></div>
+        </div>
+
+        <div class="wrap hero-grid">
+          <div class="hero-copy">
+            <p class="hero-badge" data-hero-in>
+              <span class="hero-badge-star" aria-hidden="true">✦</span>
+              L’intelligence opérationnelle de votre entreprise
+            </p>
+            <h1 class="hero-title" id="hero-title">
+              <span class="hero-line" data-hero-line>Votre entreprise.</span>
+              <span class="hero-line hero-line--accent" data-hero-line><span class="serif">Pilotée</span> par l’IA.</span>
+            </h1>
+            <p class="hero-sub lead" data-hero-in>
+              Un dashboard intelligent qui transforme vos données, vos tâches et vos opérations en un système simple, automatisé et exploitable.
+            </p>
+            <div class="hero-ctas" data-hero-in>
+              <a class="btn btn--primary btn--lg magnetic" href="#demo">Découvrir le dashboard <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a>
+              <a class="btn btn--ghost btn--lg" href="#video"><span class="btn-play-ic"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>Voir comment ça fonctionne</a>
+            </div>
+            <ul class="hero-meta" data-hero-in>
+              <li><span class="mono">01</span>Vos données réunies</li>
+              <li><span class="mono">02</span>Vos tâches automatisées</li>
+              <li><span class="mono">03</span>Vos décisions éclairées</li>
+            </ul>
+          </div>
+
+          <div class="hero-stage" aria-label="Aperçu de l’interface du dashboard" role="img">
+            <div class="hero-rig" data-hero-rig>
+              <div class="hero-glow" aria-hidden="true"></div>
+              <div class="dash-frame hero-dash" data-dashboard></div>
+              <div class="hero-light" aria-hidden="true"></div>
+
+              <div class="sat sat--notif" aria-hidden="true">
+                <span class="sat-ic sat-ic--signal"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M13 3L5 13.5h6L10 21l8-10.5h-6L13 3z"/></svg></span>
+                <div><b>12 relances envoyées</b><small>Automatisation · il y a 4 s</small></div>
+              </div>
+              <div class="sat sat--ai" aria-hidden="true">
+                <span class="sat-label">✦ Recommandation IA</span>
+                <p>Décaler la campagne de 48 h améliore le taux de réponse estimé.</p>
+                <div class="sat-bar"><i></i></div>
+              </div>
+              <div class="sat sat--kpi" aria-hidden="true">
+                <small>Temps libéré</small>
+                <b class="num">146 h</b>
+                <svg viewBox="0 0 100 28" preserveAspectRatio="none"><path d="M0,24 C12,22 18,18 28,19 C40,20 46,12 58,11 C70,10 76,6 100,3" fill="none" stroke="currentColor" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <a class="hero-scroll" href="#produit" aria-label="Faire défiler vers la présentation">
+          <span>Défiler</span><i></i>
+        </a>
+      </div>
+    </section>
+
+    <!-- ═════════════ 2. INTRODUCTION CINÉMATIQUE ═════════════ -->
+    <section class="cine" id="produit" aria-label="Présentation">
+      <div class="cine-sticky">
+        <div class="cine-vignette" aria-hidden="true"></div>
+        <p class="cine-line cine-line--1" data-cine="1">Les entreprises modernes n’ont pas besoin de plus d’outils.</p>
+        <p class="cine-line cine-line--2" data-cine="2">Elles ont besoin d’un <span class="serif">système.</span></p>
+        <div class="cine-stage" data-cine="stage">
+          <div class="cine-halo" aria-hidden="true"></div>
+          <div class="dash-frame" data-dashboard></div>
+          <div class="cine-beam" aria-hidden="true"></div>
+          <div class="cine-reflect" aria-hidden="true"></div>
+        </div>
+        <p class="cine-line cine-line--3" data-cine="3">Voici votre nouveau <span class="serif">centre de contrôle.</span></p>
+      </div>
+    </section>
+
+    <!-- ═════════════ 3. VIDÉO ═════════════ -->
+    <section class="section video" id="video" aria-labelledby="video-title">
+      <div class="wrap">
+        <div class="sec-head sec-head--split">
+          <div class="sec-head">
+            <span class="eyebrow">Le film · 60 secondes</span>
+            <h2 class="h2" id="video-title" data-reveal>Voyez ce que votre entreprise peut faire avec <em>l’IA.</em></h2>
+          </div>
+          <p class="lead" data-reveal>Une minute pour comprendre. Quelques secondes pour voir la différence.</p>
+        </div>
+
+        <div class="player" data-player>
+          <div class="player-screen">
+            <!-- Poster -->
+            <div class="player-poster" data-player-poster>
+              <div class="player-poster-dash dash-frame" data-dashboard></div>
+              <div class="player-poster-shade"></div>
+              <div class="player-poster-copy">
+                <span class="mono">ORDRA — FILM PRODUIT</span>
+                <strong>Du chaos au <span class="serif">contrôle.</span></strong>
+              </div>
+              <span class="player-duration mono">01:00</span>
+            </div>
+
+            <!-- Animatique intégrée (utilisée tant qu'aucune vidéo n'est configurée) -->
+            <div class="player-anim" data-player-anim hidden>
+              <div class="pa-scene" data-scene="0">
+                <div class="pa-chaos">
+                  <span>factures_v3_FINAL.xlsx</span><span>Re: Re: Relance devis</span><span>CRM — 214 contacts sans suivi</span>
+                  <span>Slack · 38 non lus</span><span>Tâche en retard</span><span>export_ventes (2).csv</span>
+                  <span>Où est le dernier reporting ?</span><span>Doc partagé — accès refusé</span>
+                </div>
+                <p class="pa-caption">Vos données sont partout.</p>
+              </div>
+              <div class="pa-scene" data-scene="1">
+                <div class="pa-dash dash-frame" data-dashboard></div>
+                <p class="pa-caption">Un seul endroit pour tout voir.</p>
+              </div>
+              <div class="pa-scene" data-scene="2">
+                <div class="pa-tabs"><span>Vue d’ensemble</span><span>Analytics</span><span>Clients</span><span>Rapports</span></div>
+                <p class="pa-caption">Chaque fonction à portée de clic.</p>
+              </div>
+              <div class="pa-scene" data-scene="3">
+                <div class="pa-flow"><span>Devis envoyé</span><i></i><span>Attente 3 jours</span><i></i><span class="is-ai">Relance IA</span><i></i><span>Réponse client</span></div>
+                <p class="pa-caption">L’IA prend le relais sur les tâches répétitives.</p>
+              </div>
+              <div class="pa-scene" data-scene="4">
+                <div class="pa-stats"><div><b>Temps</b><span>récupéré</span></div><div><b>Décisions</b><span>plus rapides</span></div><div><b>Erreurs</b><span>en moins</span></div></div>
+                <p class="pa-caption">Des résultats visibles, chaque semaine.</p>
+              </div>
+              <div class="pa-scene" data-scene="5">
+                <div class="pa-end"><span class="pa-logo" data-logo></span><strong>Votre entreprise. <span class="serif">Pilotée par l’IA.</span></strong></div>
+                <p class="pa-caption">Commencez maintenant.</p>
+              </div>
+            </div>
+
+            <div class="player-media" data-player-media hidden></div>
+
+            <button class="player-play" type="button" data-player-toggle aria-label="Lire la vidéo de présentation">
+              <svg class="player-ring" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48"/></svg>
+              <svg class="player-play-ic" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>
+            </button>
+          </div>
+
+          <div class="player-bar">
+            <button class="player-mini" type="button" data-player-mini aria-label="Lecture">
+              <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>
+            </button>
+            <ol class="player-chapters" data-player-chapters>
+              <li style="--w:8.33%"><button type="button" data-chapter="0"><span class="mono">00:00</span>Le chaos</button><i></i></li>
+              <li style="--w:16.67%"><button type="button" data-chapter="1"><span class="mono">00:05</span>Le dashboard</button><i></i></li>
+              <li style="--w:25%"><button type="button" data-chapter="2"><span class="mono">00:15</span>Les fonctions</button><i></i></li>
+              <li style="--w:25%"><button type="button" data-chapter="3"><span class="mono">00:30</span>L’automatisation</button><i></i></li>
+              <li style="--w:16.67%"><button type="button" data-chapter="4"><span class="mono">00:45</span>Les résultats</button><i></i></li>
+              <li style="--w:8.33%"><button type="button" data-chapter="5"><span class="mono">00:55</span>À vous</button><i></i></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═════════════ 4. PROBLÈME ═════════════ -->
+    <section class="prob" id="probleme" aria-labelledby="prob-title">
+      <div class="prob-sticky">
+        <div class="wrap prob-head">
+          <span class="eyebrow">Le constat</span>
+          <h2 class="h2" id="prob-title">Vos données sont <em>partout.</em></h2>
+          <p class="prob-chain mono" aria-label="Emails, tableurs, CRM, messages, documents, outils, tâches">
+            <span>Emails</span><i>→</i><span>Tableurs</span><i>→</i><span>CRM</span><i>→</i><span>Messages</span><i>→</i><span>Documents</span><i>→</i><span>Outils</span><i>→</i><span>Tâches</span>
+          </p>
+        </div>
+
+        <div class="prob-stage" aria-hidden="true">
+          <svg class="prob-lines" data-prob-lines></svg>
+
+          <div class="frag frag--mail" data-frag style="--x:-32%;--y:-24%;--r:-6deg">
+            <div class="frag-h"><span class="frag-ic" data-ic="mail"></span>Emails<em>47</em></div>
+            <ul class="frag-mail"><li><b>Re: Devis T4</b><span>Pouvez-vous renvoyer…</span></li><li><b>Relance facture</b><span>Sans réponse depuis…</span></li><li><b>Point hebdo</b><span>Qui a la dernière…</span></li></ul>
+          </div>
+          <div class="frag frag--sheet" data-frag style="--x:-8%;--y:-36%;--r:4deg">
+            <div class="frag-h"><span class="frag-ic" data-ic="table"></span>ventes_2024_v7.xlsx</div>
+            <div class="frag-grid"><span></span><span></span><span class="e">#REF!</span><span></span><span></span><span></span><span></span><span class="e">#N/A</span><span></span></div>
+          </div>
+          <div class="frag frag--crm" data-frag style="--x:30%;--y:-28%;--r:-3deg">
+            <div class="frag-h"><span class="frag-ic" data-ic="crm"></span>CRM</div>
+            <p><b>214</b> contacts sans suivi</p>
+          </div>
+          <div class="frag frag--msg" data-frag style="--x:36%;--y:4%;--r:5deg">
+            <div class="frag-h"><span class="frag-ic" data-ic="chat"></span>Messages<em>38</em></div>
+            <div class="frag-bubble">Quelqu’un a le chiffre de septembre ?</div>
+          </div>
+          <div class="frag frag--doc" data-frag style="--x:26%;--y:32%;--r:-5deg">
+            <div class="frag-h"><span class="frag-ic" data-ic="doc"></span>Documents</div>
+            <div class="frag-lines"><i></i><i></i><i></i></div>
+          </div>
+          <div class="frag frag--tool" data-frag style="--x:-22%;--y:36%;--r:6deg">
+            <div class="frag-h"><span class="frag-ic" data-ic="tool"></span>Outils<em>9</em></div>
+            <div class="frag-apps"><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+          <div class="frag frag--task" data-frag style="--x:-38%;--y:14%;--r:-4deg">
+            <div class="frag-h"><span class="frag-ic" data-ic="task"></span>Tâches</div>
+            <p><b class="frag-late">6</b> en retard</p>
+          </div>
+
+          <div class="hub" data-hub>
+            <div class="hub-ring"></div>
+            <div class="hub-ring hub-ring--2"></div>
+            <div class="hub-core"><span data-logo></span></div>
+            <p class="hub-label">Votre <b>Dashboard IA</b></p>
+          </div>
+        </div>
+
+        <p class="prob-foot wrap" data-prob-foot>
+          En moyenne, vos équipes jonglent entre plusieurs outils pour répondre à une seule question. <span>Ordra les relie.</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- ═════════════ 5. SOLUTION (scroll storytelling) ═════════════ -->
+    <section class="section story" id="comment" aria-labelledby="story-title">
+      <div class="wrap">
+        <div class="sec-head">
+          <span class="eyebrow">Comment ça marche</span>
+          <h2 class="h2" id="story-title" data-reveal>Un seul endroit.<br /><em>Pour tout piloter.</em></h2>
+        </div>
+
+        <div class="story-grid">
+          <ol class="story-steps">
+            <li class="story-step" data-step="1">
+              <span class="story-n mono">01</span>
+              <h3>Les données arrivent.</h3>
+              <p>Ventes, clients, finances, projets : Ordra se connecte à vos sources et les rassemble, sans ressaisie.</p>
+            </li>
+            <li class="story-step" data-step="2">
+              <span class="story-n mono">02</span>
+              <h3>L’IA analyse.</h3>
+              <p>Elle lit l’ensemble en continu, repère les écarts, les tendances et ce qui mérite votre attention.</p>
+            </li>
+            <li class="story-step" data-step="3">
+              <span class="story-n mono">03</span>
+              <h3>Le dashboard organise.</h3>
+              <p>Chaque indicateur trouve sa place. Vous voyez l’essentiel d’un coup d’œil, sans chercher.</p>
+            </li>
+            <li class="story-step" data-step="4">
+              <span class="story-n mono">04</span>
+              <h3>Les automatisations se déclenchent.</h3>
+              <p>Relances, rapports, alertes : les tâches répétitives partent toutes seules, au bon moment.</p>
+            </li>
+            <li class="story-step" data-step="5">
+              <span class="story-n mono">05</span>
+              <h3>Les résultats apparaissent.</h3>
+              <p>Vos KPI se mettent à jour en temps réel. Vous décidez sur des faits, pas sur des intuitions.</p>
+            </li>
+          </ol>
+
+          <div class="story-visual">
+            <div class="story-sticky">
+              <div class="story-status mono" aria-hidden="true">
+                <span class="story-status-dot"></span>
+                <span data-story-status>En attente de données</span>
+                <span class="story-status-count"><b data-story-n>0</b>/5</span>
+              </div>
+              <div class="story-screen">
+                <div class="dash-frame" data-dashboard="story"></div>
+              </div>
+              <div class="story-rail" aria-hidden="true"><i data-story-rail></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═════════════ 6. FONCTIONNALITÉS ═════════════ -->
+    <section class="section feats" id="fonctionnalites" aria-labelledby="feats-title">
+      <div class="wrap">
+        <div class="sec-head sec-head--split">
+          <div class="sec-head">
+            <span class="eyebrow">Fonctionnalités</span>
+            <h2 class="h2" id="feats-title" data-reveal>Tout ce dont vous avez besoin.<br /><em>Rien de superflu.</em></h2>
+          </div>
+          <p class="lead" data-reveal>Six modules pensés pour fonctionner ensemble. Activez ceux dont vous avez besoin, le reste reste discret.</p>
+        </div>
+
+        <div class="feat-grid">
+          <!-- IA Analytics -->
+          <article class="feat feat--analytics" data-feat="analytics">
+            <div class="feat-copy">
+              <span class="feat-tag mono">IA Analytics</span>
+              <h3>Comprenez vos données sans passer des heures à les analyser.</h3>
+            </div>
+            <div class="feat-vis fa">
+              <div class="fa-chart">
+                <div class="fa-bars">
+                  <i style="--h:38%"></i><i style="--h:52%"></i><i style="--h:44%"></i><i style="--h:61%"></i><i style="--h:57%"></i><i style="--h:72%"></i><i style="--h:66%"></i><i style="--h:84%"></i><i class="is-peak" style="--h:93%"></i><i style="--h:78%"></i>
+                </div>
+                <div class="fa-note"><span>✦</span>Pic lié à la campagne du 12. Effet estimé : durable.</div>
+              </div>
+              <div class="fa-q"><span class="mono">›</span><span data-type="Pourquoi les ventes ont-elles augmenté en octobre ?">Pourquoi les ventes ont-elles augmenté en octobre ?</span></div>
+            </div>
+          </article>
+
+          <!-- Automatisations -->
+          <article class="feat feat--auto" data-feat="auto">
+            <div class="feat-copy">
+              <span class="feat-tag mono">Automatisations</span>
+              <h3>Transformez les tâches répétitives en workflows automatiques.</h3>
+            </div>
+            <div class="feat-vis fw">
+              <div class="fw-node"><span>Déclencheur</span><b>Devis sans réponse · 3 j</b></div>
+              <div class="fw-link"><i></i></div>
+              <div class="fw-node fw-node--ai"><span>IA</span><b>Rédige une relance personnalisée</b></div>
+              <div class="fw-link"><i></i></div>
+              <div class="fw-node"><span>Action</span><b>Envoi + suivi dans le CRM</b></div>
+            </div>
+          </article>
+
+          <!-- Smart alerts -->
+          <article class="feat feat--alerts" data-feat="alerts">
+            <div class="feat-copy">
+              <span class="feat-tag mono">Smart Alerts</span>
+              <h3>Recevez les informations importantes au bon moment.</h3>
+            </div>
+            <div class="feat-vis fal">
+              <div class="fal-item fal-item--warn"><i></i><div><b>Trésorerie sous le seuil</b><small>Prévu dans 9 jours</small></div></div>
+              <div class="fal-item"><i></i><div><b>Client clé inactif</b><small>Aucun échange depuis 21 j</small></div></div>
+              <div class="fal-item fal-item--ok"><i></i><div><b>Objectif mensuel atteint</b><small>Avec 4 jours d’avance</small></div></div>
+            </div>
+          </article>
+
+          <!-- Performance -->
+          <article class="feat feat--perf" data-feat="perf">
+            <div class="feat-copy">
+              <span class="feat-tag mono">Performance</span>
+              <h3>Visualisez vos KPI en temps réel.</h3>
+            </div>
+            <div class="feat-vis fp">
+              <div class="fp-gauge">
+                <svg viewBox="0 0 120 120" aria-hidden="true"><circle class="fp-track" cx="60" cy="60" r="50"/><circle class="fp-val" cx="60" cy="60" r="50" pathLength="100"/></svg>
+                <div><b class="num" data-count="87" data-suffix=" %">87 %</b><small>de l’objectif</small></div>
+              </div>
+              <ul class="fp-list">
+                <li><span>Marge</span><b class="num" data-count="32.4" data-decimals="1" data-suffix=" %">32,4 %</b></li>
+                <li><span>Panier moyen</span><b class="num" data-count="412" data-suffix=" €">412 €</b></li>
+                <li><span>Délai moyen</span><b class="num" data-count="2.1" data-decimals="1" data-suffix=" j">2,1 j</b></li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- Clients -->
+          <article class="feat feat--clients" data-feat="clients">
+            <div class="feat-copy">
+              <span class="feat-tag mono">Clients</span>
+              <h3>Centralisez les informations essentielles.</h3>
+            </div>
+            <div class="feat-vis fc">
+              <button type="button" class="fc-row"><span class="fc-av">AB</span><span class="fc-n">Atelier Brume<small>Dernier échange · hier</small></span><span class="fc-pill fc-pill--ok">Actif</span></button>
+              <button type="button" class="fc-row"><span class="fc-av">NW</span><span class="fc-n">Nordwise<small>Devis en attente · 5 j</small></span><span class="fc-pill fc-pill--warn">À relancer</span></button>
+              <button type="button" class="fc-row"><span class="fc-av">MC</span><span class="fc-n">Maison Ciel<small>Renouvellement · 30 j</small></span><span class="fc-pill">Suivi</span></button>
+            </div>
+          </article>
+
+          <!-- Reporting -->
+          <article class="feat feat--report" data-feat="report">
+            <div class="feat-copy">
+              <span class="feat-tag mono">Reporting</span>
+              <h3>Générez des rapports clairs automatiquement.</h3>
+              <button type="button" class="btn btn--ghost btn--sm fr-btn" data-report-btn>
+                <span class="fr-btn-label">Générer le rapport</span>
+                <span class="fr-spinner" aria-hidden="true"></span>
+              </button>
+            </div>
+            <div class="feat-vis fr" data-report>
+              <div class="fr-doc">
+                <div class="fr-doc-h"><span class="mono">RAPPORT MENSUEL</span><span class="mono">OCT.</span></div>
+                <div class="fr-doc-title">Synthèse de performance</div>
+                <div class="fr-doc-kpis"><i></i><i></i><i></i></div>
+                <div class="fr-doc-chart"><svg viewBox="0 0 200 50" preserveAspectRatio="none" aria-hidden="true"><path d="M0,42 C20,40 30,30 50,32 C70,34 80,20 100,22 C120,24 135,12 150,14 C170,16 180,6 200,4" pathLength="1"/></svg></div>
+                <div class="fr-doc-lines"><i></i><i></i><i></i><i></i></div>
+              </div>
+              <div class="fr-done mono" aria-live="polite"></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═════════════ 7. L'IA TRAVAILLE POUR VOUS ═════════════ -->
+    <section class="core" id="ia" aria-labelledby="core-title">
+      <div class="core-inner wrap">
+        <div class="core-copy">
+          <span class="eyebrow">L’IA travaille pour vous</span>
+          <h2 class="h2" id="core-title" data-reveal>Pendant que vous vous concentrez sur votre entreprise, <em>votre dashboard travaille.</em></h2>
+        </div>
+
+        <div class="core-stage" data-core>
+          <canvas class="core-canvas" data-core-canvas aria-hidden="true"></canvas>
+          <div class="core-fallback" aria-hidden="true"><i></i><i></i><i></i></div>
+          <svg class="core-links" data-core-links aria-hidden="true"></svg>
+          <ul class="core-nodes">
+            <li class="core-node" style="--a:-90deg"><span class="core-node-dot"></span><b>Analyse</b><small>Lit vos données en continu</small></li>
+            <li class="core-node" style="--a:-30deg"><span class="core-node-dot"></span><b>Automatisation</b><small>Exécute les tâches répétitives</small></li>
+            <li class="core-node" style="--a:30deg"><span class="core-node-dot"></span><b>Détection</b><small>Repère les signaux faibles</small></li>
+            <li class="core-node" style="--a:90deg"><span class="core-node-dot"></span><b>Recommandations</b><small>Propose la prochaine action</small></li>
+            <li class="core-node" style="--a:150deg"><span class="core-node-dot"></span><b>Rapports</b><small>Résume sans qu’on le demande</small></li>
+            <li class="core-node" style="--a:210deg"><span class="core-node-dot"></span><b>Alertes</b><small>Prévient avant qu’il soit tard</small></li>
+          </ul>
+          <div class="core-ticker mono" aria-live="off"><span class="core-ticker-dot"></span><span data-core-ticker>Analyse de 14 sources…</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═════════════ 8. DÉMO INTERACTIVE ═════════════ -->
+    <section class="section demo" id="demo" aria-labelledby="demo-title">
+      <div class="wrap">
+        <div class="sec-head sec-head--split">
+          <div class="sec-head">
+            <span class="eyebrow">Démo interactive</span>
+            <h2 class="h2" id="demo-title" data-reveal>Prenez les commandes.<br /><em>C’est votre dashboard.</em></h2>
+          </div>
+          <p class="lead" data-reveal>Cliquez, filtrez, demandez. Cette démo fonctionne comme le produit, avec des données d’exemple.</p>
+        </div>
+
+        <div class="demo-app" data-demo>
+          <div class="demo-chrome">
+            <span class="demo-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <form class="demo-cmd" data-demo-cmd>
+              <label class="sr-only" for="demo-cmd-input">Que souhaitez-vous analyser ?</label>
+              <span class="demo-cmd-ic" aria-hidden="true">✦</span>
+              <input id="demo-cmd-input" type="text" autocomplete="off" placeholder="Que souhaitez-vous analyser ?" />
+              <kbd class="mono">↵</kbd>
+            </form>
+            <span class="demo-badge mono">Données d’exemple</span>
+          </div>
+
+          <div class="demo-body">
+            <div class="demo-side" role="tablist" aria-label="Sections du dashboard" aria-orientation="vertical">
+              <button role="tab" id="tab-overview" aria-controls="panel-overview" aria-selected="true" data-tab="overview"><span data-ic="grid"></span>Overview</button>
+              <button role="tab" id="tab-analytics" aria-controls="panel-analytics" aria-selected="false" tabindex="-1" data-tab="analytics"><span data-ic="chart"></span>Analytics</button>
+              <button role="tab" id="tab-automation" aria-controls="panel-automation" aria-selected="false" tabindex="-1" data-tab="automation"><span data-ic="bolt"></span>Automation</button>
+              <button role="tab" id="tab-customers" aria-controls="panel-customers" aria-selected="false" tabindex="-1" data-tab="customers"><span data-ic="users"></span>Customers</button>
+              <button role="tab" id="tab-reports" aria-controls="panel-reports" aria-selected="false" tabindex="-1" data-tab="reports"><span data-ic="doc"></span>Reports</button>
+              <button role="tab" id="tab-assistant" aria-controls="panel-assistant" aria-selected="false" tabindex="-1" data-tab="assistant"><span data-ic="spark"></span>AI Assistant</button>
+            </div>
+
+            <div class="demo-panels">
+              <div class="demo-panel" role="tabpanel" id="panel-overview" aria-labelledby="tab-overview" data-panel="overview"></div>
+              <div class="demo-panel" role="tabpanel" id="panel-analytics" aria-labelledby="tab-analytics" data-panel="analytics" hidden></div>
+              <div class="demo-panel" role="tabpanel" id="panel-automation" aria-labelledby="tab-automation" data-panel="automation" hidden></div>
+              <div class="demo-panel" role="tabpanel" id="panel-customers" aria-labelledby="tab-customers" data-panel="customers" hidden></div>
+              <div class="demo-panel" role="tabpanel" id="panel-reports" aria-labelledby="tab-reports" data-panel="reports" hidden></div>
+              <div class="demo-panel" role="tabpanel" id="panel-assistant" aria-labelledby="tab-assistant" data-panel="assistant" hidden></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═════════════ 9. AVANT / APRÈS ═════════════ -->
+    <section class="section ba-sec" id="avant-apres" aria-labelledby="ba-title">
+      <div class="wrap">
+        <div class="sec-head sec-head--split">
+          <div class="sec-head">
+            <span class="eyebrow">Avant · Après</span>
+            <h2 class="h2" id="ba-title" data-reveal>Même entreprise.<br /><em>Autre quotidien.</em></h2>
+          </div>
+          <p class="lead" data-reveal>Faites glisser la poignée pour comparer.</p>
+        </div>
+
+        <div class="ba" data-ba style="--pos:50%">
+          <div class="ba-pane ba-before">
+            <div class="ba-label mono">Avant</div>
+            <div class="ba-before-art" aria-hidden="true">
+              <div class="bb bb-sheet"><span>clients_final_v4.xlsx</span><div class="bb-cells"></div></div>
+              <div class="bb bb-mail"><b>Boîte de réception</b><span>312 non lus</span></div>
+              <div class="bb bb-note">Penser à relancer Nordwise !!</div>
+              <div class="bb bb-sheet bb-sheet--2"><span>reporting_sept (copie).xlsx</span><div class="bb-cells"></div></div>
+              <div class="bb bb-clock"><b>17:48</b><span>Reporting toujours pas fini</span></div>
+            </div>
+            <ul class="ba-list">
+              <li>Données dispersées</li>
+              <li>Tâches manuelles</li>
+              <li>Tableurs</li>
+              <li>Informations difficiles à trouver</li>
+              <li>Temps perdu</li>
+            </ul>
+          </div>
+
+          <div class="ba-pane ba-after" aria-hidden="false">
+            <div class="ba-label mono">Après</div>
+            <div class="ba-after-art" aria-hidden="true">
+              <div class="dash-frame" data-dashboard></div>
+            </div>
+            <ul class="ba-list">
+              <li>Dashboard centralisé</li>
+              <li>Automatisations</li>
+              <li>IA</li>
+              <li>Données en temps réel</li>
+              <li>Décisions plus rapides</li>
+            </ul>
+          </div>
+
+          <div class="ba-handle" role="slider" tabindex="0" aria-label="Comparer avant et après" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="50 % avant, 50 % après" data-ba-handle>
+            <span class="ba-knob"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M9 6l-5 6 5 6M15 6l5 6-5 6"/></svg></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═════════════ 10. PREUVES ═════════════ -->
+    <section class="section proof" id="preuves" aria-labelledby="proof-title">
+      <div class="wrap">
+        <div class="sec-head">
+          <span class="eyebrow">Résultats</span>
+          <h2 class="h2" id="proof-title" data-reveal>Conçu pour les entreprises qui veulent passer <em>au niveau supérieur.</em></h2>
+        </div>
+
+        <!-- Remplacez chaque emplacement par vos vrais logos / chiffres / citations (voir README). -->
+        <ul class="proof-logos" aria-label="Logos clients (emplacements)">
+          <li data-placeholder="logo"><span>Logo client</span></li>
+          <li data-placeholder="logo"><span>Logo client</span></li>
+          <li data-placeholder="logo"><span>Logo client</span></li>
+          <li data-placeholder="logo"><span>Logo client</span></li>
+          <li data-placeholder="logo"><span>Logo client</span></li>
+          <li data-placeholder="logo"><span>Logo client</span></li>
+        </ul>
+
+        <div class="proof-stats">
+          <div class="proof-stat" data-placeholder="stat">
+            <b class="num">+XX&nbsp;%</b>
+            <span>de productivité</span>
+            <small class="mono">À renseigner avec vos données</small>
+          </div>
+          <div class="proof-stat" data-placeholder="stat">
+            <b class="num">XX&nbsp;h</b>
+            <span>économisées par mois</span>
+            <small class="mono">À renseigner avec vos données</small>
+          </div>
+          <div class="proof-stat" data-placeholder="stat">
+            <b class="num">XX&nbsp;%</b>
+            <span>de tâches automatisées</span>
+            <small class="mono">À renseigner avec vos données</small>
+          </div>
+        </div>
+
+        <div class="proof-quotes">
+          <figure class="quote quote--lg" data-placeholder="testimonial">
+            <blockquote>« Emplacement pour le témoignage d’un client : ce qui a changé concrètement, en une ou deux phrases. »</blockquote>
+            <figcaption><span class="quote-av" aria-hidden="true"></span><span><b>Prénom Nom</b><small>Fonction · Entreprise</small></span></figcaption>
+          </figure>
+          <figure class="quote" data-placeholder="testimonial">
+            <blockquote>« Emplacement pour un second témoignage, centré sur un résultat mesurable. »</blockquote>
+            <figcaption><span class="quote-av" aria-hidden="true"></span><span><b>Prénom Nom</b><small>Fonction · Entreprise</small></span></figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═════════════ 11. TARIFS ═════════════ -->
+    <section class="section pricing" id="tarifs" aria-labelledby="pricing-title">
+      <div class="wrap">
+        <div class="pricing-head">
+          <div class="sec-head">
+            <span class="eyebrow">Tarifs</span>
+            <h2 class="h2" id="pricing-title" data-reveal>Un prix clair.<br /><em>Une valeur qui se voit.</em></h2>
+          </div>
+          <div class="billing" role="radiogroup" aria-label="Période de facturation" data-billing>
+            <button type="button" role="radio" aria-checked="true" data-period="monthly">Mensuel</button>
+            <button type="button" role="radio" aria-checked="false" data-period="annual">Annuel <span class="billing-save mono">−20 %</span></button>
+            <i class="billing-thumb" aria-hidden="true"></i>
+          </div>
+        </div>
+
+        <div class="plans">
+          <article class="plan" data-plan="starter">
+            <header>
+              <h3>Starter</h3>
+              <p>Pour commencer</p>
+            </header>
+            <div class="plan-price"><b class="num" data-price>49</b><span><span data-currency>€</span> HT<br />/ mois</span></div>
+            <p class="plan-note mono" data-note>Facturation mensuelle</p>
+            <a class="btn btn--ghost plan-cta" href="#tarifs" data-cta>Commencer maintenant</a>
+            <ul class="plan-list">
+              <li>Dashboard centralisé</li>
+              <li>Jusqu’à 5 sources connectées</li>
+              <li>10 automatisations actives</li>
+              <li>Rapports mensuels automatiques</li>
+              <li>3 utilisateurs</li>
+            </ul>
+          </article>
+
+          <article class="plan plan--pro" data-plan="pro">
+            <div class="plan-glow" aria-hidden="true"></div>
+            <header>
+              <h3>Pro <span class="plan-flag mono">Recommandé</span></h3>
+              <p>Pour les entreprises qui veulent automatiser davantage</p>
+            </header>
+            <div class="plan-price"><b class="num" data-price>129</b><span><span data-currency>€</span> HT<br />/ mois</span></div>
+            <p class="plan-note mono" data-note>Facturation mensuelle</p>
+            <a class="btn btn--primary plan-cta magnetic" href="#tarifs" data-cta>Commencer maintenant</a>
+            <ul class="plan-list">
+              <li><b>Tout Starter, plus :</b></li>
+              <li>Sources illimitées</li>
+              <li>Automatisations illimitées</li>
+              <li>Assistant IA et recommandations</li>
+              <li>Smart Alerts en temps réel</li>
+              <li>15 utilisateurs</li>
+            </ul>
+          </article>
+
+          <article class="plan" data-plan="enterprise">
+            <header>
+              <h3>Enterprise</h3>
+              <p>Pour les besoins personnalisés</p>
+            </header>
+            <div class="plan-price plan-price--custom"><b>Sur mesure</b></div>
+            <p class="plan-note mono">Devis selon votre organisation</p>
+            <a class="btn btn--ghost plan-cta" href="#commencer">Parler à l’équipe</a>
+            <ul class="plan-list">
+              <li><b>Tout Pro, plus :</b></li>
+              <li>Utilisateurs illimités</li>
+              <li>SSO et rôles avancés</li>
+              <li>Intégrations sur mesure</li>
+              <li>Accompagnement dédié</li>
+            </ul>
+          </article>
+        </div>
+
+        <details class="compare" data-compare>
+          <summary><span>Comparer les offres en détail</span><i aria-hidden="true"></i></summary>
+          <div class="compare-scroll">
+            <table class="compare-table">
+              <caption class="sr-only">Comparaison détaillée des offres</caption>
+              <thead><tr><th scope="col">Fonctionnalité</th><th scope="col">Starter</th><th scope="col">Pro</th><th scope="col">Enterprise</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">Sources connectées</th><td>5</td><td>Illimitées</td><td>Illimitées</td></tr>
+                <tr><th scope="row">Automatisations actives</th><td>10</td><td>Illimitées</td><td>Illimitées</td></tr>
+                <tr><th scope="row">Utilisateurs</th><td>3</td><td>15</td><td>Illimités</td></tr>
+                <tr><th scope="row">IA Analytics</th><td>Essentiel</td><td>Avancé</td><td>Avancé + modèles dédiés</td></tr>
+                <tr><th scope="row">Assistant IA</th><td class="no">—</td><td class="yes">Inclus</td><td class="yes">Inclus</td></tr>
+                <tr><th scope="row">Smart Alerts</th><td>Quotidiennes</td><td>Temps réel</td><td>Temps réel</td></tr>
+                <tr><th scope="row">Rapports automatiques</th><td>Mensuels</td><td>Hebdo + à la demande</td><td>Personnalisés</td></tr>
+                <tr><th scope="row">SSO / rôles avancés</th><td class="no">—</td><td class="no">—</td><td class="yes">Inclus</td></tr>
+                <tr><th scope="row">Support</th><td>Email</td><td>Prioritaire</td><td>Dédié</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ═════════════ 12. FAQ ═════════════ -->
+    <section class="section faq" id="faq" aria-labelledby="faq-title">
+      <div class="wrap faq-grid">
+        <div class="sec-head faq-head">
+          <span class="eyebrow">Questions fréquentes</span>
+          <h2 class="h2" id="faq-title" data-reveal>Tout ce que vous voulez <em>savoir.</em></h2>
+          <p class="muted">Une autre question ? <a class="link" href="#commencer">Écrivez-nous</a>, on répond vite.</p>
+        </div>
+        <div class="faq-list" data-faq>
+          <details class="faq-item">
+            <summary><span>Qu’est-ce que le Dashboard IA ?</span><i aria-hidden="true"></i></summary>
+            <div class="faq-a"><p>C’est un espace unique qui réunit les données de votre entreprise, les analyse avec l’IA et automatise les tâches répétitives. Vous voyez ce qui compte, vous recevez les bonnes alertes et vous gagnez du temps chaque semaine.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary><span>Est-ce adapté à mon entreprise ?</span><i aria-hidden="true"></i></summary>
+            <div class="faq-a"><p>Ordra s’adresse aux TPE, PME et équipes en croissance qui gèrent leurs ventes, leurs clients et leurs opérations avec plusieurs outils. Vous choisissez les modules utiles, le dashboard s’adapte à votre activité.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary><span>Puis-je connecter mes outils ?</span><i aria-hidden="true"></i></summary>
+            <div class="faq-a"><p>Oui. Ordra se connecte à vos outils du quotidien : messagerie, CRM, tableurs, comptabilité, gestion de projet. Si un outil manque, l’offre Enterprise inclut des intégrations sur mesure.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary><span>Les données sont-elles sécurisées ?</span><i aria-hidden="true"></i></summary>
+            <div class="faq-a"><p>Vos données sont chiffrées en transit et au repos, et l’accès est contrôlé par rôle. Elles restent votre propriété et ne servent jamais à entraîner des modèles pour d’autres clients.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary><span>Combien de temps faut-il pour commencer ?</span><i aria-hidden="true"></i></summary>
+            <div class="faq-a"><p>Vous connectez vos premières sources en quelques minutes. Le dashboard se remplit aussitôt, et l’IA affine ses analyses au fil des jours.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary><span>Puis-je personnaliser le dashboard ?</span><i aria-hidden="true"></i></summary>
+            <div class="faq-a"><p>Entièrement. Choisissez vos indicateurs, réorganisez les modules, créez vos propres automatisations et définissez qui voit quoi dans votre équipe.</p></div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═════════════ 13. CTA FINAL ═════════════ -->
+    <section class="final" id="commencer" aria-labelledby="final-title" data-final>
+      <div class="final-light" aria-hidden="true"></div>
+      <div class="final-stage" aria-hidden="true">
+        <div class="final-rig" data-final-rig>
+          <div class="final-card final-card--main">
+            <div class="fcm-head"><span data-logo></span><b>Centre de contrôle</b><em class="mono">EN DIRECT</em></div>
+            <div class="fcm-kpis">
+              <div><small>Revenus</small><b class="num">128 450 €</b></div>
+              <div><small>Automatisations</small><b class="num">24</b></div>
+              <div><small>Temps libéré</small><b class="num">146 h</b></div>
+            </div>
+            <svg class="fcm-chart" viewBox="0 0 300 70" preserveAspectRatio="none"><defs><linearGradient id="fcmG" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#a9c8ff" stop-opacity=".25"/><stop offset="1" stop-color="#a9c8ff" stop-opacity="0"/></linearGradient></defs><path d="M0,58 C30,54 45,44 70,46 C95,48 110,32 140,30 C170,28 185,20 210,22 C240,24 260,10 300,6 L300,70 L0,70 Z" fill="url(#fcmG)"/><path d="M0,58 C30,54 45,44 70,46 C95,48 110,32 140,30 C170,28 185,20 210,22 C240,24 260,10 300,6" fill="none" stroke="#a9c8ff" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg>
+          </div>
+          <div class="final-card final-card--a"><span class="fc-ic">✦</span><div><b>Insight IA</b><small>Marge PME en hausse</small></div></div>
+          <div class="final-card final-card--b"><span class="fc-ic fc-ic--sig">⚡</span><div><b>Automatisation</b><small>Rapport envoyé</small></div></div>
+        </div>
+      </div>
+      <div class="wrap final-copy">
+        <h2 class="final-title" id="final-title" data-reveal>Votre prochain système de travail <span class="serif">commence ici.</span></h2>
+        <p class="final-sub mono">Centralisez. <span>Automatisez.</span> Analysez. <span>Décidez.</span></p>
+        <a class="btn btn--primary btn--lg magnetic final-btn" href="#tarifs" data-cta>Commencer maintenant <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a>
+        <p class="final-reassure muted">Mise en route guidée · Sans engagement sur l’offre mensuelle</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ═════════════ FOOTER ═════════════ -->
+  <footer class="footer">
+    <div class="wrap footer-grid">
+      <div class="footer-brand">
+        <a class="nav-logo" href="#top" aria-label="Ordra — retour en haut"><span class="nav-logo-mark" data-logo></span><span class="nav-logo-name" data-brand>Ordra</span></a>
+        <p class="muted">Le dashboard IA qui centralise, automatise et éclaire vos décisions.</p>
+      </div>
+      <nav class="footer-cols" aria-label="Liens de pied de page">
+        <div>
+          <h4>Produit</h4>
+          <a href="#fonctionnalites">Fonctionnalités</a>
+          <a href="#tarifs">Tarifs</a>
+          <a href="#faq">FAQ</a>
+        </div>
+        <div>
+          <h4>Entreprise</h4>
+          <a href="#top">À propos</a>
+          <a href="#commencer">Contact</a>
+        </div>
+        <div>
+          <h4>Légal</h4>
+          <a href="#top">Confidentialité</a>
+          <a href="#top">Conditions</a>
+        </div>
+      </nav>
+    </div>
+    <div class="wrap footer-bottom">
+      <span class="muted">© <span data-year>2026</span> <span data-brand>Ordra</span>. Tous droits réservés.</span>
+      <a class="footer-top mono" href="#top">Retour en haut ↑</a>
+    </div>
+    <div class="footer-word" aria-hidden="true" data-brand>Ordra</div>
+  </footer>
+
+  <!-- CTA collant mobile -->
+  <div class="sticky-cta" data-sticky-cta>
+    <a class="btn btn--primary" href="#tarifs" data-cta>Commencer maintenant</a>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
