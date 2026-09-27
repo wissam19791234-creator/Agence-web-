@@ -1,9 +1,11 @@
 // Rapports : génération (chargement → prêt), aperçu, export PDF (impression), partage, planification.
+// Dans l'aperçu publié (impression et nouvelles fenêtres bloquées), l'export devient une copie du rapport en texte.
 import { api } from '../../shared/api.js';
 import { HEALTH, BRIEFING } from '../../shared/demo-data.js';
 import { icon } from '../../shared/icons.js';
 import { esc, fmt, initMenus, skeleton } from '../../shared/ui.js';
 import { pageHead } from '../widgets.js';
+import { IS_ARTIFACT } from '../../shared/paths.js';
 
 const SCHEDULES = ['Chaque jour · 8 h', 'Chaque lundi · 8 h', 'Le 1er du mois · 8 h'];
 
@@ -30,6 +32,30 @@ function reportHtml(r) {
     </article>`;
 }
 
+/** Version texte du rapport (copie dans le presse-papiers). */
+function reportText(r) {
+  const rev = api.metricSync('revenue', 30);
+  const vis = api.metricSync('visitors', 30);
+  const conv = api.metricSync('conversion', 30);
+  return [
+    `SCALIFY · ${r.name.toUpperCase()} · ${new Intl.DateTimeFormat('fr-FR', { dateStyle: 'long' }).format(new Date())}`,
+    'Synthèse · Maison Demo (données de démonstration)',
+    '',
+    `Chiffre d’affaires : ${fmt.money(rev.value)} (${fmt.delta(rev.delta)})`,
+    `Visiteurs : ${fmt.int(vis.value)} (${fmt.delta(vis.delta)})`,
+    `Conversion : ${fmt.pct(conv.value)} (${fmt.delta(conv.delta)})`,
+    `Score de santé : ${HEALTH.score}/100 (+${HEALTH.delta} pts)`,
+    '',
+    'Ce qui a changé',
+    ...BRIEFING.changes.map((c) => `- ${c}`),
+    '',
+    'Recommandations',
+    ...BRIEFING.opportunities.map((c) => `- ${c}`),
+    `- ${BRIEFING.issue}`,
+  ].join('\n');
+}
+const EXPORT_LABEL = IS_ARTIFACT ? `${icon('copy', 14)}Copier le rapport` : `${icon('download', 14)}Exporter PDF`;
+
 export async function render(el, app) {
   const list = await api.reports();
   el.innerHTML = `
@@ -41,7 +67,7 @@ export async function render(el, app) {
         <div class="rcard-out" data-out></div>
         <div class="rcard-a">
           <button type="button" class="btn btn--primary btn--sm" data-gen>${icon('spark', 14)}Générer le rapport</button>
-          <button type="button" class="btn btn--secondary btn--sm" data-pdf disabled>${icon('download', 14)}Exporter PDF</button>
+          <button type="button" class="btn btn--secondary btn--sm" data-pdf disabled>${EXPORT_LABEL}</button>
           <button type="button" class="btn btn--ghost btn--sm" data-share disabled>${icon('share', 14)}Partager</button>
           <div data-menu>
             <button type="button" class="btn btn--ghost btn--sm" data-menu-btn aria-expanded="false">${icon('calendar', 14)}Planifier</button>
@@ -74,9 +100,16 @@ export async function render(el, app) {
     btn.classList.remove('is-loading');
   }
   function preview(r) {
-    app.openModal(`${reportHtml(r)}<div class="modal-a"><button type="button" class="btn btn--secondary" data-print>${icon('download', 15)}Exporter PDF</button><button type="button" class="btn btn--primary" data-modal-close>Fermer</button></div>`, {
-      label: r.name, wide: true, onMount: (box) => box.querySelector('[data-print]').addEventListener('click', () => printReport(r)),
+    app.openModal(`${reportHtml(r)}<div class="modal-a"><button type="button" class="btn btn--secondary" data-print>${EXPORT_LABEL}</button><button type="button" class="btn btn--primary" data-modal-close>Fermer</button></div>`, {
+      label: r.name, wide: true, onMount: (box) => box.querySelector('[data-print]').addEventListener('click', () => exportReport(r)),
     });
+  }
+  function exportReport(r) {
+    if (!IS_ARTIFACT) { printReport(r); return; }
+    const text = reportText(r);
+    const fallback = () => app.openModal(`<h2 class="modal-t">${esc(r.name)}</h2><p class="modal-s">Sélectionnez le texte puis copiez-le (Ctrl+C ou ⌘C).</p><textarea class="textarea csv-out" readonly rows="14" aria-label="Rapport en texte">${esc(text)}</textarea>`, { label: r.name, onMount: (box) => box.querySelector('textarea').select() });
+    if (navigator.clipboard?.writeText) navigator.clipboard.writeText(text).then(() => app.toast('Rapport copié : collez-le dans un email ou un document.', { tone: 'success' }), fallback);
+    else fallback();
   }
   function printReport(r) {
     const w = window.open('', '_blank');
@@ -98,7 +131,7 @@ export async function render(el, app) {
     const r = list.find((x) => x.id === id);
     if (e.target.closest('[data-gen]')) generate(id);
     if (e.target.closest('[data-preview]')) preview(r);
-    if (e.target.closest('[data-pdf]')) printReport(r);
+    if (e.target.closest('[data-pdf]')) exportReport(r);
     if (e.target.closest('[data-share]')) {
       const link = `${location.origin}/r/${id}-${Math.random().toString(36).slice(2, 8)}`;
       try { await navigator.clipboard.writeText(link); app.toast('Lien de partage copié.', { tone: 'success' }); } catch { app.toast(`Lien : ${link}`); }

@@ -52,6 +52,7 @@ export async function go(id, { push = true, anchor = null } = {}) {
   $('[data-crumbs]').innerHTML = `<a href="${href('/app/overview/')}" data-route="overview">Maison Demo</a>${icon('chevron', 12)}<span aria-current="page">${r.title}</span>`;
   $('[data-ask-ctx]').textContent = `Contexte : ${r.title}`;
   closeSide();
+  if (!$('[data-modal]').hidden) closeModal();
   active?.destroy?.();
   view.innerHTML = `<div class="view-in">${skeleton(2, 'skel--title')}<div class="grid-skel">${skeleton(3, 'skel--block')}${skeleton(3, 'skel--block')}${skeleton(3, 'skel--block')}</div></div>`;
   const token = Symbol('nav');

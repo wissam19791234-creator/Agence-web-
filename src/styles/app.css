@@ -394,6 +394,7 @@
 .modal-t { font: 400 38px/1.05 var(--f-display); text-transform: uppercase; margin-bottom: 8px; padding-right: 44px; }
 .modal-s { color: var(--text-2); font-size: 15px; margin-bottom: 18px; }
 .modal-a { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; margin-top: 22px; }
+.csv-out { font: 600 12.5px/1.55 ui-monospace, 'SF Mono', Menlo, monospace; white-space: pre; overflow: auto; }
 .cust li label { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed rgba(0, 0, 0, .25); font-size: 14.5px; font-weight: 700; cursor: pointer; }
 .keys { display: grid; }
 .keys li { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dashed rgba(0, 0, 0, .25); font-size: 14px; font-weight: 600; }

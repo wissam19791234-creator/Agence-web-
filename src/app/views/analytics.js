@@ -6,6 +6,7 @@ import { METRICS } from '../../shared/demo-data.js';
 import { icon } from '../../shared/icons.js';
 import { countTo, esc, fmt, trendBadge } from '../../shared/ui.js';
 import { pageHead, aiMenu, bindAiMenus } from '../widgets.js';
+import { IS_ARTIFACT } from '../../shared/paths.js';
 
 const PERIODS = { '7d': 7, '30d': 30, '90d': 90 };
 const DAY = new Intl.DateTimeFormat('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' });
@@ -91,6 +92,22 @@ export async function render(el, app) {
     const s = api.metricSync(st.metric, days);
     const dates = api.dates(days);
     const csv = ['date;valeur;periode_precedente', ...s.points.map((v, i) => `${dates[i].toISOString().slice(0, 10)};${v};${s.prevPoints[i] ?? ''}`)].join('\n');
+    // Aperçu publié : les téléchargements y sont bloqués, on propose de copier les données
+    if (IS_ARTIFACT) {
+      app.openModal(`<h2 class="modal-t">Export CSV</h2>
+        <p class="modal-s">${esc(s.label)} · ${days} jours. Le téléchargement de fichiers est bloqué dans cet aperçu : copiez les données puis collez-les dans votre tableur.</p>
+        <textarea class="textarea csv-out" id="csv-out" readonly rows="10" aria-label="Données CSV">${esc(csv)}</textarea>
+        <div class="modal-a"><button type="button" class="btn btn--ghost" data-modal-close>Fermer</button><button type="button" class="btn btn--primary" data-copy-csv>${icon('copy', 15)}Copier le CSV</button></div>`, {
+        label: 'Export CSV',
+        onMount: (box) => box.querySelector('[data-copy-csv]').addEventListener('click', () => {
+          const ta = box.querySelector('#csv-out');
+          const done = () => app.toast('CSV copié. Collez-le dans votre tableur.', { tone: 'success' });
+          const select = () => { ta.focus(); ta.select(); app.toast('Données sélectionnées : copiez-les avec Ctrl+C ou ⌘C.'); };
+          if (navigator.clipboard?.writeText) navigator.clipboard.writeText(csv).then(done, select); else select();
+        }),
+      });
+      return;
+    }
     const a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
     a.download = `scalify-${st.metric}-${days}j.csv`;

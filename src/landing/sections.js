@@ -210,8 +210,14 @@ export function renderBento(root) {
   out.addEventListener('click', (e) => {
     const a = e.target.closest('[data-r]');
     if (!a) return;
-    const msg = { pdf: 'PDF prêt au téléchargement (démo).', share: 'Lien de partage copié.', plan: 'Rapport planifié chaque lundi à 8 h.' }[a.dataset.r];
-    if (a.dataset.r === 'share') navigator.clipboard?.writeText(location.href).catch(() => {});
+    if (a.dataset.r === 'share') {
+      // Message selon le résultat réel de la copie (le presse-papiers peut être refusé)
+      const ok = () => toast('Lien de partage copié.', { tone: 'success' });
+      const ko = () => toast('Copie refusée par le navigateur : le partage se fait depuis l’application.');
+      if (navigator.clipboard?.writeText) navigator.clipboard.writeText(location.href).then(ok, ko); else ko();
+      return;
+    }
+    const msg = { pdf: 'Démo : dans l’application, le PDF est prêt à télécharger.', plan: 'Rapport planifié chaque lundi à 8 h.' }[a.dataset.r];
     toast(msg, { tone: 'success' });
   });
 
