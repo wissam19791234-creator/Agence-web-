@@ -61,7 +61,7 @@ function markup() {
 
       <div class="fm-layer fm-feat" data-l="feat">
         ${SLIDES.map((s, i) => `
-          <div class="fm-slide" data-slide="${i}">
+          <div class="fm-slide" data-slide="${i}" style="--c:${['#ff6b2c', '#ffc857', '#ff4d8d', '#ff8a3d', '#ffb347', '#ff3d2e'][i]}">
             <div class="fm-slide-copy">
               <span class="fm-idx mono">0${i + 1} / 06</span>
               <b class="fm-kw">${s.k}</b>
@@ -99,7 +99,7 @@ function markup() {
       </div>
 
       <div class="fm-layer fm-rise" data-l="rise">
-        <svg viewBox="0 0 400 200" preserveAspectRatio="none"><defs><linearGradient id="fmRise" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#a9c8ff" stop-opacity=".35"/><stop offset="1" stop-color="#a9c8ff" stop-opacity="0"/></linearGradient></defs>
+        <svg viewBox="0 0 400 200" preserveAspectRatio="none"><defs><linearGradient id="fmRise" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#ff6b2c" stop-opacity=".35"/><stop offset="1" stop-color="#ff6b2c" stop-opacity="0"/></linearGradient></defs>
           <path class="area" d="M0,180 C60,176 90,160 140,150 C190,140 220,110 270,92 C320,74 350,40 400,14 L400,200 L0,200 Z" fill="url(#fmRise)"/>
           <path class="ln" pathLength="1" d="M0,180 C60,176 90,160 140,150 C190,140 220,110 270,92 C320,74 350,40 400,14"/>
         </svg>
@@ -116,7 +116,7 @@ function markup() {
       <div class="fm-layer fm-kin" data-l="kin"></div>
     </div>
     <div class="fm-sub" data-sub></div>
-    <div class="fm-cursor"><svg viewBox="0 0 24 24" width="100%" height="100%"><path d="M5 3l14 8-6 1.6L10 19z" fill="#fff" stroke="#06070a" stroke-width="1.2" stroke-linejoin="round"/></svg><i class="fm-ripple"></i></div>
+    <div class="fm-cursor"><svg viewBox="0 0 24 24" width="100%" height="100%"><path d="M5 3l14 8-6 1.6L10 19z" fill="#fff" stroke="#0a0706" stroke-width="1.2" stroke-linejoin="round"/></svg><i class="fm-ripple"></i></div>
     <i class="fm-flash"></i>
     <i class="fm-bar fm-bar--t"></i><i class="fm-bar fm-bar--b"></i>
     <i class="fm-vig"></i>
@@ -155,8 +155,9 @@ export function buildFilm(root) {
     el.innerHTML = `<span>${html}</span>`;
     kin.appendChild(el);
     gsap.set(el, { autoAlpha: 0 });
-    tl.fromTo(el, { autoAlpha: 0, scale: 1.45, filter: 'blur(14px)' }, { autoAlpha: 1, scale: 1, filter: 'blur(0px)', duration: 0.2, ease: 'expo.out' }, t)
-      .to(el, { scale: 1.06, duration: dur, ease: 'none' }, t + 0.2);
+    tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.06, ease: 'none' }, t)
+      .fromTo(el.firstElementChild, { scale: 1.5, yPercent: 8 }, { scale: 1, yPercent: 0, duration: 0.28, ease: 'expo.out' }, t)
+      .to(el.firstElementChild, { scale: 1.07, duration: dur - 0.28, ease: 'none' }, t + 0.28);
     if (exit === 'fade') tl.to(el, { autoAlpha: 0, duration: 0.2 }, t + dur);
     else tl.set(el, { autoAlpha: 0 }, t + dur);
     if (sound) hits.push({ t, type: sound });
@@ -187,8 +188,8 @@ export function buildFilm(root) {
   tl.set([$('.fm-bar--t'), $('.fm-bar--b')], { scaleY: 1 }, 0);
 
   // ═════ 0–5 s · Le chaos ═════
-  slam('Lundi.', 0.15, 0.55, { sound: 'kick' });
-  slam('<span class="mono">08:57</span>', 0.8, 0.45, { sound: 'kick' });
+  slam('Lundi.', 0.15, 0.55, { sound: 'kick', cls: 'bg-ink' });
+  slam('08:57', 0.8, 0.45, { sound: 'kick', cls: 'bg-flame' });
   show('chaos', 1.3);
   const cards = $$('.fm-card');
   cards.forEach((c, i) => {
@@ -202,9 +203,9 @@ export function buildFilm(root) {
   count($('[data-unread]'), 312, 1.3, 3.2, 'power2.in');
   tl.fromTo(L('chaos'), { '--red': 0 }, { '--red': 1, duration: 3, ease: 'power1.in' }, 1.5);
   shake(2.6, 2.1, 2.2);
-  slam('Trop d’outils.', 3.1, 0.5, { cls: 'on-dark' });
-  slam('Trop d’onglets.', 3.65, 0.5, { cls: 'on-dark' });
-  slam('Pas assez de <span class="serif">temps.</span>', 4.2, 0.55, { cls: 'on-dark' });
+  slam('Trop d’outils.', 3.1, 0.5, { cls: 'bg-cream' });
+  slam('Trop d’onglets.', 3.65, 0.5, { cls: 'bg-flame' });
+  slam('Pas assez de <span class="serif">temps.</span>', 4.2, 0.55, { cls: 'bg-ink' });
   doFlash(4.78);
   hide('chaos', 4.8);
 
@@ -215,7 +216,7 @@ export function buildFilm(root) {
     .fromTo('.fm-burst', { scale: 0, autoAlpha: 1 }, { scale: 4, autoAlpha: 0, duration: 1.1, ease: 'expo.out' }, 5.7)
     .fromTo('.fm-logo .fm-mark', { scale: 0, rotate: -90 }, { scale: 1, rotate: 0, duration: 0.7, ease: 'back.out(1.8)' }, 5.7)
     .fromTo('.fm-word span', { yPercent: 110, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, stagger: 0.05, duration: 0.5, ease: 'expo.out' }, 5.9)
-    .fromTo('.fm-tag', { autoAlpha: 0, y: 16, filter: 'blur(8px)' }, { autoAlpha: 1, y: 0, filter: 'blur(0px)', duration: 0.7 }, 6.6)
+    .fromTo('.fm-tag', { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.7 }, 6.6)
     .to(L('logo'), { scale: 1.6, autoAlpha: 0, duration: 0.45, ease: 'power3.in' }, 7.5);
   hits.push({ t: 5.7, type: 'impact' }, { t: 7.55, type: 'whoosh' });
 
@@ -233,7 +234,7 @@ export function buildFilm(root) {
   hits.push({ t: 12.55, type: 'whoosh' });
   caption('Vos priorités. Signalées par l’IA.', 12.9, 0.9);
   focus(0.5, 0.5, 1, 13.85, 0.6, 'expo.inOut');
-  slam('Tout. <span class="serif">Au même endroit.</span>', 14.25, 0.6, { cls: 'on-dark' });
+  slam('Tout. <span class="serif">Au même endroit.</span>', 14.25, 0.6, { cls: 'bg-flame' });
   doFlash(14.86, 0.9);
   hide('dash', 15);
 
@@ -288,8 +289,8 @@ export function buildFilm(root) {
   hide('feat', 29.8);
 
   // ═════ 30–45 s · L'automatisation ═════
-  slam('Et le <span class="serif">répétitif ?</span>', 30.0, 1.2, { exit: 'fade' });
-  slam('L’IA s’en <span class="serif">charge.</span>', 31.35, 1.25, { cls: 'accent', exit: 'fade' });
+  slam('Et le <span class="serif">répétitif ?</span>', 30.0, 1.2, { exit: 'fade', cls: 'bg-cream' });
+  slam('L’IA s’en <span class="serif">charge.</span>', 31.35, 1.25, { cls: 'bg-flame', exit: 'fade' });
   show('auto', 32.7);
   const nodes = $$('.fm-node');
   tl.fromTo(nodes, { autoAlpha: 0, y: 30, scale: 0.9 }, { autoAlpha: 1, y: 0, scale: 1, stagger: 0.25, duration: 0.5, ease: 'back.out(1.6)' }, 32.8)
@@ -305,7 +306,7 @@ export function buildFilm(root) {
     .fromTo('.fm-activate', { '--on': 0 }, { '--on': 1, duration: 0.2 }, 34.75)
     .to(cursor, { autoAlpha: 0, duration: 0.3 }, 35.6)
     .fromTo($$('.fm-link em'), { xPercent: -100 }, { xPercent: 400, duration: 0.6, repeat: 12, ease: 'none', stagger: 0.3 }, 34.8)
-    .to(nodes, { boxShadow: '0 0 0 1px rgba(169,200,255,.6), 0 0 40px -6px rgba(169,200,255,.7)', stagger: 0.2, duration: 0.3, yoyo: true, repeat: 5 }, 34.8);
+    .to(nodes, { boxShadow: '0 0 0 1px rgba(255,107,44,.6), 0 0 40px -6px rgba(255,107,44,.7)', stagger: 0.2, duration: 0.3, yoyo: true, repeat: 5 }, 34.8);
   hits.push({ t: 34.72, type: 'kick' });
   const toasts = $$('.fm-toast');
   toasts.forEach((to, i) => {
@@ -323,13 +324,13 @@ export function buildFilm(root) {
     .fromTo('.fm-clock .m', { rotate: 0 }, { rotate: 360 * 10, duration: 2.6, ease: 'power2.inOut' }, 40.3)
     .fromTo('.fm-clock .h', { rotate: 0 }, { rotate: 360 * 1.5, duration: 2.6, ease: 'power2.inOut' }, 40.3);
   $$('.fm-days span').forEach((d, i) => {
-    tl.to(d, { color: '#06070a', backgroundColor: '#e9edf4', duration: 0.1 }, 40.4 + i * 0.5)
-      .to(d, { color: '#6c7587', backgroundColor: 'rgba(255,255,255,0)', duration: 0.3 }, 40.85 + i * 0.5);
+    tl.to(d, { color: '#0a0706', backgroundColor: '#fbefe4', duration: 0.1 }, 40.4 + i * 0.5)
+      .to(d, { color: '#8f7b6e', backgroundColor: 'rgba(255,255,255,0)', duration: 0.3 }, 40.85 + i * 0.5);
     hits.push({ t: 40.4 + i * 0.5, type: 'tick' });
   });
   caption('Du lundi au vendredi. Sans relâche.', 40.6, 2.2);
   hide('week', 43);
-  slam('Pendant que vous faites <span class="serif">autre chose.</span>', 43.05, 1.8, { exit: 'fade' });
+  slam('Pendant que vous faites <span class="serif">autre chose.</span>', 43.05, 1.8, { exit: 'fade', cls: 'bg-ink' });
 
   // ═════ 45–55 s · Les résultats ═════
   show('split', 45);
@@ -337,9 +338,9 @@ export function buildFilm(root) {
     .fromTo(L('split'), { '--wipe': '0%' }, { '--wipe': '100%', duration: 1.6, ease: 'power3.inOut' }, 45.7);
   hits.push({ t: 45.7, type: 'whoosh', arg: 1.2 });
   hide('split', 47.55);
-  slam('Moins de <span class="serif">saisie.</span>', 47.6, 0.75);
-  slam('Moins <span class="serif">d’oublis.</span>', 48.4, 0.75);
-  slam('Plus de <span class="serif">décisions.</span>', 49.2, 0.95, { cls: 'accent' });
+  slam('Moins de <span class="serif">saisie.</span>', 47.6, 0.75, { cls: 'bg-cream' });
+  slam('Moins <span class="serif">d’oublis.</span>', 48.4, 0.75, { cls: 'bg-flame' });
+  slam('Plus de <span class="serif">décisions.</span>', 49.2, 0.95, { cls: 'bg-ink accent' });
   show('rise', 50.2);
   tl.fromTo(L('rise'), { rotate: -4, scale: 1.25 }, { rotate: 0, scale: 1, duration: 2.6, ease: 'power2.out' }, 50.2)
     .fromTo('.fm-rise .ln', { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 1.8, ease: 'power2.inOut' }, 50.3)
@@ -348,13 +349,13 @@ export function buildFilm(root) {
   hits.push({ t: 52.05, type: 'pop' });
   caption('Votre croissance, pilotée.', 51.2, 1.6);
   hide('rise', 53);
-  slam('Vos équipes <span class="serif">respirent.</span>', 53.0, 1.8, { exit: 'fade' });
+  slam('Vos équipes <span class="serif">respirent.</span>', 53.0, 1.8, { exit: 'fade', cls: 'bg-flame' });
   doFlash(54.9);
 
   // ═════ 55–60 s · À vous ═════
   show('end', 55);
   tl.fromTo('.fm-end .fm-mark', { scale: 0, rotate: -90 }, { scale: 1, rotate: 0, duration: 0.7, ease: 'back.out(1.8)' }, 55.05)
-    .fromTo('.fm-end-t', { autoAlpha: 0, y: 20, filter: 'blur(10px)' }, { autoAlpha: 1, y: 0, filter: 'blur(0px)', duration: 0.8 }, 55.4)
+    .fromTo('.fm-end-t', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.8 }, 55.4)
     .fromTo('.fm-cta', { autoAlpha: 0, scale: 0.8 }, { autoAlpha: 1, scale: 1, duration: 0.5, ease: 'back.out(2)' }, 56.4)
     .fromTo('.fm-price', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6 }, 57)
     .to([$('.fm-bar--t'), $('.fm-bar--b')], { scaleY: 0, duration: 1.2, ease: 'power2.inOut' }, 57.5)

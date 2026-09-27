@@ -4,6 +4,7 @@ import './styles/sections-a.css';
 import './styles/sections-b.css';
 import './styles/film.css';
 import './styles/extras.css';
+import './styles/site.css';
 
 import { CONFIG } from './config.js';
 import { mountDashboard, logoMark } from './modules/dashboard.js';
@@ -19,6 +20,7 @@ import { initCore } from './modules/core.js';
 import { initDemo } from './modules/demo.js';
 import { initBeforeAfter, initPricing, initAccordions, initFinal } from './modules/sections.js';
 import { splitWords } from './modules/utils.js';
+import { initContent, initForms, initSignupModal, initConsent } from './modules/site.js';
 import { initMarquee, initMega, initManifesto, initCases, initRoi, initCommandPalette, initRail, initTilt } from './modules/extras.js';
 
 function applyBrand() {
@@ -39,6 +41,7 @@ function safe(name, fn) {
 }
 
 applyBrand();
+initContent();
 mountDashboards();
 initSmoothScroll();
 
@@ -66,6 +69,9 @@ safe('roi', initRoi);
 safe('cmdk', initCommandPalette);
 safe('rail', initRail);
 safe('tilt', initTilt);
+safe('forms', initForms);
+safe('signup', initSignupModal);
+safe('consent', initConsent);
 safe('reveals', () => initReveals(splitWords));
 
 // Recalcule les déclencheurs une fois les polices chargées (hauteurs de texte définitives)

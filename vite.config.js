@@ -1,7 +1,10 @@
 import { defineConfig } from 'vite';
+import { seoPlugin } from './scripts/seo-plugin.mjs';
 
 export default defineConfig({
   base: './',
+  plugins: [seoPlugin()],
+  define: { __ARTIFACT__: 'false' },
   build: {
     target: 'es2020',
     cssCodeSplit: true,

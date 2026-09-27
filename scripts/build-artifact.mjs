@@ -1,6 +1,7 @@
 // Construit une version « un seul fichier » de la page (CSS et JS inclus,
 // bibliothèques chargées depuis jsDelivr) : dist-artifact/ordra.html
 import { build } from 'vite';
+import { seoPlugin } from './seo-plugin.mjs';
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, rmSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -10,7 +11,6 @@ const pkg = (name) => JSON.parse(readFileSync(resolve(root, `node_modules/${name
 const CDN = {
   gsap: `https://cdn.jsdelivr.net/npm/gsap@${pkg('gsap')}/index.js`,
   'gsap/ScrollTrigger': `https://cdn.jsdelivr.net/npm/gsap@${pkg('gsap')}/ScrollTrigger.js`,
-  lenis: `https://cdn.jsdelivr.net/npm/lenis@${pkg('lenis')}/dist/lenis.mjs`,
   three: `https://cdn.jsdelivr.net/npm/three@${pkg('three')}/build/three.module.js`,
 };
 
@@ -31,7 +31,8 @@ const lazyThree = {
 await build({
   root,
   configFile: false,
-  plugins: [lazyThree],
+  plugins: [lazyThree, seoPlugin()],
+  define: { __ARTIFACT__: 'true' },
   logLevel: 'warn',
   base: './',
   build: {

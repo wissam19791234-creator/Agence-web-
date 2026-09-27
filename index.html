@@ -3,21 +3,31 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Ordra — Dashboard IA</title>
+  <title>Ordra — Le dashboard IA qui pilote votre entreprise</title>
   <meta name="description" content="Ordra réunit vos données, vos tâches et vos opérations dans un dashboard piloté par l'IA. Centralisez, automatisez, analysez, décidez." />
-  <meta name="theme-color" content="#06070a" />
+  <meta name="theme-color" content="#0a0706" />
   <meta property="og:title" content="Ordra — Votre entreprise, pilotée par l'IA" />
   <meta property="og:description" content="Un dashboard intelligent qui transforme vos données, vos tâches et vos opérations en un système simple, automatisé et exploitable." />
   <meta property="og:type" content="website" />
+  <meta property="og:locale" content="fr_FR" />
+  <meta property="og:image" content="og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Ordra — Votre entreprise, pilotée par l'IA. Aperçu du dashboard." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Ordra — Votre entreprise, pilotée par l'IA" />
+  <meta name="twitter:description" content="Centralisez vos données, automatisez vos tâches, décidez plus vite." />
+  <meta name="twitter:image" content="og.png" />
+  <link rel="canonical" href="%SITE_URL%/" />
+  <!--JSONLD-->
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2306070a'/%3E%3Crect x='7' y='7' width='8' height='8' rx='2' fill='%23e9edf4'/%3E%3Crect x='17' y='7' width='8' height='8' rx='2' fill='%23e9edf4' fill-opacity='.35'/%3E%3Crect x='7' y='17' width='8' height='8' rx='2' fill='%23e9edf4' fill-opacity='.35'/%3E%3Crect x='17' y='17' width='8' height='8' rx='2' fill='%23a9c8ff'/%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@1,6..72,300;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@1,6..72,300;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap" />
 </head>
 <body>
   <a class="skip-link" href="#main">Aller au contenu</a>
-  <div class="grain" aria-hidden="true"></div>
-  <div class="cursor" aria-hidden="true"></div>
+    <div class="cursor" aria-hidden="true"></div>
   <div class="cursor-dot" aria-hidden="true"></div>
 
   <!-- ═════════════ NAVIGATION ═════════════ -->
@@ -60,65 +70,55 @@
 
     <!-- ═════════════ 1. HERO ═════════════ -->
     <section class="hero" id="top" aria-labelledby="hero-title">
-      <div class="hero-sticky">
-        <div class="hero-bg" aria-hidden="true">
-          <div class="hero-beam hero-beam--1"></div>
-          <div class="hero-beam hero-beam--2"></div>
-          <div class="hero-horizon"></div>
-          <div class="hero-floor"></div>
+      <div class="hero-bg" aria-hidden="true">
+        <canvas class="hero-ember" data-ember="hero"></canvas>
+        <div class="hero-fade"></div>
+      </div>
+
+      <div class="wrap hero-copy">
+        <p class="hero-badge" data-hero-in>
+          <span class="hero-badge-star" aria-hidden="true">✦</span>
+          L’intelligence opérationnelle de votre entreprise
+        </p>
+        <h1 class="hero-title" id="hero-title">
+          <span class="hero-line" data-hero-line>Votre entreprise.</span>
+          <span class="hero-line hero-line--accent" data-hero-line><span class="serif">pilotée par l’IA.</span></span>
+        </h1>
+        <p class="hero-sub lead" data-hero-in>
+          Un dashboard intelligent qui transforme vos données, vos tâches et vos opérations en un système simple, automatisé et exploitable.
+        </p>
+        <div class="hero-ctas" data-hero-in>
+          <a class="btn btn--primary btn--lg magnetic" href="#demo">Découvrir le dashboard <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a>
+          <a class="btn btn--ghost btn--lg" href="#video"><span class="btn-play-ic"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>Voir le film (1 min)</a>
         </div>
+        <ul class="hero-meta" data-hero-in>
+          <li><span class="mono">01</span>Vos données réunies</li>
+          <li><span class="mono">02</span>Vos tâches automatisées</li>
+          <li><span class="mono">03</span>Vos décisions éclairées</li>
+        </ul>
+      </div>
 
-        <div class="wrap hero-grid">
-          <div class="hero-copy">
-            <p class="hero-badge" data-hero-in>
-              <span class="hero-badge-star" aria-hidden="true">✦</span>
-              L’intelligence opérationnelle de votre entreprise
-            </p>
-            <h1 class="hero-title" id="hero-title">
-              <span class="hero-line" data-hero-line>Votre entreprise.</span>
-              <span class="hero-line hero-line--accent" data-hero-line><span class="serif">Pilotée</span> par l’IA.</span>
-            </h1>
-            <p class="hero-sub lead" data-hero-in>
-              Un dashboard intelligent qui transforme vos données, vos tâches et vos opérations en un système simple, automatisé et exploitable.
-            </p>
-            <div class="hero-ctas" data-hero-in>
-              <a class="btn btn--primary btn--lg magnetic" href="#demo">Découvrir le dashboard <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a>
-              <a class="btn btn--ghost btn--lg" href="#video"><span class="btn-play-ic"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>Voir comment ça fonctionne</a>
-            </div>
-            <ul class="hero-meta" data-hero-in>
-              <li><span class="mono">01</span>Vos données réunies</li>
-              <li><span class="mono">02</span>Vos tâches automatisées</li>
-              <li><span class="mono">03</span>Vos décisions éclairées</li>
-            </ul>
+      <div class="hero-stage wrap" aria-label="Aperçu de l’interface du dashboard" role="img">
+        <div class="hero-rig" data-hero-rig>
+          <div class="hero-glow" aria-hidden="true"></div>
+          <div class="dash-frame hero-dash" data-dashboard></div>
+          <div class="hero-light" aria-hidden="true"></div>
+
+          <div class="sat sat--notif" aria-hidden="true">
+            <span class="sat-ic sat-ic--signal"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M13 3L5 13.5h6L10 21l8-10.5h-6L13 3z"/></svg></span>
+            <div><b>12 relances envoyées</b><small>Automatisation · il y a 4 s</small></div>
           </div>
-
-          <div class="hero-stage" aria-label="Aperçu de l’interface du dashboard" role="img">
-            <div class="hero-rig" data-hero-rig>
-              <div class="hero-glow" aria-hidden="true"></div>
-              <div class="dash-frame hero-dash" data-dashboard></div>
-              <div class="hero-light" aria-hidden="true"></div>
-
-              <div class="sat sat--notif" aria-hidden="true">
-                <span class="sat-ic sat-ic--signal"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M13 3L5 13.5h6L10 21l8-10.5h-6L13 3z"/></svg></span>
-                <div><b>12 relances envoyées</b><small>Automatisation · il y a 4 s</small></div>
-              </div>
-              <div class="sat sat--ai" aria-hidden="true">
-                <span class="sat-label">✦ Recommandation IA</span>
-                <p>Décaler la campagne de 48 h améliore le taux de réponse estimé.</p>
-                <div class="sat-bar"><i></i></div>
-              </div>
-              <div class="sat sat--kpi" aria-hidden="true">
-                <small>Temps libéré</small>
-                <b class="num">146 h</b>
-                <svg viewBox="0 0 100 28" preserveAspectRatio="none"><path d="M0,24 C12,22 18,18 28,19 C40,20 46,12 58,11 C70,10 76,6 100,3" fill="none" stroke="currentColor" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg>
-              </div>
-            </div>
+          <div class="sat sat--ai" aria-hidden="true">
+            <span class="sat-label">✦ Recommandation IA</span>
+            <p>Décaler la campagne de 48 h améliore le taux de réponse estimé.</p>
+            <div class="sat-bar"><i></i></div>
+          </div>
+          <div class="sat sat--kpi" aria-hidden="true">
+            <small>Temps libéré</small>
+            <b class="num">146 h</b>
+            <svg viewBox="0 0 100 28" preserveAspectRatio="none"><path d="M0,24 C12,22 18,18 28,19 C40,20 46,12 58,11 C70,10 76,6 100,3" fill="none" stroke="currentColor" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg>
           </div>
         </div>
-
-        <a class="hero-scroll" href="#produit" aria-label="Faire défiler vers la présentation">
-          <span>Défiler</span><i></i>
-        </a>
       </div>
     </section>
 
@@ -475,14 +475,14 @@
               <div class="case-ui case-ui--cash"><svg viewBox="0 0 240 70" preserveAspectRatio="none" aria-hidden="true"><path d="M0,50 C30,46 50,52 80,40 C110,28 130,36 160,26 C190,16 210,22 240,10"/><path class="f" d="M160,26 C190,16 210,22 240,10"/></svg><small>Prévision de trésorerie · 90 j</small></div>
               <ul><li>Rapprochement automatique</li><li>Relances de paiement</li><li>Alertes de seuil</li></ul>
             </li>
-            <li class="case" style="--c: #c9a8ff">
+            <li class="case" style="--c: #ff4d8d">
               <span class="case-n mono">04</span>
               <h3>Opérations</h3>
               <p>Stocks, délais, fournisseurs : l’IA repère le grain de sable avant qu’il ne bloque la machine.</p>
               <div class="case-ui case-ui--ops"><div><i class="ok"></i>Commandes du jour<b>142</b></div><div><i class="warn"></i>Délai fournisseur<b>+2 j</b></div><div><i class="ok"></i>Stock critique<b>0</b></div></div>
               <ul><li>Détection d’anomalies</li><li>Réassort programmé</li><li>Suivi des délais</li></ul>
             </li>
-            <li class="case" style="--c: #7fd6ff">
+            <li class="case" style="--c: #ffa24c">
               <span class="case-n mono">05</span>
               <h3>Service client</h3>
               <p>Chaque demande est triée, priorisée et suivie. Les clients mécontents sont repérés avant de partir.</p>
@@ -620,7 +620,7 @@
     <section class="section proof" id="preuves" aria-labelledby="proof-title">
       <div class="wrap">
         <div class="sec-head">
-          <span class="eyebrow">Résultats</span>
+          <span class="eyebrow">Avis &amp; résultats</span>
           <h2 class="h2" id="proof-title" data-reveal>Conçu pour les entreprises qui veulent passer <em>au niveau supérieur.</em></h2>
         </div>
 
@@ -652,16 +652,21 @@
           </div>
         </div>
 
-        <div class="proof-quotes">
-          <figure class="quote quote--lg" data-placeholder="testimonial">
-            <blockquote>« Emplacement pour le témoignage d’un client : ce qui a changé concrètement, en une ou deux phrases. »</blockquote>
-            <figcaption><span class="quote-av" aria-hidden="true"></span><span><b>Prénom Nom</b><small>Fonction · Entreprise</small></span></figcaption>
-          </figure>
-          <figure class="quote" data-placeholder="testimonial">
-            <blockquote>« Emplacement pour un second témoignage, centré sur un résultat mesurable. »</blockquote>
-            <figcaption><span class="quote-av" aria-hidden="true"></span><span><b>Prénom Nom</b><small>Fonction · Entreprise</small></span></figcaption>
-          </figure>
+        <div class="proof-reviews" data-reviews aria-label="Avis clients"></div>
+      </div>
+    </section>
+
+    <!-- ═════════════ ÉTUDES DE CAS ═════════════ -->
+    <section class="section studies" id="etudes-de-cas" aria-labelledby="studies-title">
+      <div class="wrap">
+        <div class="sec-head sec-head--split">
+          <div class="sec-head">
+            <span class="eyebrow">Études de cas</span>
+            <h2 class="h2" id="studies-title" data-reveal>Des entreprises qui ont <em>repris la main.</em></h2>
+          </div>
+          <p class="lead" data-reveal>Le défi, ce qu’on a mis en place, ce qui a changé. En toute transparence.</p>
         </div>
+        <div class="studies-grid" data-studies></div>
       </div>
     </section>
 
@@ -748,7 +753,7 @@
               <span class="plan-setup-ic" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 015 5L12 19l-4 1 1-4z"/><path d="M13 8l3 3"/></svg></span>
               <span class="plan-setup-txt"><b data-setup-price></b><small data-setup-label>Installation &amp; paramétrage · une fois</small></span>
             </div>
-            <a class="btn btn--ghost plan-cta" href="#tarifs" data-cta>Commencer maintenant</a>
+            <a class="btn btn--ghost plan-cta" href="#tarifs" data-cta data-plan-pick="starter">Commencer maintenant</a>
             <ul class="plan-list">
               <li>Dashboard centralisé</li>
               <li>Jusqu’à 5 sources connectées</li>
@@ -770,7 +775,7 @@
               <span class="plan-setup-ic" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 015 5L12 19l-4 1 1-4z"/><path d="M13 8l3 3"/></svg></span>
               <span class="plan-setup-txt"><b data-setup-price></b><small data-setup-label>Installation &amp; paramétrage · une fois</small></span>
             </div>
-            <a class="btn btn--primary plan-cta magnetic" href="#tarifs" data-cta>Commencer maintenant</a>
+            <a class="btn btn--primary plan-cta magnetic" href="#tarifs" data-cta data-plan-pick="pro">Commencer maintenant</a>
             <ul class="plan-list">
               <li><b>Tout Starter, plus :</b></li>
               <li>Sources illimitées</li>
@@ -792,7 +797,7 @@
               <span class="plan-setup-ic" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 015 5L12 19l-4 1 1-4z"/><path d="M13 8l3 3"/></svg></span>
               <span class="plan-setup-txt"><b>Projet d’intégration dédié</b><small>Installation chiffrée avec vous</small></span>
             </div>
-            <a class="btn btn--ghost plan-cta" href="#commencer">Parler à l’équipe</a>
+            <a class="btn btn--ghost plan-cta" href="#contact">Parler à l’équipe</a>
             <ul class="plan-list">
               <li><b>Tout Pro, plus :</b></li>
               <li>Utilisateurs illimités</li>
@@ -837,7 +842,7 @@
         <div class="sec-head faq-head">
           <span class="eyebrow">Questions fréquentes</span>
           <h2 class="h2" id="faq-title" data-reveal>Tout ce que vous voulez <em>savoir.</em></h2>
-          <p class="muted">Une autre question ? <a class="link" href="#commencer">Écrivez-nous</a>, on répond vite.</p>
+          <p class="muted">Une autre question ? <a class="link" href="#contact">Écrivez-nous</a>.</p>
         </div>
         <div class="faq-list" data-faq>
           <details class="faq-item">
@@ -868,6 +873,56 @@
       </div>
     </section>
 
+    <!-- ═════════════ ÉQUIPE + CONTACT ═════════════ -->
+    <section class="section team" id="equipe" aria-labelledby="team-title">
+      <div class="wrap">
+        <div class="sec-head">
+          <span class="eyebrow">L’équipe</span>
+          <h2 class="h2" id="team-title" data-reveal>Des humains derrière <em>l’IA.</em></h2>
+        </div>
+        <ul class="team-grid" data-team></ul>
+      </div>
+    </section>
+
+    <section class="section contact" id="contact" aria-labelledby="contact-title">
+      <div class="wrap contact-grid">
+        <div class="contact-copy">
+          <span class="eyebrow">Contact</span>
+          <h2 class="h2" id="contact-title" data-reveal>Parlons de <em>votre projet.</em></h2>
+          <p class="lead">Une question, une démo personnalisée, un besoin sur mesure : écrivez-nous.</p>
+          <ul class="contact-facts">
+            <li><span class="cf-ic" data-ic="clock"></span><div><b data-company="responseTime"></b><small data-company="openingHours"></small></div></li>
+            <li><span class="cf-ic" data-ic="mail"></span><div><b data-company="email"></b><small>Par email</small></div></li>
+            <li><span class="cf-ic" data-ic="target"></span><div><b data-company="addressLine"></b><small data-company="cityLine"></small></div></li>
+          </ul>
+          <div class="map-card" aria-label="Plan d’accès">
+            <svg class="map-art" viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <rect width="400" height="220" fill="#140c09"/>
+              <g stroke="rgba(255,214,190,.08)" stroke-width="10" fill="none" stroke-linecap="round"><path d="M-10 60 C80 70 140 30 220 50 S340 90 420 70"/><path d="M-10 170 C60 150 150 190 230 160 S350 120 420 140"/><path d="M120 -10 C130 60 110 130 140 230"/><path d="M290 -10 C270 70 300 150 280 230"/></g>
+              <g stroke="rgba(255,214,190,.05)" stroke-width="4" fill="none"><path d="M-10 110 H420"/><path d="M200 -10 V230"/><path d="M40 -10 L90 230"/><path d="M350 -10 L330 230"/></g>
+              <circle cx="205" cy="105" r="40" fill="rgba(255,107,44,.12)"/><circle cx="205" cy="105" r="18" fill="rgba(255,107,44,.25)"/>
+            </svg>
+            <span class="map-pin" aria-hidden="true"></span>
+            <a class="btn btn--primary btn--sm map-btn" href="#" data-itinerary target="_blank" rel="noopener">Itinéraire <svg class="ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></svg></a>
+          </div>
+        </div>
+
+        <form class="form-card" data-form="contact" novalidate>
+          <div class="form-row">
+            <div class="field"><label for="c-name">Nom et prénom</label><input id="c-name" name="name" type="text" autocomplete="name" required /></div>
+            <div class="field"><label for="c-email">Email professionnel</label><input id="c-email" name="email" type="email" autocomplete="email" required /></div>
+          </div>
+          <div class="field"><label for="c-company">Entreprise</label><input id="c-company" name="company" type="text" autocomplete="organization" /></div>
+          <div class="field"><label for="c-msg">Votre message</label><textarea id="c-msg" name="message" rows="5" required></textarea></div>
+          <label class="check"><input type="checkbox" name="consent" required /><span>J’accepte que mes données soient utilisées pour répondre à ma demande (<a class="link" href="confidentialite.html">politique de confidentialité</a>).</span></label>
+          <p class="form-error" role="alert" hidden></p>
+          <button class="btn btn--primary btn--lg form-submit" type="submit"><span>Envoyer le message</span><span class="fr-spinner" aria-hidden="true"></span></button>
+          <p class="form-note mono" data-company="responseTime"></p>
+          <div class="form-done" hidden><span class="form-done-ic">✓</span><b>Message envoyé.</b><p>Merci ! Nous revenons vers vous rapidement.</p></div>
+        </form>
+      </div>
+    </section>
+
     <!-- ═════════════ BANDEAU GÉANT ═════════════ -->
     <div class="mega" aria-hidden="true">
       <div class="mega-row" data-mega="1"><span>Centralisez <i>✦</i> Automatisez <i>✦</i> Analysez <i>✦</i> Décidez <i>✦</i> Centralisez <i>✦</i> Automatisez <i>✦</i> Analysez <i>✦</i> Décidez <i>✦</i></span></div>
@@ -876,6 +931,7 @@
 
     <!-- ═════════════ 13. CTA FINAL ═════════════ -->
     <section class="final" id="commencer" aria-labelledby="final-title" data-final>
+      <canvas class="final-ember" data-ember="final" aria-hidden="true"></canvas>
       <div class="final-light" aria-hidden="true"></div>
       <div class="final-stage" aria-hidden="true">
         <div class="final-rig" data-final-rig>
@@ -886,7 +942,7 @@
               <div><small>Automatisations</small><b class="num">24</b></div>
               <div><small>Temps libéré</small><b class="num">146 h</b></div>
             </div>
-            <svg class="fcm-chart" viewBox="0 0 300 70" preserveAspectRatio="none"><defs><linearGradient id="fcmG" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#a9c8ff" stop-opacity=".25"/><stop offset="1" stop-color="#a9c8ff" stop-opacity="0"/></linearGradient></defs><path d="M0,58 C30,54 45,44 70,46 C95,48 110,32 140,30 C170,28 185,20 210,22 C240,24 260,10 300,6 L300,70 L0,70 Z" fill="url(#fcmG)"/><path d="M0,58 C30,54 45,44 70,46 C95,48 110,32 140,30 C170,28 185,20 210,22 C240,24 260,10 300,6" fill="none" stroke="#a9c8ff" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg>
+            <svg class="fcm-chart" viewBox="0 0 300 70" preserveAspectRatio="none"><defs><linearGradient id="fcmG" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#ff6b2c" stop-opacity=".25"/><stop offset="1" stop-color="#ff6b2c" stop-opacity="0"/></linearGradient></defs><path d="M0,58 C30,54 45,44 70,46 C95,48 110,32 140,30 C170,28 185,20 210,22 C240,24 260,10 300,6 L300,70 L0,70 Z" fill="url(#fcmG)"/><path d="M0,58 C30,54 45,44 70,46 C95,48 110,32 140,30 C170,28 185,20 210,22 C240,24 260,10 300,6" fill="none" stroke="#ff6b2c" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg>
           </div>
           <div class="final-card final-card--a"><span class="fc-ic">✦</span><div><b>Insight IA</b><small>Marge PME en hausse</small></div></div>
           <div class="final-card final-card--b"><span class="fc-ic fc-ic--sig">⚡</span><div><b>Automatisation</b><small>Rapport envoyé</small></div></div>
@@ -912,18 +968,22 @@
         <div>
           <h4>Produit</h4>
           <a href="#fonctionnalites">Fonctionnalités</a>
+          <a href="#demo">Démo</a>
           <a href="#tarifs">Tarifs</a>
           <a href="#faq">FAQ</a>
         </div>
         <div>
           <h4>Entreprise</h4>
-          <a href="#top">À propos</a>
-          <a href="#commencer">Contact</a>
+          <a href="#equipe">À propos</a>
+          <a href="#etudes-de-cas">Études de cas</a>
+          <a href="#contact">Contact</a>
         </div>
         <div>
           <h4>Légal</h4>
-          <a href="#top">Confidentialité</a>
-          <a href="#top">Conditions</a>
+          <a href="mentions-legales.html">Mentions légales</a>
+          <a href="confidentialite.html">Confidentialité</a>
+          <a href="conditions.html">Conditions</a>
+          <button class="footer-link" type="button" data-consent-open>Gérer les cookies</button>
         </div>
       </nav>
     </div>
@@ -933,6 +993,43 @@
     </div>
     <div class="footer-word" aria-hidden="true" data-brand>Ordra</div>
   </footer>
+
+  <!-- Formulaire d'inscription -->
+  <div class="modal" id="inscription" data-modal hidden>
+    <div class="modal-backdrop" data-modal-close></div>
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="signup-title">
+      <button class="modal-x" type="button" data-modal-close aria-label="Fermer">×</button>
+      <div class="modal-head">
+        <span class="eyebrow">Commencer maintenant</span>
+        <h2 id="signup-title">Votre dashboard, <span class="serif">prêt en quelques jours.</span></h2>
+        <p>Laissez vos coordonnées : nous préparons votre espace et planifions l’installation avec vous.</p>
+      </div>
+      <form class="form-card form-card--flat" data-form="signup" novalidate>
+        <div class="form-row">
+          <div class="field"><label for="s-name">Nom et prénom</label><input id="s-name" name="name" type="text" autocomplete="name" required /></div>
+          <div class="field"><label for="s-email">Email professionnel</label><input id="s-email" name="email" type="email" autocomplete="email" required /></div>
+        </div>
+        <div class="form-row">
+          <div class="field"><label for="s-company">Entreprise</label><input id="s-company" name="company" type="text" autocomplete="organization" required /></div>
+          <div class="field"><label for="s-size">Taille de l’équipe</label>
+            <select id="s-size" name="size"><option>1 à 3</option><option selected>4 à 15</option><option>16 à 50</option><option>Plus de 50</option></select></div>
+        </div>
+        <div class="field"><label for="s-plan">Offre</label>
+          <select id="s-plan" name="plan" data-plan-select><option value="starter">Starter</option><option value="pro" selected>Pro</option><option value="enterprise">Enterprise</option></select></div>
+        <label class="check"><input type="checkbox" name="consent" required /><span>J’accepte d’être recontacté et la <a class="link" href="confidentialite.html">politique de confidentialité</a>.</span></label>
+        <p class="form-error" role="alert" hidden></p>
+        <button class="btn btn--primary btn--lg form-submit" type="submit"><span>Créer mon espace</span><span class="fr-spinner" aria-hidden="true"></span></button>
+        <p class="form-note mono" data-company="responseTime"></p>
+        <div class="form-done" hidden><span class="form-done-ic">✓</span><b>C’est noté !</b><p>Vous recevez un email de confirmation. Nous vous contactons pour planifier l’installation.</p></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Consentement cookies (mesure d'audience) -->
+  <div class="consent" data-consent hidden role="region" aria-label="Cookies">
+    <p>Nous utilisons un outil de mesure d’audience pour améliorer le site, uniquement avec votre accord. <a class="link" href="confidentialite.html#cookies">En savoir plus</a></p>
+    <div class="consent-actions"><button class="btn btn--ghost btn--sm" type="button" data-consent-choice="deny">Refuser</button><button class="btn btn--primary btn--sm" type="button" data-consent-choice="accept">Accepter</button></div>
+  </div>
 
   <!-- Palette de commandes (⌘K) -->
   <div class="cmdk" data-cmdk hidden>

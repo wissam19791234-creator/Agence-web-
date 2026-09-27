@@ -2,7 +2,7 @@
 
 Landing page de vente pour un dashboard IA : dark premium, maquette 3D du produit, storytelling au scroll, démo interactive, noyau IA en WebGL.
 
-**Stack :** Vite · JavaScript (modules ES) · GSAP + ScrollTrigger · Lenis (smooth scroll) · Three.js (chargé à la demande).
+**Stack :** Vite · JavaScript (modules ES) · GSAP + ScrollTrigger · WebGL (fond « braise ») · Three.js (chargé à la demande). Défilement natif, sans scroll-jacking.
 
 ```bash
 npm install
@@ -12,11 +12,16 @@ npm run preview    # prévisualiser le build
 node scripts/build-artifact.mjs   # version « un seul fichier » : dist-artifact/ordra.html
 ```
 
+## Outils installés dans le projet
+
+- **Skill UI/UX Pro Max** (`.claude/skills/ui-ux-pro-max/`, licence MIT) : base de styles, palettes, typographies et règles UX, utilisable par Claude Code dans ce projet.
+- **Serveur MCP 21st.dev** (`.mcp.json`) : lit la clé dans la variable d'environnement `API_KEY_21ST`. Vérifiez avec `claude mcp list`.
+
 ## Personnaliser
 
 | Quoi | Où |
 | --- | --- |
-| Nom de la marque, lien des CTA, URL de la vidéo, prix | `src/config.js` |
+| Nom de la marque, lien des CTA, URL de la vidéo, prix, formulaires, Google Analytics, coordonnées, avis, études de cas, équipe | `src/config.js` |
 | Logo (monogramme SVG) | `logoMark()` dans `src/modules/dashboard.js` + favicon dans `index.html` |
 | Textes, FAQ, fonctionnalités des offres | `index.html` |
 | Couleurs, typographies, rayons, espacements | tokens `:root` dans `src/styles/base.css` |
@@ -37,10 +42,10 @@ Renseignez `videoUrl` dans `src/config.js` (fichier `.mp4`/`.webm`, lien YouTube
 
 La bande-son (120 BPM, synchronisée sur les coupes) est **générée dans le navigateur** (`src/modules/sound.js`) : aucun fichier audio, bouton pour couper le son. Ce film sert aussi de storyboard précis pour tourner la vraie vidéo.
 
-### Couleurs
-- `--signal` (bleu glace) : données, graphiques, états actifs.
-- `--ai` (ambre) : tout ce que fait l'IA (insights, recommandations, alertes).
-- Changer ces deux tokens suffit à recolorer tout le site, maquettes comprises.
+### Direction artistique
+- Palette « braise » : noir chaud, `--signal` flamme (#ff6b2c), `--ai` or (#ffc857), `--pink` corail (#ff4d8d), texte crème. Dégradés `--grad` et `--grad-hot` dans `src/styles/base.css`.
+- Titres en **Anton** (capitales, style affiche) avec accents en **Newsreader** italique en dégradé.
+- Fond animé du hero et du CTA final : shader WebGL maison (`src/modules/ember.js`), réagit à la souris, rendu à demi-résolution et en pause hors écran.
 
 ## Contenus à remplacer avant mise en ligne
 
@@ -77,6 +82,30 @@ src/modules/
                            calculateur, palette ⌘K, rail de progression, cartes inclinables
   chrome.js                navigation, curseur, boutons magnétiques, CTA mobile
 ```
+
+## Checklist de mise en ligne (intégrée)
+
+| Élément | Où |
+| --- | --- |
+| Titres et meta descriptions uniques | chaque page HTML |
+| Page de remerciement | `public/merci.html` (redirection après envoi si `formEndpoint` est renseigné) |
+| robots.txt + sitemap.xml | `public/` (remplacez `votre-domaine.fr`) |
+| Avis clients | section Résultats, `testimonials` dans la config |
+| CTA collant mobile, CTA visible sans scroller | hero + barre en bas sur mobile |
+| Fil d'Ariane | pages légales (+ `BreadcrumbList` en JSON-LD) |
+| Confidentialité, mentions légales, conditions | `public/*.html` : **modèles à faire valider par un juriste** |
+| Image de partage réseaux sociaux | `public/og.png` (1200×630) + balises Open Graph / Twitter |
+| FAQ | section FAQ + `FAQPage` en JSON-LD |
+| 404 personnalisée | `public/404.html` |
+| Carte + itinéraire | section Contact (lien Google Maps construit depuis l'adresse de la config) |
+| Temps de réponse | `company.responseTime` |
+| Google Analytics | `gaId` : chargé uniquement après accord (bandeau cookies, RGPD) |
+| Liens internes | nav, footer, palette ⌘K, liens entre pages |
+| Schema LocalBusiness / Organization / SoftwareApplication | injectés au build par `scripts/seo-plugin.mjs` |
+| Études de cas | `caseStudies` dans la config |
+| Photos d'équipe | `team` dans la config (photos dans `public/equipe/`) |
+
+Tant qu'une liste (avis, études de cas, équipe) est vide, la page affiche des emplacements marqués « À compléter » : aucun faux client n'est inventé.
 
 ## Interactions ajoutées
 

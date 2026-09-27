@@ -2,41 +2,50 @@
 :root {
   color-scheme: dark;
 
-  --ink-0: #06070a;      /* fond profond */
-  --ink-1: #0a0c10;
-  --ink-2: #0f1218;      /* surfaces */
-  --ink-3: #151923;      /* surfaces relevées */
-  --ink-4: #1c2130;
+  /* Fonds : noir chaud, comme une braise éteinte */
+  --ink-0: #0a0706;
+  --ink-1: #110b09;
+  --ink-2: #17100d;
+  --ink-3: #1f1612;
+  --ink-4: #2a1e18;
 
-  --line: rgba(176, 196, 235, 0.08);
-  --line-2: rgba(176, 196, 235, 0.14);
-  --line-3: rgba(176, 196, 235, 0.24);
+  --line: rgba(255, 214, 190, 0.08);
+  --line-2: rgba(255, 214, 190, 0.14);
+  --line-3: rgba(255, 214, 190, 0.26);
 
-  --fg: #e9edf4;
-  --fg-2: #a4adbd;
-  --fg-3: #6c7587;
-  --fg-4: #454d5d;
+  /* Texte crème */
+  --fg: #fbefe4;
+  --fg-2: #cdb9aa;
+  --fg-3: #8f7b6e;
+  --fg-4: #5a4a40;
 
-  --signal: #a9c8ff;       /* glace — données */
-  --signal-2: #6f9dff;
-  --signal-rgb: 169, 200, 255;
-  --ai: #ffb86c;           /* ambre — intelligence */
-  --ai-rgb: 255, 184, 108;
-  --ok: #7ee0b0;
-  --warn: #ffb86c;
-  --bad: #ff8b7a;
+  /* Couleurs de marque */
+  --signal: #ff6b2c;       /* flamme — données, actions */
+  --signal-2: #ff3d2e;     /* rouge braise */
+  --signal-rgb: 255, 107, 44;
+  --ai: #ffc857;           /* or — intelligence */
+  --ai-rgb: 255, 200, 87;
+  --pink: #ff4d8d;         /* corail rose — accents */
+  --pink-rgb: 255, 77, 141;
+  --ok: #5ee6a8;
+  --warn: #ffc857;
+  --bad: #ff5a5a;
+  --on-brand: #1a0a04;
 
-  --glass: rgba(18, 22, 31, 0.55);
-  --glass-2: rgba(22, 27, 38, 0.72);
+  --grad: linear-gradient(100deg, #ff3d2e 0%, #ff6b2c 38%, #ffc857 100%);
+  --grad-hot: linear-gradient(100deg, #ff4d8d 0%, #ff6b2c 50%, #ffc857 100%);
 
-  --f-display: 'Schibsted Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  --glass: rgba(30, 20, 16, 0.55);
+  --glass-2: rgba(36, 24, 19, 0.72);
+
+  --f-display: 'Anton', 'Impact', 'Arial Narrow', sans-serif;
   --f-body: 'Schibsted Grotesk', 'Helvetica Neue', Arial, sans-serif;
   --f-serif: 'Newsreader', 'Iowan Old Style', Georgia, serif;
   --f-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
 
-  --t-hero: clamp(2.9rem, 1.2rem + 6.4vw, 7.4rem);
-  --t-h1: clamp(2.4rem, 1.3rem + 4.2vw, 5.2rem);
-  --t-h2: clamp(2rem, 1.2rem + 3vw, 3.9rem);
+  --t-hero: clamp(3.6rem, 1rem + 10vw, 11rem);
+  --t-h1: clamp(2.8rem, 1rem + 6vw, 6.4rem);
+  --t-h2: clamp(2.5rem, 1rem + 4.6vw, 5.4rem);
   --t-h3: clamp(1.25rem, 1.05rem + .6vw, 1.6rem);
   --t-lead: clamp(1.05rem, .98rem + .35vw, 1.3rem);
   --t-body: 1rem;
@@ -44,9 +53,9 @@
   --t-micro: .72rem;
 
   --r-xs: 4px;
-  --r-s: 7px;
-  --r-m: 11px;
-  --r-l: 16px;
+  --r-s: 8px;
+  --r-m: 12px;
+  --r-l: 18px;
 
   --gutter: clamp(16px, 4vw, 48px);
   --maxw: 1320px;
@@ -60,7 +69,6 @@
 /* ───────────────────────── Reset ───────────────────────── */
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; scroll-behavior: auto; overflow-x: clip; }
-html.no-lenis { scroll-behavior: smooth; }
 body {
   margin: 0;
   background: var(--ink-0);
@@ -81,7 +89,7 @@ h1, h2, h3, h4, h5, p, ul, ol, figure, blockquote { margin: 0; }
 ul, ol { padding: 0; list-style: none; }
 input { font: inherit; color: inherit; }
 [hidden] { display: none !important; }
-::selection { background: rgba(var(--signal-rgb), .3); color: #fff; }
+::selection { background: rgba(var(--signal-rgb), .45); color: #fff; }
 
 :focus-visible {
   outline: 2px solid var(--signal);
@@ -117,9 +125,10 @@ input { font: inherit; color: inherit; }
 .h2 {
   font-family: var(--f-display);
   font-size: var(--t-h2);
-  font-weight: 500;
-  line-height: 1.02;
-  letter-spacing: -0.035em;
+  font-weight: 400;
+  line-height: .98;
+  letter-spacing: 0;
+  text-transform: uppercase;
   text-wrap: balance;
 }
 .h2 em, .serif {
@@ -127,6 +136,13 @@ input { font: inherit; color: inherit; }
   font-style: italic;
   font-weight: 400;
   letter-spacing: -0.02em;
+  text-transform: none;
+}
+.h2 em {
+  font-size: 1.04em;
+  background: var(--grad);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  padding-right: .06em;
 }
 .lead { font-size: var(--t-lead); color: var(--fg-2); line-height: 1.5; max-width: 34em; text-wrap: pretty; }
 .muted { color: var(--fg-3); }
@@ -158,13 +174,13 @@ input { font: inherit; color: inherit; }
 .btn .ico { transition: transform .45s var(--ease-out); }
 .btn:hover .ico { transform: translateX(3px); }
 .btn--primary {
-  background: var(--fg); color: var(--ink-0);
-  box-shadow: 0 0 0 1px rgba(255,255,255,.1) inset, 0 10px 30px -12px rgba(var(--signal-rgb), .45);
+  background: var(--grad); color: var(--on-brand); font-weight: 600;
+  box-shadow: 0 0 0 1px rgba(255,255,255,.18) inset, 0 12px 34px -12px rgba(var(--signal-rgb), .7);
   overflow: hidden;
 }
 .btn--primary::before {
   content: ''; position: absolute; inset: 0; z-index: -1;
-  background: radial-gradient(120px circle at var(--mx, 50%) var(--my, 50%), rgba(var(--signal-rgb), .55), transparent 70%);
+  background: radial-gradient(120px circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,.45), transparent 70%);
   opacity: 0; transition: opacity .4s var(--ease-out);
 }
 .btn--primary:hover::before { opacity: 1; }
@@ -204,15 +220,18 @@ input { font: inherit; color: inherit; }
 .cursor.is-text { width: 3px; height: 26px; margin: -13px 0 0 -1px; border-radius: 2px; background: var(--signal); border-color: transparent; }
 .cursor.is-hidden, .cursor-dot.is-hidden { opacity: 0 !important; }
 
-/* Grain photographique très léger */
-.grain {
-  position: fixed; inset: 0; z-index: 150; pointer-events: none; opacity: .045;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-}
-
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: .001ms !important; animation-iteration-count: 1 !important;
     transition-duration: .001ms !important; scroll-behavior: auto !important;
   }
 }
+
+/* Mots découpés pour l'animation : le dégradé s'applique à chaque mot (sinon texte invisible)
+   et on laisse de la place aux accents des capitales. */
+.w { padding-top: .14em; margin-top: -.14em; }
+.h2 em .w > span, .final-title .serif .w > span, .cine-line .serif .w > span {
+  background: var(--grad-hot); -webkit-background-clip: text; background-clip: text; color: transparent;
+  padding-right: .04em;
+}
+.h2 em .w > span { background: var(--grad); -webkit-background-clip: text; background-clip: text; }

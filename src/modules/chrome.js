@@ -63,7 +63,7 @@ export function initNav() {
     const a = e.target.closest('a[href^="#"]');
     if (!a) return;
     const id = a.getAttribute('href');
-    if (id.length < 2) return;
+    if (id.length < 2 || id === '#inscription') return;
     const target = document.querySelector(id);
     if (!target) return;
     e.preventDefault();
@@ -80,8 +80,8 @@ export function initCursor() {
   const ring = document.querySelector('.cursor');
   const dot = document.querySelector('.cursor-dot');
   if (!ring || !dot) return;
-  const xRing = gsap.quickTo(ring, 'x', { duration: 0.45, ease: 'power3.out' });
-  const yRing = gsap.quickTo(ring, 'y', { duration: 0.45, ease: 'power3.out' });
+  const xRing = gsap.quickTo(ring, 'x', { duration: 0.22, ease: 'power3.out' });
+  const yRing = gsap.quickTo(ring, 'y', { duration: 0.22, ease: 'power3.out' });
   const xDot = gsap.quickTo(dot, 'x', { duration: 0.08 });
   const yDot = gsap.quickTo(dot, 'y', { duration: 0.08 });
 

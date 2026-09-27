@@ -24,7 +24,7 @@ export function initCinematic() {
 
     const tl = gsap.timeline({
       defaults: { ease: 'power3.out' },
-      scrollTrigger: { trigger: sec, start: 'top top', end: 'bottom bottom', scrub: 1 },
+      scrollTrigger: { trigger: sec, start: 'top top', end: 'bottom bottom', scrub: 0.4 },
     });
     tl.to(w1, { yPercent: 0, opacity: 1, filter: 'blur(0px)', stagger: 0.08, duration: 1 })
       .to({}, { duration: 0.8 })

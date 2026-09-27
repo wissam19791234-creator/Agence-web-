@@ -2,6 +2,7 @@
 import { CONFIG } from '../config.js';
 import { gsap } from './motion.js';
 import { clamp, fmt, isFinePointer, prefersReducedMotion } from './utils.js';
+import { mountEmber } from './ember.js';
 
 export function initBeforeAfter() {
   const ba = document.querySelector('[data-ba]');
@@ -184,6 +185,15 @@ export function initFinal() {
   const sec = document.querySelector('[data-final]');
   if (!sec) return;
   const rig = sec.querySelector('[data-final-rig]');
+  const canvas = sec.querySelector('[data-ember="final"]');
+  if (canvas) {
+    const io = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting) return;
+      io.disconnect();
+      mountEmber(canvas, { intensity: 0.9, focus: 1 });
+    }, { rootMargin: '400px' });
+    io.observe(sec);
+  }
   if (!isFinePointer() || prefersReducedMotion()) return;
   sec.addEventListener('pointermove', (e) => {
     const r = sec.getBoundingClientRect();

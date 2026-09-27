@@ -109,7 +109,7 @@ export function initProblem() {
       tl.to(f, { x: toHub(f, 'x'), y: toHub(f, 'y'), scale: 0.2, opacity: 0, rotate: 0, duration: 1.4, ease: 'power3.in' }, 5 + i * 0.08);
     });
     tl.to(lines, { p: 0, flow: 0, duration: 1.2, ease: 'power3.in', onUpdate: setLines }, 5.2)
-      .to(hubCore, { scale: 1.25, boxShadow: '0 0 0 1px rgba(0,0,0,.5), 0 30px 100px 0 rgba(169,200,255,.55), inset 0 1px 0 rgba(255,255,255,.12)', duration: 0.6 }, 6.2)
+      .to(hubCore, { scale: 1.25, boxShadow: '0 0 0 1px rgba(0,0,0,.5), 0 30px 100px 0 rgba(255,107,44,.55), inset 0 1px 0 rgba(255,255,255,.12)', duration: 0.6 }, 6.2)
       .to(hub.querySelector('.hub-label'), { scale: 1.12, duration: 0.6 }, 6.2)
       .to(foot, { opacity: 1, y: 0, duration: 0.8 }, 6.6)
       .to({}, { duration: 0.6 });
@@ -120,7 +120,7 @@ export function initProblem() {
     sec.classList.add('is-pinned');
     ScrollTrigger.refresh();
     build();
-    const tl = buildTimeline({ trigger: sec, start: 'top top', end: 'bottom bottom', scrub: 1, invalidateOnRefresh: true, onRefresh: build });
+    const tl = buildTimeline({ trigger: sec, start: 'top top', end: 'bottom bottom', scrub: 0.4, invalidateOnRefresh: true, onRefresh: build });
     return () => { tl.kill(); sec.classList.remove('is-pinned'); gsap.set([...frags, hub, hubCore, foot], { clearProps: 'all' }); };
   });
 

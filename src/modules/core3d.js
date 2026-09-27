@@ -96,8 +96,8 @@ export function startCore(canvas, container, { reduced = false } = {}) {
   const uniforms = {
     uTime: { value: 0 },
     uPixel: { value: dpr },
-    uCold: { value: new THREE.Color('#a9c8ff') },
-    uHot: { value: new THREE.Color('#ffb86c') },
+    uCold: { value: new THREE.Color('#ff6b2c') },
+    uHot: { value: new THREE.Color('#ffc857') },
   };
   const mat = new THREE.ShaderMaterial({
     vertexShader: vert, fragmentShader: frag, uniforms,
@@ -108,19 +108,19 @@ export function startCore(canvas, container, { reduced = false } = {}) {
   root.add(sphere);
 
   // Lueur centrale
-  const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTexture('rgba(255,184,108,1)'), transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0.55 }));
+  const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTexture('rgba(255,200,87,1)'), transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0.55 }));
   glow.scale.setScalar(1.7);
   root.add(glow);
-  const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTexture('rgba(169,200,255,1)'), transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0.22 }));
+  const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTexture('rgba(255,107,44,1)'), transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0.22 }));
   halo.scale.setScalar(4.6);
   root.add(halo);
 
   // Orbites + satellites
   const orbits = [];
   const ringDefs = [
-    { r: 1.65, tilt: [1.2, 0.2, 0], speed: 0.35, color: '#a9c8ff', dash: false },
-    { r: 1.95, tilt: [1.45, -0.5, 0.3], speed: -0.22, color: '#a9c8ff', dash: true },
-    { r: 2.3, tilt: [1.05, 0.7, -0.2], speed: 0.16, color: '#ffb86c', dash: true },
+    { r: 1.65, tilt: [1.2, 0.2, 0], speed: 0.35, color: '#ff6b2c', dash: false },
+    { r: 1.95, tilt: [1.45, -0.5, 0.3], speed: -0.22, color: '#ff6b2c', dash: true },
+    { r: 2.3, tilt: [1.05, 0.7, -0.2], speed: 0.16, color: '#ffc857', dash: true },
   ];
   ringDefs.forEach((d) => {
     const pts = [];
@@ -138,7 +138,7 @@ export function startCore(canvas, container, { reduced = false } = {}) {
     pivot.rotation.set(...d.tilt);
     pivot.add(line);
     const sat = new THREE.Mesh(new THREE.SphereGeometry(0.035, 16, 16), new THREE.MeshBasicMaterial({ color: d.color }));
-    const satGlow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTexture(d.color === '#ffb86c' ? 'rgba(255,184,108,1)' : 'rgba(169,200,255,1)'), transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0.8 }));
+    const satGlow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTexture(d.color === '#ffc857' ? 'rgba(255,200,87,1)' : 'rgba(255,107,44,1)'), transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0.8 }));
     satGlow.scale.setScalar(0.35);
     sat.add(satGlow);
     pivot.add(sat);
@@ -159,7 +159,7 @@ export function startCore(canvas, container, { reduced = false } = {}) {
   }
   const dgeo = new THREE.BufferGeometry();
   dgeo.setAttribute('position', new THREE.BufferAttribute(dpos, 3));
-  const dust = new THREE.Points(dgeo, new THREE.PointsMaterial({ color: '#a9c8ff', size: 0.012, transparent: true, opacity: 0.4, depthWrite: false }));
+  const dust = new THREE.Points(dgeo, new THREE.PointsMaterial({ color: '#ff6b2c', size: 0.012, transparent: true, opacity: 0.4, depthWrite: false }));
   scene.add(dust);
 
   // Taille

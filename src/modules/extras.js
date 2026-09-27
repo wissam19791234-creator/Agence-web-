@@ -22,7 +22,10 @@ export function initMarquee() {
   wrap.addEventListener('pointerenter', () => { hover = true; });
   wrap.addEventListener('pointerleave', () => { hover = false; });
   ScrollTrigger.create({ onUpdate: (self) => { boost = clamp(Math.abs(self.getVelocity()) / 300, 0, 8); } });
+  let visible = true;
+  new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(wrap);
   gsap.ticker.add((_, dt) => {
+    if (!visible) return;
     const half = track.scrollWidth / 2;
     if (!half) return;
     const speed = hover ? 0.15 : 0.6 + boost;
@@ -114,7 +117,7 @@ export function initCases() {
         trigger: sec,
         start: 'top top',
         end: 'bottom bottom',
-        scrub: 0.8,
+        scrub: 0.3,
         invalidateOnRefresh: true,
         onUpdate: (self) => setProgress(self.progress),
       },

@@ -5,8 +5,45 @@
 export const CONFIG = {
   brand: 'Ordra',
 
-  // Lien de tous les CTA « Commencer maintenant ». Remplacez par votre URL d'inscription.
-  signupUrl: '#tarifs',
+  // Lien des CTA « Commencer maintenant ».
+  // '#inscription' ouvre le formulaire intégré ; sinon mettez l'URL de votre app.
+  signupUrl: '#inscription',
+
+  // Où envoyer les formulaires (inscription et contact) : URL qui accepte un POST JSON
+  // (Formspree, Make, Zapier, votre API…). Vide = démonstration sans envoi.
+  formEndpoint: '',
+
+  // Page de remerciement après un envoi réussi (site publié).
+  thankYouPage: 'merci.html',
+
+  // Google Analytics 4 (ex. 'G-XXXXXXX'). Chargé seulement après accord du visiteur.
+  gaId: '',
+
+  // Informations de l'entreprise : footer, contact, carte, données structurées, pages légales.
+  company: {
+    legalName: '[Raison sociale]',
+    siteUrl: 'https://www.votre-domaine.fr',
+    email: 'contact@votre-domaine.fr',
+    phone: '',
+    street: '[Adresse]',
+    postalCode: '[Code postal]',
+    city: '[Ville]',
+    country: 'France',
+    responseTime: 'Réponse sous 24 h ouvrées',
+    openingHours: 'Du lundi au vendredi, 9 h – 18 h',
+  },
+
+  // Preuves : laissez vide tant que vous n'avez pas de vraies données.
+  // Les emplacements vides s'affichent comme « à compléter ».
+  testimonials: [
+    // { quote: '…', name: 'Prénom Nom', role: 'Fonction', company: 'Entreprise', rating: 5 },
+  ],
+  caseStudies: [
+    // { sector: 'Négoce B2B', company: 'Entreprise', challenge: '…', solution: '…', result: '…', metric: '−12 h / semaine' },
+  ],
+  team: [
+    // { name: 'Prénom Nom', role: 'Fondateur', photo: 'equipe/prenom.jpg' },
+  ],
 
   // Vidéo produit. Laisser vide ('') pour afficher l'animatique intégrée.
   // Formats acceptés : fichier .mp4/.webm, lien YouTube ou Vimeo.
