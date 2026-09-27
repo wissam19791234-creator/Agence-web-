@@ -46,14 +46,14 @@ body { font-family: var(--f-body); letter-spacing: -.005em; }
 .plan-cta, .form-submit { width: 100%; }
 
 /* ───────── Blocs ───────── */
-.feat, .plan, .case, .study, .review, .roi-inputs, .form-card:not(.form-card--flat), .compare, .demo-app, .map-card,
+.feat, .plan, .case, .study, .review, .roi-inputs, .form-card:not(.form-card--flat), .compare, .demo-app,
 .member-photo, .player-screen, .ba, .proof-stat, .proof-logos li, .reviews-summary, .quote {
   border-radius: var(--r-l) !important;
 }
 .feat-grid { gap: 14px; }
-.feat { background: var(--card) !important; border: var(--bd); min-height: 340px; transition: transform var(--t-fast), border-color var(--t-fast); }
+.feat { background: var(--card) !important; border: var(--bd); min-height: 340px; transition: translate var(--t-fast), border-color var(--t-fast) !important; }
 .feat::before, .feat::after, .feat-copy::before { display: none !important; }
-.feat:hover { transform: translateY(-4px); border-color: #3a3a36; }
+.feat:hover { translate: 0 -4px; border-color: #3a3a36; }
 .feat .feat-tag { justify-self: start; padding: 5px 10px; border-radius: 99px; background: rgba(212,255,58,.1); color: var(--signal); font-family: var(--f-body); font-size: .75rem; font-weight: 600; letter-spacing: 0; text-transform: none; }
 .feat h3 { font-size: clamp(1.25rem, 1.05rem + .6vw, 1.6rem); font-weight: 600; letter-spacing: -.02em; line-height: 1.15; }
 .feat--analytics { background: var(--signal) !important; color: #0b0b0b; border-color: var(--signal); }
@@ -148,8 +148,6 @@ input[type="range"]::-moz-range-thumb { border-radius: 50%; width: 22px; height:
 .form-done-ic { border-radius: 50%; background: var(--signal); }
 .form-done b { font-family: var(--f-display); font-weight: 800; }
 .cf-ic { border-radius: 12px; background: rgba(212,255,58,.12); color: var(--signal); }
-.map-card { border: var(--bd); }
-.map-pin { background: var(--signal); box-shadow: 0 8px 20px rgba(212,255,58,.4); }
 .modal-panel { border-radius: 28px; background: var(--card); border: var(--bd); box-shadow: 0 60px 120px -30px rgba(0,0,0,.9); }
 .modal-x { border-radius: 50%; border: 0; background: var(--card-2); }
 .consent, .cmdk-panel, .kbd-hint { border-radius: 20px; background: var(--card); border: var(--bd); box-shadow: 0 30px 80px -20px rgba(0,0,0,.9); }

@@ -90,7 +90,7 @@ export function splitWords(el) {
     [...node.childNodes].forEach((child) => {
       if (child.nodeType === 3) {
         const frag = document.createDocumentFragment();
-        child.textContent.split(/(\s+)/).forEach((part) => {
+        child.textContent.split(/([ \t\n\r]+)/).forEach((part) => {
           if (!part) return;
           if (/^\s+$/.test(part)) {
             frag.appendChild(document.createTextNode(' '));

@@ -1,8 +1,11 @@
 import { CONFIG } from '../config.js';
 import { gsap } from './motion.js';
 import { prefersReducedMotion } from './utils.js';
+// Chapitres du film intégré (60 s) et de la vidéo publiée (version courte de 30 s)
 const CHAPTERS = [0, 5, 15, 30, 45, 55];
 const FILM_DURATION = 60;
+const VIDEO_CHAPTERS = [0, 3, 6.5, 12.5, 20, 27];
+const VIDEO_DURATION = 30.5;
 
 function mediaFor(url) {
   const yt = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([\w-]{11})/);
@@ -45,7 +48,7 @@ export function initVideo() {
       if (!v) return;
       v.addEventListener('timeupdate', () => {
         chapters.forEach((c, i) => {
-          const a = CHAPTERS[i], b = CHAPTERS[i + 1] ?? FILM_DURATION;
+          const a = VIDEO_CHAPTERS[i], b = VIDEO_CHAPTERS[i + 1] ?? VIDEO_DURATION;
           c.style.setProperty('--fill', Math.min(1, Math.max(0, (v.currentTime - a) / (b - a))).toFixed(3));
           c.classList.toggle('is-current', v.currentTime >= a && v.currentTime < b);
         });
@@ -64,7 +67,7 @@ export function initVideo() {
     chapters.forEach((li, i) => li.querySelector('button').addEventListener('click', () => {
       if (!media.querySelector('video')) start();
       const v = media.querySelector('video');
-      if (v) v.currentTime = CHAPTERS[i];
+      if (v) v.currentTime = VIDEO_CHAPTERS[i];
     }));
     return;
   }

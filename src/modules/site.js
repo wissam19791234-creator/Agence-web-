@@ -18,10 +18,7 @@ export function initContent() {
   };
   document.querySelectorAll('[data-company]').forEach((el) => { el.textContent = fields[el.dataset.company] || ''; });
   document.querySelectorAll('[data-ic]').forEach((el) => { if (!el.innerHTML.trim()) el.innerHTML = icon(el.dataset.ic, 16); });
-  const addr = [c.street, c.postalCode, c.city, c.country].filter((x) => x && !x.startsWith('[')).join(' ');
-  document.querySelectorAll('[data-itinerary]').forEach((a) => {
-    a.href = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(addr || CONFIG.brand)}`;
-  });
+  document.querySelectorAll('[data-mailto]').forEach((a) => { a.href = `mailto:${c.email}`; });
 
   // Étiquettes « exemple » tant que les contenus illustratifs ne sont pas remplacés
   document.querySelectorAll('[data-example-tag]').forEach((t) => { t.hidden = !CONFIG.exampleContent; });
@@ -87,12 +84,13 @@ export function initContent() {
 }
 
 // ───────── Formulaires ─────────
-async function send(kind, data) {
-  if (!CONFIG.formEndpoint) { await wait(900); return true; }
+export async function send(kind, data) {
+  // Démonstration sans envoi : pas d'adresse configurée, ou page publiée en aperçu (artifact)
+  if (!CONFIG.formEndpoint || __ARTIFACT__) { await wait(900); return true; }
   const res = await fetch(CONFIG.formEndpoint, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-    body: JSON.stringify({ form: kind, ...data, page: location.href }),
+    body: JSON.stringify({ _subject: `${CONFIG.brand} · ${kind === 'signup' ? 'Nouvelle inscription' : 'Nouveau message'}`, form: kind, ...data, page: location.href }),
   });
   return res.ok;
 }
@@ -154,6 +152,8 @@ export function initSignupModal() {
   const open = (plan) => {
     last = document.activeElement;
     if (plan) planSelect.value = plan;
+    const details = modal.querySelector('[data-plan-details]');
+    if (details) details.value = planSelect.value === 'custom' ? document.querySelector('[data-custom]')?.dataset.summary || '' : '';
     modal.hidden = false;
     document.documentElement.classList.add('is-locked');
     requestAnimationFrame(() => modal.classList.add('is-open'));

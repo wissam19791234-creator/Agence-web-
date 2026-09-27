@@ -6,13 +6,13 @@ import './styles/film.css';
 import './styles/extras.css';
 import './styles/site.css';
 import './styles/lime.css';
+import './styles/magic.css';
 
 import { CONFIG } from './config.js';
 import { mountDashboard, logoMark } from './modules/dashboard.js';
 import { initSmoothScroll, ScrollTrigger } from './modules/motion.js';
 import { initNav, initCursor, initMagnetic, initStickyCta, initReveals } from './modules/chrome.js';
 import { initHero } from './modules/hero.js';
-import { initCinematic } from './modules/cinematic.js';
 import { initVideo } from './modules/video.js';
 import { initProblem } from './modules/problem.js';
 import { initStory } from './modules/story.js';
@@ -22,6 +22,8 @@ import { initDemo } from './modules/demo.js';
 import { initBeforeAfter, initPricing, initAccordions, initFinal } from './modules/sections.js';
 import { splitWords } from './modules/utils.js';
 import { initContent, initForms, initSignupModal, initConsent } from './modules/site.js';
+import { initSupport } from './modules/support.js';
+import { initMagic } from './modules/magic.js';
 import { initMarquee, initMega, initManifesto, initCases, initRoi, initCommandPalette, initRail, initTilt } from './modules/extras.js';
 
 function applyBrand() {
@@ -50,7 +52,6 @@ safe('nav', initNav);
 safe('cursor', initCursor);
 safe('magnetic', initMagnetic);
 safe('hero', initHero);
-safe('cinematic', initCinematic);
 safe('video', initVideo);
 safe('problem', initProblem);
 safe('story', initStory);
@@ -73,6 +74,8 @@ safe('tilt', initTilt);
 safe('forms', initForms);
 safe('signup', initSignupModal);
 safe('consent', initConsent);
+safe('support', initSupport);
+safe('magic', initMagic);
 safe('reveals', () => initReveals(splitWords));
 
 // Recalcule les déclencheurs une fois les polices chargées (hauteurs de texte définitives)

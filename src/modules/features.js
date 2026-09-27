@@ -34,7 +34,7 @@ export function initFeatures() {
 
   if (!reduced) {
     gsap.from(cards, {
-      y: 50, opacity: 0, duration: 1.2, ease: 'expo.out', stagger: 0.08,
+      y: 50, opacity: 0, duration: 1.2, ease: 'expo.out', stagger: 0.08, clearProps: 'transform,opacity',
       scrollTrigger: { trigger: '.feat-grid', start: 'top 85%', once: true },
     });
   }

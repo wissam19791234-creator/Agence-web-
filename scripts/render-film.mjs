@@ -1,5 +1,6 @@
-// Exporte le film intégré en vrai MP4 (1080p, flou de mouvement, bande-son mixée).
-// Usage : npm run film   (lance un serveur Vite, capture 60 i/s, mixe l'audio, encode)
+// Exporte le film intégré en vrai MP4 (1080p 60 i/s, bande-son mixée).
+// Usage : npm run film          → version courte de 30 s (celle du site)
+//        npm run film -- --full → version longue de 60 s
 import { createServer } from 'vite';
 import { chromium } from 'playwright-core';
 import { spawn } from 'node:child_process';
@@ -9,10 +10,19 @@ import { fileURLToPath } from 'node:url';
 import ffmpegPath from 'ffmpeg-static';
 import { renderSoundtrack } from './soundtrack.mjs';
 
+// Structure musicale de la version courte (temps de sortie, en secondes)
+const PLAN_30 = {
+  introEnd: 6.5, introTicks: 3, drop: 7, beatEnd: 27, breaks: [], hatFrom: 9, fullFrom: 12.5, bigFrom: 20,
+  padFrom: 7, brightFrom: 12.5, breakPad: null, melody: [21, 26.9], endAt: 27.05,
+  risers: [[5.6, 1.4], [11.3, 1.2], [18.8, 1.2], [25.8, 1.2]],
+  typing: [17.85, 18.65], camWhooshes: [10.8], toggleAt: 20.92,
+  success: [-1, -1], chaos: [3, 6.5], toasts: [22.1, 25.7, 22.2], select: [-1, -1], achieveFrom: 27,
+};
+
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = resolve(root, 'public/media');
 const FPS = 60;
-const DURATION = 60;
+const FULL = process.argv.includes('--full');
 const W = 1920;
 const H = 1080;
 mkdirSync(OUT, { recursive: true });
@@ -44,15 +54,16 @@ await page.route('**/__font/*', (r) => {
 });
 await page.goto(url, { waitUntil: 'networkidle' });
 await page.waitForFunction(() => window.filmReady === true);
+const DURATION = await page.evaluate((full) => (full ? 60 : window.filmCut.duration), FULL);
 await page.addStyleTag({ content: '*,*::before,*::after{animation-play-state:paused!important;caret-color:transparent!important}' });
 
-const score = await page.evaluate(() => window.film.score);
+const score = await page.evaluate((full) => (full ? window.film.score : window.film.cutScore), FULL);
 writeFileSync(resolve(OUT, 'score.json'), JSON.stringify(score));
 
 // ── Audio ──
 console.log('Mixage de la bande-son…');
 const wav = resolve(OUT, 'ordra-film.wav');
-await renderSoundtrack(score, wav, { duration: DURATION, root });
+await renderSoundtrack(score, wav, { duration: DURATION, root, ...(FULL ? {} : { plan: PLAN_30 }) });
 
 if (!only) {
   // ── Images : 60 i/s natifs (mouvements parfaitement fluides, sans images fantômes) ──
@@ -70,7 +81,7 @@ if (!only) {
   const total = FPS * DURATION;
   const t0 = Date.now();
   for (let i = 0; i < total; i++) {
-    await page.evaluate((t) => { window.film.tl.pause(); window.film.tl.seek(t, false); }, i / FPS);
+    await page.evaluate(([t, full]) => { window.film.tl.pause(); window.film.tl.seek(full ? t : window.filmCut.map(t), false); }, [i / FPS, FULL]);
     const buf = await page.screenshot({ type: 'jpeg', quality: 92, clip: { x: 0, y: 0, width: W, height: H } });
     if (!ff.stdin.write(buf)) await new Promise((r) => ff.stdin.once('drain', r));
     if (i % 300 === 0) console.log(`  ${Math.round((i / total) * 100)} % (${((Date.now() - t0) / 1000).toFixed(0)} s)`);
@@ -80,7 +91,7 @@ if (!only) {
 
   // Affiche (poster) et version légère pour mobile
   const still = (t, out, scale) => new Promise((r) => spawn(ffmpegPath, ['-y', '-loglevel', 'error', '-ss', String(t), '-i', mp4, '-frames:v', '1', ...(scale ? ['-vf', `scale=${scale}`] : []), '-q:v', '3', out]).on('close', r));
-  await still(2.9, resolve(OUT, 'ordra-film-poster.jpg'), '1280:-2');
+  await still(FULL ? 2.9 : 9.4, resolve(OUT, 'ordra-film-poster.jpg'), '1280:-2');
   await new Promise((r) => spawn(ffmpegPath, ['-y', '-loglevel', 'error', '-i', mp4, '-vf', 'scale=960:-2,fps=30', '-c:v', 'libx264', '-preset', 'slow', '-crf', '24', '-c:a', 'aac', '-b:a', '128k', '-movflags', '+faststart', resolve(OUT, 'ordra-film-mobile.mp4')], { stdio: 'inherit' }).on('close', r));
   await new Promise((r) => spawn(ffmpegPath, ['-y', '-loglevel', 'error', '-i', mp4, '-vf', 'scale=1280:-2,fps=30', '-c:v', 'libvpx-vp9', '-b:v', '1400k', '-deadline', 'good', '-cpu-used', '5', '-row-mt', '1', '-c:a', 'libopus', '-b:a', '128k', resolve(OUT, 'ordra-film.webm')], { stdio: 'inherit' }).on('close', r));
   console.log('Film exporté :', mp4);

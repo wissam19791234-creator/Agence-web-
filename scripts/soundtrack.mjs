@@ -48,7 +48,17 @@ const noise = () => Math.random() * 2 - 1;
 const saw = (ph) => 2 * (ph - Math.floor(ph + 0.5));
 const panLR = (p) => [Math.cos((p + 1) * Math.PI / 4), Math.sin((p + 1) * Math.PI / 4)];
 
-export async function renderSoundtrack(score, outFile, { duration = 60, root }) {
+// Structure musicale de la version longue (60 s). La version courte passe sa propre structure.
+export const PLAN_60 = {
+  introEnd: 4.8, drop: 8, beatEnd: 55, breaks: [[29.5, 32.8], [44.5, 45.5]], hatFrom: 12, fullFrom: 15, bigFrom: 32.8,
+  padFrom: 5.7, brightFrom: 15, breakPad: 29.6, melody: [45.5, 54.9], endAt: 55.05,
+  risers: [[3.4, 1.4], [13.6, 1.25], [28.4, 1.1], [31.4, 1.35], [43.4, 1.6], [53.4, 1.6]],
+  typing: [25.35, 26.15], camWhooshes: [9.5, 11.15, 12.55, 13.85], toggleAt: 34.72,
+  success: [20, 30], chaos: [0, 5], toasts: [35.9, 39.5, 36], select: [32, 34], achieveFrom: 55,
+};
+
+export async function renderSoundtrack(score, outFile, { duration = 60, root, plan = PLAN_60 }) {
+  const P = plan;
   const N = Math.ceil(SR * duration);
   const drums = new Bus(N), bass = new Bus(N), music = new Bus(N), sfx = new Bus(N), send = new Bus(N), dsend = new Bus(N);
   const S = (theme, name) => decode(resolve(root, `node_modules/uisfx/sounds/${theme}/${name}.mp3`));
@@ -142,49 +152,49 @@ export async function renderSoundtrack(score, outFile, { duration = 60, root }) 
     { root: 48, tones: [55, 60, 64, 67] }, // C
     { root: 43, tones: [55, 59, 62, 67] }, // G
   ];
-  const chordAt = (t) => prog[Math.floor(Math.max(0, t - 8) / 2) % 4];
-  const inBreak = (t) => (t >= 29.5 && t < 32.8) || (t >= 44.5 && t < 45.5) || t >= 55;
+  const chordAt = (t) => prog[Math.floor(Math.max(0, t - P.drop) / 2) % 4];
+  const inBreak = (t) => P.breaks.some(([a, b]) => t >= a && t < b) || t >= P.beatEnd;
 
   // Intro : nappe grave qui monte + tic-tac
-  note(music, 0.1, 33, 4.6, { vol: 0.35, cutoff: 180, fenv: 0, attack: 3.5, release: 0.15, detune: [0, 9, -9, 12], sub: 0.3 });
-  for (let t = 0.1; t < 4.8; t += 0.5) place(sfx, smp.step, t, 0.35, 0, 1.6, 0.05);
+  note(music, 0.1, 33, P.introEnd - 0.2, { vol: 0.35, cutoff: 180, fenv: 0, attack: Math.min(3.5, P.introEnd * 0.7), release: 0.15, detune: [0, 9, -9, 12], sub: 0.3 });
+  for (let t = P.introTicks ?? 0.1; t < P.introEnd; t += 0.5) place(sfx, smp.step, t, 0.35, 0, 1.6, 0.05);
 
   // Pads : accords tenus
-  for (let t = 5.7; t < 55; t += 2) {
-    if (t > 29.5 && t < 32.8) continue;
-    const c = t < 8 ? prog[0] : chordAt(t);
-    c.tones.slice(0, 3).forEach((m, k) => note(music, t, m, 1.9, { vol: 0.095, cutoff: t < 15 ? 1100 : 1900, attack: 0.35, release: 0.6, pan: (k - 1) * 0.5, sendAmt: 0.45 }));
+  for (let t = P.padFrom; t < P.beatEnd; t += 2) {
+    if (P.breaks.some(([a, b]) => t > a && t < b)) continue;
+    const c = t < P.drop ? prog[0] : chordAt(t);
+    c.tones.slice(0, 3).forEach((m, k) => note(music, t, m, 1.9, { vol: 0.095, cutoff: t < P.brightFrom ? 1100 : 1900, attack: 0.35, release: 0.6, pan: (k - 1) * 0.5, sendAmt: 0.45 }));
   }
   // Break 29.5–32.8 : pad filtré seulement
-  [57, 60, 64].forEach((m, k) => note(music, 29.6, m, 3, { vol: 0.08, cutoff: 500, attack: 0.8, release: 0.4, pan: (k - 1) * 0.6, sendAmt: 0.6 }));
+  if (P.breakPad != null) [57, 60, 64].forEach((m, k) => note(music, P.breakPad, m, 3, { vol: 0.08, cutoff: 500, attack: 0.8, release: 0.4, pan: (k - 1) * 0.6, sendAmt: 0.6 }));
 
   // Batterie + basse + arpège
-  for (let t = 8; t < 55; t += 0.125) {
+  for (let t = P.drop; t < P.beatEnd; t += 0.125) {
     if (inBreak(t)) continue;
-    const step = Math.round((t - 8) / 0.125);
+    const step = Math.round((t - P.drop) / 0.125);
     const beatPos = step % 4; // 0 = temps
     const c = chordAt(t);
     if (beatPos === 0 && step % 8 === 0) kick(t);
-    if (beatPos === 0 && step % 8 === 4) { kick(t, 0.9); if (t >= 15) clap(t, t >= 32.8 ? 1 : 0.7); }
-    if (t >= 12 && beatPos === 2) hat(t, 0.8, t >= 32.8 && step % 16 === 14);
-    if (t >= 15 && beatPos % 2 === 1) hat(t, 0.45);
+    if (beatPos === 0 && step % 8 === 4) { kick(t, 0.9); if (t >= P.fullFrom) clap(t, t >= P.bigFrom ? 1 : 0.7); }
+    if (t >= P.hatFrom && beatPos === 2) hat(t, 0.8, t >= P.bigFrom && step % 16 === 14);
+    if (t >= P.fullFrom && beatPos % 2 === 1) hat(t, 0.45);
     // basse : croches sur la fondamentale, octave sur le contretemps
     if (step % 2 === 0) {
       const off = step % 4 === 2 ? 12 : 0;
       note(bass, t, c.root + off, 0.2, { vol: 0.27, cutoff: 240, fenv: 900, q: 1.2, detune: [0, 6], attack: 0.004, release: 0.05, sendAmt: 0, sub: 0.32 });
     }
     // arpège en doubles croches
-    if (t >= 15) {
+    if (t >= P.fullFrom) {
       const pattern = [0, 1, 2, 3, 2, 1, 2, 0];
       const m = c.tones[pattern[step % 8]] + 12;
-      note(music, t, m, 0.09, { vol: t >= 32.8 ? 0.075 : 0.055, cutoff: 900, fenv: 3200, q: 2, detune: [0, 5], attack: 0.002, release: 0.12, pan: step % 2 ? 0.45 : -0.45, sendAmt: 0.3 });
+      note(music, t, m, 0.09, { vol: t >= P.bigFrom ? 0.075 : 0.055, cutoff: 900, fenv: 3200, q: 2, detune: [0, 5], attack: 0.002, release: 0.12, pan: step % 2 ? 0.45 : -0.45, sendAmt: 0.3 });
     }
   }
   // Mélodie principale (45.5–55)
   const motif = [[0, 76, 0.5], [0.5, 74, 0.25], [0.75, 72, 0.25], [1, 74, 0.75], [1.75, 69, 0.25]];
-  for (let bar = 45.5; bar < 54.9; bar += 2) motif.forEach(([o, m, d]) => note(music, bar + o, m, d, { vol: 0.09, cutoff: 2600, fenv: 1500, detune: [0, 10, -10], attack: 0.01, release: 0.3, sendAmt: 0.4 }));
+  for (let bar = P.melody[0]; bar < P.melody[1]; bar += 2) motif.forEach(([o, m, d]) => note(music, bar + o, m, d, { vol: 0.09, cutoff: 2600, fenv: 1500, detune: [0, 10, -10], attack: 0.01, release: 0.3, sendAmt: 0.4 }));
   // Fin : accord final ouvert
-  [45, 57, 60, 64, 71].forEach((m, k) => note(music, 55.05, m, 3.8, { vol: m < 50 ? 0.2 : 0.07, cutoff: 1800, attack: 0.05, release: 1.1, pan: (k - 2) * 0.3, sendAmt: 0.6, sub: m < 50 ? 0.4 : 0 }));
+  [45, 57, 60, 64, 71].forEach((m, k) => note(music, P.endAt, m, Math.min(3.8, duration - P.endAt - 0.2), { vol: m < 50 ? 0.2 : 0.07, cutoff: 1800, attack: 0.05, release: 1.1, pan: (k - 2) * 0.3, sendAmt: 0.6, sub: m < 50 ? 0.4 : 0 }));
 
   // ───────── Effets de synthèse ─────────
   const whoosh = (t, dur = 0.45, v = 1) => {
@@ -228,7 +238,7 @@ export async function renderSoundtrack(score, outFile, { duration = 60, root }) 
       send.add(st + i, y * 0.3, y * 0.3);
     }
   };
-  [[3.4, 1.4], [13.6, 1.25], [28.4, 1.1], [31.4, 1.35], [43.4, 1.6], [53.4, 1.6]].forEach(([t, d]) => riser(t, d));
+  P.risers.forEach(([t, d]) => riser(t, d));
 
   // ───────── Événements du montage ─────────
   const hits = score.filter((e) => e.hit);
@@ -237,22 +247,22 @@ export async function renderSoundtrack(score, outFile, { duration = 60, root }) 
     if (e.type === 'impact') impact(t);
     else if (e.type === 'whoosh') whoosh(t, e.arg || 0.45, 0.9);
     else if (e.type === 'kick') {
-      if (Math.abs(t - 34.72) < 0.05) place(sfx, smp.toggle, t, 0.9, 0.2);
-      else if (t > 20 && t < 30) place(sfx, smp.success, t, 0.8, 0.1);
+      if (Math.abs(t - P.toggleAt) < 0.05) place(sfx, smp.toggle, t, 0.9, 0.2);
+      else if (t > P.success[0] && t < P.success[1]) place(sfx, smp.success, t, 0.8, 0.1);
       else { kick(t, 1.1); clap(t, 0.5); }
     } else if (e.type === 'tick') place(sfx, smp.step, t, 0.55, (t % 2) - 0.5, 1.2);
     else if (e.type === 'pop') {
-      if (t < 5) place(sfx, Math.random() < 0.3 ? smp.error : smp.drop, t, 0.32, (Math.random() - 0.5) * 1.4, 0.9 + Math.random() * 0.3);
-      else if (t > 35.9 && t < 39.5) place(sfx, smp.receive, t, 0.45, 0.4, 1 + (t - 36) * 0.06);
-      else if (t > 32 && t < 34) place(sfx, smp.select, t, 0.6, -0.3);
-      else if (t > 55) place(sfx, smp.achievement, t, 0.75);
+      if (t >= P.chaos[0] && t < P.chaos[1]) place(sfx, Math.random() < 0.3 ? smp.error : smp.drop, t, 0.32, (Math.random() - 0.5) * 1.4, 0.9 + Math.random() * 0.3);
+      else if (t > P.toasts[0] && t < P.toasts[1]) place(sfx, smp.receive, t, 0.45, 0.4, 1 + (t - P.toasts[2]) * 0.06);
+      else if (t > P.select[0] && t < P.select[1]) place(sfx, smp.select, t, 0.6, -0.3);
+      else if (t > P.achieveFrom) place(sfx, smp.achievement, t, 0.75);
       else place(sfx, smp.notif, t, 0.55, 0.3);
     }
   }
   // frappe au clavier de l'assistant (25.35 → 26.15)
-  for (let t = 25.35; t < 26.15; t += 0.055 + Math.random() * 0.02) place(sfx, smp.typing, t, 0.5, 0.25, 0.9 + Math.random() * 0.25, 0.05);
+  for (let t = P.typing[0]; t < P.typing[1]; t += 0.055 + Math.random() * 0.02) place(sfx, smp.typing, t, 0.5, 0.25, 0.9 + Math.random() * 0.25, 0.05);
   // coups de caméra vers les KPI / graphique / insight
-  [9.5, 11.15, 12.55, 13.85].forEach((t) => whoosh(t + 0.35, 0.5, 0.7));
+  P.camWhooshes.forEach((t) => whoosh(t + 0.35, 0.5, 0.7));
 
   // ───────── Réverbération (Freeverb simplifié) + delay ping-pong ─────────
   const reverb = (inL, inR, outL, outR, room = 0.84, damp = 0.3, wet = 1) => {

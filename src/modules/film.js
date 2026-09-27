@@ -9,6 +9,40 @@ import { buildScore } from './sound.js';
 export const FILM_DURATION = 60;
 export const CHAPTERS = [0, 5, 15, 30, 45, 55];
 
+// ── Version courte « 30 s » (celle publiée sur le site) ──
+// Montage par segments de la timeline source : [début, fin] en secondes.
+// L'accroche (60 → 63 s) n'existe que dans cette version.
+export const CUT = [
+  [60, 63],       // 0.0  Accroche : « 12 h perdues par semaine »
+  [1.3, 4.8],     // 3.0  Le chaos (notifications)
+  [5.2, 11.2],    // 6.5  Logo + dashboard
+  [15, 20],       // 12.5 Fonctions (Analytics, Alertes)
+  [25, 27.5],     // 17.5 Assistant IA
+  [33.8, 38.8],   // 20.0 Automatisation (clic + avalanche de tâches)
+  [48.2, 50.2],   // 25.0 Moins d'oublis / Plus de décisions
+  [55, 58.5],     // 27.0 Fin : logo, CTA, prix
+];
+export const CUT_DURATION = CUT.reduce((a, [s, e]) => a + e - s, 0);
+export const CUT_CHAPTERS = [0, 3, 6.5, 12.5, 20, 27];
+/** Temps de la version courte → temps de la timeline source. */
+export function cutToSource(t) {
+  let acc = 0;
+  for (const [s, e] of CUT) {
+    if (t < acc + (e - s)) return s + (t - acc);
+    acc += e - s;
+  }
+  return CUT.at(-1)[1] - 0.001;
+}
+/** Temps source → temps dans la version courte (null si coupé). */
+function sourceToCut(t) {
+  let acc = 0;
+  for (const [s, e] of CUT) {
+    if (t >= s && t < e) return acc + (t - s);
+    acc += e - s;
+  }
+  return null;
+}
+
 const CHAOS = [
   ['mail', 'Re: Re: TR: Devis T4'], ['table', 'ventes_v7_FINAL(2).xlsx'], ['chat', '38 messages non lus'],
   ['crm', '214 contacts sans suivi'], ['alert', 'Facture en retard'], ['doc', 'Reporting — accès refusé'],
@@ -360,8 +394,20 @@ export function buildFilm(root) {
     .fromTo('.fm-cta', { autoAlpha: 0, scale: 0.8 }, { autoAlpha: 1, scale: 1, duration: 0.5, ease: 'back.out(2)' }, 56.4)
     .fromTo('.fm-price', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6 }, 57)
     .to([$('.fm-bar--t'), $('.fm-bar--b')], { scaleY: 0, duration: 1.2, ease: 'power2.inOut' }, 57.5)
-    .to({}, { duration: 0.01 }, FILM_DURATION - 0.01);
+    ;
   hits.push({ t: 55.05, type: 'impact' }, { t: 56.4, type: 'pop' });
 
-  return { tl, score: buildScore(hits) };
+  // ═════ 60–63 s · Accroche (version courte uniquement) ═════
+  hide('end', 59.9);
+  tl.set([$('.fm-bar--t'), $('.fm-bar--b')], { scaleY: 1 }, 59.95);
+  slam('Vous perdez', 60.0, 0.6, { cls: 'bg-ink', sound: 'kick' });
+  slam('12&nbsp;h', 60.6, 0.8, { cls: 'bg-flame huge', sound: 'impact' });
+  slam('par semaine.', 61.4, 0.7, { cls: 'bg-cream', sound: 'kick' });
+  slam('On vous les <span class="accent-box">rend.</span>', 62.1, 0.9, { cls: 'bg-ink', sound: 'kick' });
+  tl.to({}, { duration: 0.01 }, 63);
+
+  const cutHits = hits
+    .map((h) => ({ ...h, t: sourceToCut(h.t) }))
+    .filter((h) => h.t != null);
+  return { tl, score: buildScore(hits.filter((h) => h.t < FILM_DURATION)), cutScore: cutHits.map((h) => ({ ...h, hit: true })).sort((a, b) => a.t - b.t) };
 }

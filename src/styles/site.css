@@ -60,11 +60,6 @@
 .cf-ic { display: grid; place-items: center; flex: none; width: 40px; height: 40px; border-radius: 10px; background: rgba(var(--signal-rgb), .12); color: var(--signal); }
 .contact-facts b { display: block; font-weight: 500; }
 .contact-facts small { color: var(--fg-3); }
-.map-card { position: relative; aspect-ratio: 16 / 8; max-width: 100%; border-radius: var(--r-l); overflow: hidden; border: 1px solid var(--line-2); }
-.map-art { position: absolute; inset: 0; width: 100%; height: 100%; }
-.map-pin { position: absolute; left: 51.25%; top: 47.7%; width: 22px; height: 22px; margin: -22px 0 0 -11px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: var(--grad); box-shadow: 0 8px 20px rgba(var(--signal-rgb), .6); }
-.map-pin::after { content: ''; position: absolute; inset: 7px; border-radius: 50%; background: var(--on-brand); }
-.map-btn { position: absolute; right: 14px; bottom: 14px; }
 
 .form-card { position: relative; display: grid; gap: 16px; padding: clamp(22px, 3vw, 36px); border-radius: var(--r-l); border: 1px solid var(--line-2); background: var(--ink-1); box-shadow: 0 40px 100px -50px rgba(var(--signal-rgb), .4); }
 .form-card--flat { padding: 0; border: 0; background: none; box-shadow: none; }

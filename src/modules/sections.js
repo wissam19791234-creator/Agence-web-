@@ -92,8 +92,10 @@ export function initPricing() {
   const save = group.querySelector('.billing-save');
   if (save) save.innerHTML = `−${Math.round(annualDiscount * 100)} %${setupWaivedAnnual ? '<span class="billing-extra"> · installation offerte</span>' : ''}`;
   document.querySelectorAll('[data-setup-cell]').forEach((td) => {
-    const v = setup[td.dataset.setupCell];
-    td.textContent = v == null ? 'Sur devis' : `${money(v)} HT${setupWaivedAnnual ? ' · offerte en annuel' : ''}`;
+    const k = td.dataset.setupCell;
+    const v = setup[k];
+    if (k === 'custom') td.textContent = `Dès ${money(CONFIG.pricing.custom.setupFrom)} HT`;
+    else td.textContent = v == null ? 'Sur devis' : `${money(v)} HT${setupWaivedAnnual ? ' · offerte en annuel' : ''}`;
   });
 
   const apply = (period) => {
@@ -110,11 +112,7 @@ export function initPricing() {
       const note = card.querySelector('[data-note]');
       if (base == null || !priceEl) return;
       const value = annual ? Math.round(base * (1 - annualDiscount)) : base;
-      priceEl.classList.add('is-swap');
-      setTimeout(() => {
-        priceEl.textContent = String(value);
-        priceEl.classList.remove('is-swap');
-      }, prefersReducedMotion() ? 0 : 180);
+      rollNumber(priceEl, value);
       if (note) {
         note.textContent = annual
           ? `Facturé ${fmt(value * 12)} ${currency} HT par an`
@@ -147,13 +145,53 @@ export function initPricing() {
     });
   });
   apply('monthly');
+  initCustomPlan();
 
   if (!prefersReducedMotion()) {
-    gsap.from('.plan', {
-      y: 60, opacity: 0, duration: 1.2, ease: 'expo.out', stagger: 0.1,
+    gsap.from('.plan, .custom-plan', {
+      y: 60, opacity: 0, duration: 1.2, ease: 'expo.out', stagger: 0.1, clearProps: 'transform,opacity',
       scrollTrigger: { trigger: '.plans', start: 'top 85%', once: true },
     });
   }
+}
+
+/** Fait défiler un nombre jusqu'à sa nouvelle valeur (effet « Number Ticker »). */
+function rollNumber(el, to, { suffix = '' } = {}) {
+  const from = parseFloat(el.dataset.v ?? el.textContent.replace(/\s/g, '')) || 0;
+  el.dataset.v = to;
+  if (prefersReducedMotion() || from === to) { el.textContent = fmt(to) + suffix; return; }
+  const o = { v: from };
+  gsap.to(o, { v: to, duration: 0.7, ease: 'expo.out', overwrite: true, onUpdate: () => { el.textContent = fmt(Math.round(o.v)) + suffix; } });
+  el.animate?.([{ transform: 'translateY(-6px)', filter: 'blur(2px)' }, { transform: 'none', filter: 'none' }], { duration: 420, easing: 'cubic-bezier(.2,.8,.2,1)' });
+}
+
+/** 4ᵉ offre : configurateur « sur mesure » (utilisateurs + modules → estimation). */
+function initCustomPlan() {
+  const box = document.querySelector('[data-custom]');
+  if (!box) return;
+  const cfg = CONFIG.pricing.custom;
+  const { currency } = CONFIG.pricing;
+  const range = box.querySelector('[data-cu-users]');
+  const out = box.querySelector('[data-cu-out]');
+  const mods = box.querySelector('[data-cu-mods]');
+  mods.innerHTML = cfg.modules.map((m, i) => `
+    <label class="cu-mod"><input type="checkbox" value="${m.id}" ${i < 2 ? 'checked' : ''} />
+      <span class="cu-mod-box" aria-hidden="true"></span><span class="cu-mod-l">${m.label}</span><small class="mono">+${fmt(m.price)} ${currency}</small></label>`).join('');
+  const price = box.querySelector('[data-cu-price]');
+  const setupEl = box.querySelector('[data-cu-setup]');
+  const update = () => {
+    const users = +range.value;
+    out.textContent = users;
+    range.style.setProperty('--p', `${((users - range.min) / (range.max - range.min)) * 100}%`);
+    const chosen = [...mods.querySelectorAll('input:checked')].map((c) => cfg.modules.find((m) => m.id === c.value));
+    const total = cfg.base + Math.max(0, users - cfg.includedUsers) * cfg.perUser + chosen.reduce((a, m) => a + m.price, 0);
+    rollNumber(price, total);
+    setupEl.textContent = `Installation dès ${fmt(cfg.setupFrom)} ${currency} HT · ${chosen.length} module${chosen.length > 1 ? 's' : ''}`;
+    box.dataset.summary = `${users} utilisateurs · ${chosen.map((m) => m.label).join(', ') || 'socle'} · ~${fmt(total)} ${currency}/mois`;
+  };
+  range.addEventListener('input', update);
+  mods.addEventListener('change', update);
+  update();
 }
 
 /** Accordéons <details> avec animation de hauteur. */

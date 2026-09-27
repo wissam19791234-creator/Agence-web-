@@ -18,9 +18,10 @@
     import '../src/styles/dashboard.css';
     import '../src/styles/film.css';
     import '../src/styles/lime.css';
-    import { buildFilm } from '../src/modules/film.js';
+    import { buildFilm, cutToSource, CUT_DURATION } from '../src/modules/film.js';
     const film = buildFilm(document.getElementById('stage'));
     window.film = film;
+    window.filmCut = { map: cutToSource, duration: CUT_DURATION };
     document.fonts.ready.then(() => { window.filmReady = true; });
   </script>
 </body>

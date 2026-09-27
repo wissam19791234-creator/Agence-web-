@@ -9,9 +9,11 @@ export const CONFIG = {
   // '#inscription' ouvre le formulaire intégré ; sinon mettez l'URL de votre app.
   signupUrl: '#inscription',
 
-  // Où envoyer les formulaires (inscription et contact) : URL qui accepte un POST JSON
-  // (Formspree, Make, Zapier, votre API…). Vide = démonstration sans envoi.
-  formEndpoint: '',
+  // Où envoyer les formulaires (inscription, contact, service client) : URL qui accepte un POST JSON.
+  // Par défaut : FormSubmit, qui transfère chaque envoi par email à l'adresse ci-dessous
+  // (au premier envoi, FormSubmit envoie un email d'activation à confirmer une seule fois).
+  // Vide = démonstration sans envoi.
+  formEndpoint: 'https://formsubmit.co/ajax/scalifyfr@gmail.com',
 
   // Page de remerciement après un envoi réussi (site publié).
   thankYouPage: 'merci.html',
@@ -23,14 +25,22 @@ export const CONFIG = {
   company: {
     legalName: '[Raison sociale]',
     siteUrl: 'https://www.votre-domaine.fr',
-    email: 'contact@votre-domaine.fr',
+    email: 'scalifyfr@gmail.com',
     phone: '',
     street: '[Adresse]',
     postalCode: '[Code postal]',
     city: '[Ville]',
     country: 'France',
-    responseTime: 'Réponse sous 24 h ouvrées',
-    openingHours: 'Du lundi au vendredi, 9 h – 18 h',
+    responseTime: 'Réponse sous 2 h ouvrées',
+    openingHours: 'Du lundi au samedi, 9 h – 19 h',
+  },
+
+  // Service client : widget de discussion (bas de page) + section « Service client »
+  support: {
+    agent: 'Léa',               // prénom affiché dans le widget
+    agentAvatar: 'lea',         // clé d'avatar (src/data/avatars.js)
+    hours: 'Lun – sam · 9 h – 19 h',
+    reply: 'Réponse moyenne : 12 min',
   },
 
   // ───────── Preuves ─────────
@@ -77,15 +87,30 @@ export const CONFIG = {
     annualDiscount: 0.2,
     // Abonnement mensuel
     plans: {
-      starter: 89,
-      pro: 249,
-      enterprise: null,
+      starter: 190,
+      pro: 490,
+      business: 990,
     },
     // Frais d'installation et de paramétrage (payés une fois)
     setup: {
-      starter: 490,
-      pro: 1490,
-      enterprise: null,
+      starter: 990,
+      pro: 2490,
+      business: 4900,
+    },
+    // Offre sur mesure : estimation affichée par le configurateur (« à partir de »)
+    custom: {
+      base: 1490,           // socle mensuel
+      perUser: 12,          // par utilisateur au-delà de 50
+      includedUsers: 50,
+      setupFrom: 9900,
+      modules: [
+        { id: 'sso', label: 'SSO & rôles avancés', price: 290 },
+        { id: 'integrations', label: 'Intégrations sur mesure', price: 490 },
+        { id: 'models', label: 'Modèles IA dédiés', price: 690 },
+        { id: 'csm', label: 'Responsable de compte dédié', price: 390 },
+        { id: 'sla', label: 'SLA 99,9 % + support 24/7', price: 590 },
+        { id: 'onprem', label: 'Hébergement privé (UE)', price: 890 },
+      ],
     },
     // Offrir l'installation aux clients qui choisissent l'engagement annuel
     setupWaivedAnnual: true,

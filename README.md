@@ -16,6 +16,19 @@ node scripts/build-artifact.mjs   # version « un seul fichier » : dist-artifac
 
 Direction « Studio Lime » : fond noir, accent citron vert `#d4ff3a`, violet `#b9a7ff`, titres **Syne** 800 en capitales avec mots surlignés en blocs lime, texte **Inter Tight**, cartes arrondies (24 px) et blocs lime pleins pour les éléments clés (offre Pro, statistique principale, CTA final). Tout est dans `src/styles/lime.css` (chargé en dernier).
 
+## Composants animés (Magic UI / 21st.dev)
+
+Le serveur MCP 21st.dev est bloqué par le réseau de l'environnement cloud (le domaine `21st.dev` n'est pas autorisé). Les composants ont donc été repris directement de leur source ouverte sur GitHub, [Magic UI](https://github.com/magicuidesign/magicui) (licence MIT, également publiés sur 21st.dev), et réécrits en JavaScript natif dans `src/modules/magic.js` + `src/styles/magic.css` :
+
+| Composant | Où |
+| --- | --- |
+| **MagicCard** (halo et bordure qui suivent la souris) | cartes de fonctionnalités, offres, avis, études de cas, FAQ |
+| **BorderBeam** (faisceau qui parcourt la bordure) | offre Pro, offre sur mesure, démo, lecteur vidéo, fenêtre de discussion |
+| **NumberTicker** (chiffres qui défilent) | cartes du hero, statistiques, études de cas, prix |
+| **Meteors** | fond du hero |
+| **AnimatedBeam** (faisceaux entre éléments) | section Service client |
+| **Shine button** | boutons principaux |
+
 ## Outils installés dans le projet
 
 - **Skill UI/UX Pro Max** (`.claude/skills/ui-ux-pro-max/`, licence MIT) : base de styles, palettes, typographies et règles UX, utilisable par Claude Code dans ce projet.
@@ -25,7 +38,8 @@ Direction « Studio Lime » : fond noir, accent citron vert `#d4ff3a`, violet `#
 
 | Quoi | Où |
 | --- | --- |
-| Nom de la marque, lien des CTA, URL de la vidéo, prix, formulaires, Google Analytics, coordonnées, avis, études de cas, équipe | `src/config.js` |
+| Nom de la marque, lien des CTA, URL de la vidéo, prix (4 offres + configurateur), formulaires, email, service client, Google Analytics, avis, études de cas, équipe | `src/config.js` |
+| Réponses de la bulle de service client | `answers()` dans `src/modules/support.js` |
 | Logo (monogramme SVG) | `logoMark()` dans `src/modules/dashboard.js` + favicon dans `index.html` |
 | Textes, FAQ, fonctionnalités des offres | `index.html` |
 | Couleurs, typographies, rayons, espacements | tokens `:root` dans `src/styles/base.css` |
@@ -33,9 +47,20 @@ Direction « Studio Lime » : fond noir, accent citron vert `#d4ff3a`, violet `#
 | Données et réponses de la démo interactive | `src/modules/demo.js` |
 
 ### Vidéo
-Le film de 60 s est un **vrai fichier MP4** (`public/media/ordra-film.mp4`, 1080p 60 i/s, + version mobile 540p et affiche JPEG), lu par un lecteur `<video>` natif : aucun calcul d'animation pendant la lecture.
+Le film publié est la **version courte de 30 s** (accroche chiffrée dès la première seconde), un **vrai fichier MP4** (`public/media/ordra-film.mp4`, 1080p 60 i/s, + version mobile 540p et affiche JPEG), lu par un lecteur `<video>` natif : aucun calcul d'animation pendant la lecture.
 
-Il est **généré à partir du code** : `npm run film` ouvre `tools/film.html`, capture le montage (`src/modules/film.js`) image par image, mixe la bande-son et encode avec ffmpeg. Modifiez le montage ou les textes, relancez la commande : la vidéo est à jour.
+Il est **généré à partir du code** : `npm run film` ouvre `tools/film.html`, capture le montage (`src/modules/film.js`) image par image, mixe la bande-son et encode avec ffmpeg. La version courte est un montage par segments de la timeline longue (`CUT` dans `film.js`) avec sa propre structure musicale (`PLAN_30` dans `scripts/render-film.mjs`). `npm run film -- --full` exporte la version longue de 60 s.
+
+| Temps | Version courte (30 s) |
+| --- | --- |
+| 0–3 s | Accroche : « Vous perdez 12 h par semaine. On vous les rend. » |
+| 3–6,5 s | Le chaos : avalanche de notifications |
+| 6,5–12,5 s | Logo, le dashboard arrive en 3D, zoom sur les KPI |
+| 12,5–20 s | Fonctions : Analytics, Alertes, Assistant IA |
+| 20–27 s | Automatisation : clic, avalanche de tâches, « Plus de décisions » |
+| 27–30,5 s | Logo, bouton, prix d'appel |
+
+Version longue (60 s) :
 
 | Temps | Chapitre | Ce qu'on voit |
 | --- | --- | --- |
@@ -62,8 +87,9 @@ Pour utiliser une autre vidéo (tournage, Higgsfield…), remplacez `videoUrl` d
 Ces éléments sont des **emplacements** et ne doivent pas être publiés en l'état :
 
 - **Section Résultats** (`#preuves`) : 6 logos clients, 3 statistiques (`+XX %`, `XX h`, `XX %`), 2 témoignages. Tous sont marqués `data-placeholder` dans `index.html`.
-- **Prix** (`src/config.js`) : abonnement 89 € / 249 € / sur devis, **frais d'installation** 490 € / 1 490 € / sur devis, remise annuelle de 20 % et installation offerte en annuel (`setupWaivedAnnual`). Le contenu de l'installation (sources connectées, workflows configurés, formation) est détaillé dans le tableau comparatif de `index.html` : à ajuster à votre offre réelle.
-- **Calculateur** (`#calculateur`) : l'offre conseillée dépend de la taille d'équipe (≤ 3 Starter, ≤ 15 Pro, au-delà Enterprise), voir `initRoi()` dans `src/modules/extras.js`.
+- **Prix** (`src/config.js`) : **Starter 190 €**, **Pro 490 €**, **Business 990 €** HT/mois ; **frais d'installation** 990 € / 2 490 € / 4 900 € ; remise annuelle de 20 % et installation offerte en annuel (`setupWaivedAnnual`). **4ᵉ offre sur mesure** : configurateur (utilisateurs + modules) qui affiche une estimation « dès … » à partir de `pricing.custom` et transmet la composition dans la demande de devis. Contenu des offres et tableau comparatif dans `index.html` : à ajuster à votre offre réelle.
+- **Service client** : engagements affichés (« < 2 h », « 6 j/7 », « 100 % basé en France ») et horaires dans `company` / `support` : à valider.
+- **Calculateur** (`#calculateur`) : l'offre conseillée dépend de la taille d'équipe (≤ 5 Starter, ≤ 15 Pro, ≤ 50 Business, au-delà sur mesure), voir `initRoi()` dans `src/modules/extras.js`.
 - **Affirmations à valider** par vous : réponses de la FAQ (sécurité, chiffrement, délai de mise en route, intégrations), « Sans engagement sur l'offre mensuelle » dans le CTA final, contenu des offres et du tableau comparatif.
 - **Liens du footer** (À propos, Confidentialité, Conditions) : pointent vers le haut de page, à relier à vos vraies pages.
 
@@ -107,8 +133,9 @@ src/modules/
 | Image de partage réseaux sociaux | `public/og.png` (1200×630) + balises Open Graph / Twitter |
 | FAQ | section FAQ + `FAQPage` en JSON-LD |
 | 404 personnalisée | `public/404.html` |
-| Carte + itinéraire | section Contact (lien Google Maps construit depuis l'adresse de la config) |
+| Service client | bulle de discussion (toutes les pages de la landing) + section `#contact` |
 | Temps de réponse | `company.responseTime` |
+| Réception des formulaires | `formEndpoint` : FormSubmit vers **scalifyfr@gmail.com** (confirmer l'email d'activation reçu au premier envoi) |
 | Google Analytics | `gaId` : chargé uniquement après accord (bandeau cookies, RGPD) |
 | Liens internes | nav, footer, palette ⌘K, liens entre pages |
 | Schema LocalBusiness / Organization / SoftwareApplication | injectés au build par `scripts/seo-plugin.mjs` |
@@ -120,7 +147,8 @@ src/modules/
 ## Interactions ajoutées
 
 - **Bandeau d'outils** sous le hero : défile en boucle et accélère quand on scrolle.
-- **Manifeste** : le texte s'allume mot à mot au scroll.
+- **Bulle de service client** : réponses instantanées (offres, installation, sécurité, essai) puis transfert à l'équipe par email.
+- **Configurateur d'offre sur mesure** : utilisateurs + modules → estimation en direct.
 - **Pour chaque équipe** : 5 cas d'usage (Direction, Ventes, Finance, Opérations, Service client) qui défilent horizontalement pendant le scroll vertical sur ordinateur, en carrousel au doigt sur mobile.
 - **Calculateur** de temps récupéré avec curseurs, offre conseillée et délai d'amortissement de l'installation.
 - **Palette ⌘K / Ctrl K** : navigation et actions rapides (lancer le film, essayer l'assistant IA, voir les tarifs en annuel…).

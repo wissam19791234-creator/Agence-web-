@@ -164,10 +164,10 @@ export function initRoi() {
 
     const monthlyHours = team * hours * rate * 4.33;
     const value = monthlyHours * cost;
-    const planKey = team <= 3 ? 'starter' : team <= 15 ? 'pro' : 'enterprise';
+    const planKey = team <= 5 ? 'starter' : team <= 15 ? 'pro' : team <= 50 ? 'business' : 'custom';
     const price = plans[planKey];
     const fee = setup?.[planKey];
-    res('plan').textContent = { starter: 'Starter', pro: 'Pro', enterprise: 'Enterprise' }[planKey];
+    res('plan').textContent = { starter: 'Starter', pro: 'Pro', business: 'Business', custom: 'Sur mesure' }[planKey];
     res('cost').textContent = price == null ? 'Sur devis' : money(price);
     const net = price == null ? null : value - price;
     res('payback').textContent = net && net > 0 && fee != null
@@ -207,7 +207,8 @@ export function initCommandPalette() {
     { g: 'Actions', ic: 'clock', label: 'Calculer mon temps récupéré', run: go('#calculateur') },
     { g: 'Actions', ic: 'calendar', label: 'Voir les tarifs en annuel', run: () => { scrollToTarget('#tarifs'); setTimeout(() => document.querySelector('[data-period="annual"]')?.click(), 700); } },
     { g: 'Actions', ic: 'arrowUpRight', label: 'Commencer maintenant', run: () => { const a = document.querySelector('[data-cta]'); if (a) a.click(); } },
-    { g: 'Aller à', ic: 'grid', label: 'Produit', run: go('#produit') },
+    { g: 'Actions', ic: 'chat', label: 'Parler au service client', run: () => document.querySelector('[data-support-open]')?.click() },
+    { g: 'Actions', ic: 'tool', label: 'Composer une offre sur mesure', run: go('[data-custom]') },
     { g: 'Aller à', ic: 'eye', label: 'Le film', run: go('#video') },
     { g: 'Aller à', ic: 'refresh', label: 'Comment ça marche', run: go('#comment') },
     { g: 'Aller à', ic: 'bolt', label: 'Fonctionnalités', run: go('#fonctionnalites') },
@@ -299,9 +300,9 @@ export function initRail() {
   const rail = document.querySelector('[data-rail]');
   if (!rail) return;
   const secs = [
-    ['top', 'Accueil'], ['produit', 'Produit'], ['video', 'Le film'], ['probleme', 'Le constat'], ['comment', 'Comment ça marche'],
+    ['top', 'Accueil'], ['video', 'Le film'], ['probleme', 'Le constat'], ['comment', 'Comment ça marche'],
     ['fonctionnalites', 'Fonctionnalités'], ['equipes', 'Équipes'], ['ia', 'L’IA'], ['demo', 'Démo'], ['calculateur', 'Calculateur'],
-    ['tarifs', 'Tarifs'], ['faq', 'FAQ'], ['commencer', 'Commencer'],
+    ['tarifs', 'Tarifs'], ['faq', 'FAQ'], ['contact', 'Service client'], ['commencer', 'Commencer'],
   ].filter(([id]) => document.getElementById(id));
   rail.innerHTML = secs.map(([id, l]) => `<a href="#${id}" aria-label="${l}"><span>${l}</span></a>`).join('');
   const links = [...rail.children];

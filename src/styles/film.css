@@ -184,3 +184,6 @@
 .player-sound[aria-pressed="false"] .snd-off { display: block; }
 .player-bar { align-items: center; }
 .player-bar .player-mini { align-self: flex-start; }
+/* Accroche de la version courte : chiffre géant */
+.fm-slam.huge > span { font-size: 3.2em; line-height: .85; letter-spacing: -.05em; }
+.fm-slam .accent-box { display: inline-block; padding: 0 .14em; background: var(--signal); color: #0b0b0b; font-style: normal; }
