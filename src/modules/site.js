@@ -23,40 +23,41 @@ export function initContent() {
     a.href = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(addr || CONFIG.brand)}`;
   });
 
+  // Étiquettes « exemple » tant que les contenus illustratifs ne sont pas remplacés
+  document.querySelectorAll('[data-example-tag]').forEach((t) => { t.hidden = !CONFIG.exampleContent; });
+
+  // Logos (mots-symboles) et chiffres clés
+  const logos = document.querySelector('[data-logos]');
+  if (logos) logos.innerHTML = CONFIG.logos.map((l) => `<li><span class="logo-word">${esc(l)}</span></li>`).join('');
+  const stats = document.querySelector('[data-stats]');
+  if (stats) stats.innerHTML = CONFIG.stats.map((st) => `<div class="proof-stat"><b class="num">${esc(st.value)}</b><span>${esc(st.label)}</span></div>`).join('');
+
   // Avis clients
   const reviews = document.querySelector('[data-reviews]');
   if (reviews) {
-    const list = CONFIG.testimonials.length ? CONFIG.testimonials : [{}, {}, {}];
-    const stars = (n) => `<span class="stars" aria-label="${n ? `${n} sur 5` : 'Note à venir'}">${'★'.repeat(n || 5)}</span>`;
-    reviews.innerHTML = `
-      <div class="reviews-summary">
-        ${CONFIG.testimonials.length
-          ? `<b class="reviews-score">${(CONFIG.testimonials.reduce((a, t) => a + (t.rating || 5), 0) / CONFIG.testimonials.length).toFixed(1).replace('.', ',')}</b>${stars(5)}<small>${CONFIG.testimonials.length} avis vérifiés</small>`
-          : `<b class="reviews-score">Bientôt</b>${stars(0)}<small>Vos premiers avis clients s’afficheront ici</small>`}
-      </div>
-      ${list.map((t) => `
-        <figure class="review${t.quote ? '' : ' is-empty'}">
-          ${stars(t.rating)}
-          <blockquote>${t.quote ? `« ${esc(t.quote)} »` : '« Emplacement pour un avis client : ce qui a changé concrètement, en une ou deux phrases. »'}</blockquote>
-          <figcaption><span class="review-av">${t.name ? esc(t.name.split(' ').map((w) => w[0]).join('').slice(0, 2)) : ''}</span>
-            <span><b>${t.name ? esc(t.name) : 'Prénom Nom'}</b><small>${t.role ? `${esc(t.role)} · ${esc(t.company)}` : 'Fonction · Entreprise'}</small></span>${t.quote ? '' : todo}</figcaption>
-        </figure>`).join('')}`;
+    const stars = (n = 5) => `<span class="stars" aria-label="${n} sur 5">${'★'.repeat(n)}${'☆'.repeat(5 - n)}</span>`;
+    reviews.innerHTML = CONFIG.testimonials.map((t) => `
+      <figure class="review">
+        ${stars(t.rating)}
+        <blockquote>« ${esc(t.quote)} »</blockquote>
+        <figcaption><span class="review-av" data-avatars="${esc(t.avatar || '')}">${esc(t.name.split(' ').map((w) => w[0]).join('').slice(0, 2))}</span>
+          <span><b>${esc(t.name)}</b><small>${esc(t.role)} · ${esc(t.company)}</small></span></figcaption>
+      </figure>`).join('');
   }
 
   // Études de cas
   const studies = document.querySelector('[data-studies]');
   if (studies) {
-    const list = CONFIG.caseStudies.length ? CONFIG.caseStudies : [{ sector: 'Commerce B2B' }, { sector: 'Services' }, { sector: 'Industrie' }];
-    const hues = ['#ff6b2c', '#ffc857', '#ff4d8d'];
-    studies.innerHTML = list.map((s, i) => `
-      <article class="study${s.challenge ? '' : ' is-empty'}" style="--c:${hues[i % 3]}">
-        <div class="study-top"><span class="study-sector mono">${esc(s.sector || 'Secteur')}</span>${s.challenge ? '' : todo}</div>
-        <h3>${s.company ? esc(s.company) : 'Nom du client'}</h3>
-        <b class="study-metric">${s.metric ? esc(s.metric) : 'Résultat clé'}</b>
+    const hues = ['#d4ff3a', '#b9a7ff', '#eaff8f'];
+    studies.innerHTML = CONFIG.caseStudies.map((st, i) => `
+      <article class="study" style="--c:${hues[i % 3]}">
+        <div class="study-top"><span class="study-sector mono">${esc(st.sector)}</span></div>
+        <h3>${esc(st.company)}</h3>
+        <b class="study-metric">${esc(st.metric)}<small>${esc(st.metricLabel || '')}</small></b>
         <dl>
-          <div><dt>Le défi</dt><dd>${s.challenge ? esc(s.challenge) : 'Ce qui bloquait avant Ordra.'}</dd></div>
-          <div><dt>La solution</dt><dd>${s.solution ? esc(s.solution) : 'Les modules et automatisations mis en place.'}</dd></div>
-          <div><dt>Le résultat</dt><dd>${s.result ? esc(s.result) : 'Ce qui a changé, chiffres à l’appui.'}</dd></div>
+          <div><dt>Avant</dt><dd>${esc(st.challenge)}</dd></div>
+          <div><dt>Avec Ordra</dt><dd>${esc(st.solution)}</dd></div>
+          <div><dt>Résultat</dt><dd>${esc(st.result)}</dd></div>
         </dl>
       </article>`).join('');
   }
@@ -64,14 +65,24 @@ export function initContent() {
   // Équipe
   const team = document.querySelector('[data-team]');
   if (team) {
-    const list = CONFIG.team.length ? CONFIG.team : [{}, {}, {}, {}];
-    team.innerHTML = list.map((m, i) => `
-      <li class="member${m.name ? '' : ' is-empty'}" style="--c:${['#ff6b2c', '#ffc857', '#ff4d8d', '#ff8a3d'][i % 4]}">
-        <div class="member-photo">${m.photo
-          ? `<img src="${esc(m.photo)}" alt="Portrait de ${esc(m.name)}, ${esc(m.role)}" loading="lazy" width="480" height="600" />`
-          : '<svg viewBox="0 0 100 120" aria-hidden="true"><circle cx="50" cy="44" r="20"/><path d="M14 120c4-26 18-38 36-38s32 12 36 38"/></svg>'}</div>
-        <b>${m.name ? esc(m.name) : 'Prénom Nom'}</b><small>${m.role ? esc(m.role) : 'Rôle'}</small>${m.name ? '' : todo}
+    team.innerHTML = CONFIG.team.map((m, i) => `
+      <li class="member" style="--c:${['#d4ff3a', '#b9a7ff', '#eaff8f', '#c7f9cc'][i % 4]}">
+        <div class="member-photo" ${m.photo ? '' : `data-avatars="${esc(m.avatar || '')}" data-avatar-size="lg"`}>${m.photo
+          ? `<img src="${esc(m.photo)}" alt="Portrait de ${esc(m.name)}, ${esc(m.role)}" loading="lazy" width="480" height="600" />` : ''}</div>
+        <b>${esc(m.name)}</b><small>${esc(m.role)}</small>
       </li>`).join('');
+  }
+
+  // Avatars illustrés (chargés après l'affichage : ~200 Ko)
+  const slots = document.querySelectorAll('[data-avatars]');
+  if (slots.length) {
+    import('../data/avatars.js').then(({ AVATARS }) => {
+      slots.forEach((el) => {
+        const keys = el.dataset.avatars.split(',').filter((k) => AVATARS[k]);
+        if (!keys.length) return;
+        el.innerHTML = keys.map((k) => `<img src="${AVATARS[k]}" alt="" width="96" height="96" decoding="async" />`).join('');
+      });
+    });
   }
 }
 

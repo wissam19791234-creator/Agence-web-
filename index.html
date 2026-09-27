@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Ordra — Le dashboard IA qui pilote votre entreprise</title>
   <meta name="description" content="Ordra réunit vos données, vos tâches et vos opérations dans un dashboard piloté par l'IA. Centralisez, automatisez, analysez, décidez." />
-  <meta name="theme-color" content="#0a0706" />
+  <meta name="theme-color" content="#0b0b0b" />
   <meta property="og:title" content="Ordra — Votre entreprise, pilotée par l'IA" />
   <meta property="og:description" content="Un dashboard intelligent qui transforme vos données, vos tâches et vos opérations en un système simple, automatisé et exploitable." />
   <meta property="og:type" content="website" />
@@ -23,7 +23,7 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2306070a'/%3E%3Crect x='7' y='7' width='8' height='8' rx='2' fill='%23e9edf4'/%3E%3Crect x='17' y='7' width='8' height='8' rx='2' fill='%23e9edf4' fill-opacity='.35'/%3E%3Crect x='7' y='17' width='8' height='8' rx='2' fill='%23e9edf4' fill-opacity='.35'/%3E%3Crect x='17' y='17' width='8' height='8' rx='2' fill='%23a9c8ff'/%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@1,6..72,300;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" />
 </head>
 <body>
   <a class="skip-link" href="#main">Aller au contenu</a>
@@ -70,54 +70,40 @@
 
     <!-- ═════════════ 1. HERO ═════════════ -->
     <section class="hero" id="top" aria-labelledby="hero-title">
-      <div class="hero-bg" aria-hidden="true">
-        <canvas class="hero-ember" data-ember="hero"></canvas>
-        <div class="hero-fade"></div>
-      </div>
+      <div class="hero-bg" aria-hidden="true"><div class="hero-dots"></div><div class="hero-glow2"></div></div>
 
-      <div class="wrap hero-copy">
-        <p class="hero-badge" data-hero-in>
-          <span class="hero-badge-star" aria-hidden="true">✦</span>
-          L’intelligence opérationnelle de votre entreprise
-        </p>
-        <h1 class="hero-title" id="hero-title">
-          <span class="hero-line" data-hero-line>Votre entreprise.</span>
-          <span class="hero-line hero-line--accent" data-hero-line><span class="serif">pilotée par l’IA.</span></span>
-        </h1>
-        <p class="hero-sub lead" data-hero-in>
-          Un dashboard intelligent qui transforme vos données, vos tâches et vos opérations en un système simple, automatisé et exploitable.
-        </p>
-        <div class="hero-ctas" data-hero-in>
-          <a class="btn btn--primary btn--lg magnetic" href="#demo">Découvrir le dashboard <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a>
-          <a class="btn btn--ghost btn--lg" href="#video"><span class="btn-play-ic"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>Voir le film (1 min)</a>
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <p class="hero-badge" data-hero-in><span class="hero-badge-star" aria-hidden="true">✦</span> Nouveau · Assistant IA intégré</p>
+          <h1 class="hero-title" id="hero-title">
+            <span class="hero-line" data-hero-line>Votre boîte</span>
+            <span class="hero-line" data-hero-line>en <span class="hl">pilote</span></span>
+            <span class="hero-line" data-hero-line>automatique.</span>
+          </h1>
+          <p class="hero-sub" data-hero-in>Le dashboard IA qui réunit vos données, automatise vos tâches et vous dit quoi faire.</p>
+          <div class="hero-ctas" data-hero-in>
+            <a class="btn btn--primary btn--lg" href="#tarifs" data-cta>Commencer maintenant <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a>
+            <a class="btn btn--ghost btn--lg" href="#video"><span class="btn-play-ic"><svg class="ico" viewBox="0 0 24 24" width="10" height="10" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>Voir le film</a>
+          </div>
+          <div class="hero-proof" data-hero-in>
+            <span class="hero-avs" data-avatars="claire,thomas,ines,karim"></span>
+            <span><b class="stars" aria-hidden="true">★★★★★</b> Adopté par des équipes qui détestent les tableurs</span>
+          </div>
         </div>
-        <ul class="hero-meta" data-hero-in>
-          <li><span class="mono">01</span>Vos données réunies</li>
-          <li><span class="mono">02</span>Vos tâches automatisées</li>
-          <li><span class="mono">03</span>Vos décisions éclairées</li>
-        </ul>
+
+        <div class="hero-cards" aria-hidden="true">
+          <div class="hc hc--big"><small>Temps libéré ce mois</small><strong class="num">146 h</strong>
+            <svg viewBox="0 0 300 90" preserveAspectRatio="none"><path d="M0,80 C40,74 60,62 100,60 C140,58 160,40 200,34 C240,28 260,14 300,6"/></svg></div>
+          <div class="hc hc--k1"><small>Tâches automatisées</small><strong class="num">3 912</strong><em>+28 %</em></div>
+          <div class="hc hc--k2"><small>Chiffre d’affaires</small><strong class="num">128 k€</strong><em>+12 %</em></div>
+          <div class="hc hc--rv"><span class="hc-av" data-avatars="claire"></span><div><b>Claire M.</b><small>DG · Atelier Brume</small><p>« On a gagné une journée par semaine. »</p></div></div>
+        </div>
       </div>
 
       <div class="hero-stage wrap" aria-label="Aperçu de l’interface du dashboard" role="img">
         <div class="hero-rig" data-hero-rig>
-          <div class="hero-glow" aria-hidden="true"></div>
           <div class="dash-frame hero-dash" data-dashboard></div>
           <div class="hero-light" aria-hidden="true"></div>
-
-          <div class="sat sat--notif" aria-hidden="true">
-            <span class="sat-ic sat-ic--signal"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M13 3L5 13.5h6L10 21l8-10.5h-6L13 3z"/></svg></span>
-            <div><b>12 relances envoyées</b><small>Automatisation · il y a 4 s</small></div>
-          </div>
-          <div class="sat sat--ai" aria-hidden="true">
-            <span class="sat-label">✦ Recommandation IA</span>
-            <p>Décaler la campagne de 48 h améliore le taux de réponse estimé.</p>
-            <div class="sat-bar"><i></i></div>
-          </div>
-          <div class="sat sat--kpi" aria-hidden="true">
-            <small>Temps libéré</small>
-            <b class="num">146 h</b>
-            <svg viewBox="0 0 100 28" preserveAspectRatio="none"><path d="M0,24 C12,22 18,18 28,19 C40,20 46,12 58,11 C70,10 76,6 100,3" fill="none" stroke="currentColor" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg>
-          </div>
         </div>
       </div>
     </section>
@@ -151,23 +137,14 @@
       </div>
     </section>
 
-    <!-- ═════════════ MANIFESTE ═════════════ -->
-    <section class="manifesto" aria-label="Manifeste">
-      <div class="wrap">
-        <span class="eyebrow">Pourquoi Ordra</span>
-        <p class="manifesto-text" data-manifesto>Chaque jour, vos équipes cherchent une information, recopient un chiffre, relancent un client, compilent un reporting. Des heures qui ne font pas avancer l’entreprise. Ordra reprend ce travail, en continu, pour que chacun se concentre sur ce qui compte vraiment : <em>vendre, servir, décider.</em></p>
-      </div>
-    </section>
-
     <!-- ═════════════ 3. VIDÉO ═════════════ -->
     <section class="section video" id="video" aria-labelledby="video-title">
       <div class="wrap">
         <div class="sec-head sec-head--split">
           <div class="sec-head">
             <span class="eyebrow">Le film · 60 secondes</span>
-            <h2 class="h2" id="video-title" data-reveal>Voyez ce que votre entreprise peut faire avec <em>l’IA.</em></h2>
+            <h2 class="h2" id="video-title" data-reveal>60 secondes pour <em>tout comprendre.</em></h2>
           </div>
-          <p class="lead" data-reveal>Une minute pour comprendre. Quelques secondes pour voir la différence.</p>
         </div>
 
         <div class="player" data-player>
@@ -268,9 +245,7 @@
           </div>
         </div>
 
-        <p class="prob-foot wrap" data-prob-foot>
-          En moyenne, vos équipes jonglent entre plusieurs outils pour répondre à une seule question. <span>Ordra les relie.</span>
-        </p>
+        <p class="prob-foot wrap" data-prob-foot><span>Ordra relie tout.</span></p>
       </div>
     </section>
 
@@ -279,7 +254,7 @@
       <div class="wrap">
         <div class="sec-head">
           <span class="eyebrow">Comment ça marche</span>
-          <h2 class="h2" id="story-title" data-reveal>Un seul endroit.<br /><em>Pour tout piloter.</em></h2>
+          <h2 class="h2" id="story-title" data-reveal>Un seul endroit. <em>Tout piloter.</em></h2>
         </div>
 
         <div class="story-grid">
@@ -287,27 +262,27 @@
             <li class="story-step" data-step="1">
               <span class="story-n mono">01</span>
               <h3>Les données arrivent.</h3>
-              <p>Ventes, clients, finances, projets : Ordra se connecte à vos sources et les rassemble, sans ressaisie.</p>
+              <p>Toutes vos sources, branchées en quelques clics.</p>
             </li>
             <li class="story-step" data-step="2">
               <span class="story-n mono">02</span>
               <h3>L’IA analyse.</h3>
-              <p>Elle lit l’ensemble en continu, repère les écarts, les tendances et ce qui mérite votre attention.</p>
+              <p>Elle repère ce qui compte, en continu.</p>
             </li>
             <li class="story-step" data-step="3">
               <span class="story-n mono">03</span>
               <h3>Le dashboard organise.</h3>
-              <p>Chaque indicateur trouve sa place. Vous voyez l’essentiel d’un coup d’œil, sans chercher.</p>
+              <p>L’essentiel, en un coup d’œil.</p>
             </li>
             <li class="story-step" data-step="4">
               <span class="story-n mono">04</span>
-              <h3>Les automatisations se déclenchent.</h3>
-              <p>Relances, rapports, alertes : les tâches répétitives partent toutes seules, au bon moment.</p>
+              <h3>Ça s’automatise.</h3>
+              <p>Relances, rapports, alertes : tout part seul.</p>
             </li>
             <li class="story-step" data-step="5">
               <span class="story-n mono">05</span>
               <h3>Les résultats apparaissent.</h3>
-              <p>Vos KPI se mettent à jour en temps réel. Vous décidez sur des faits, pas sur des intuitions.</p>
+              <p>Vos KPI, en temps réel.</p>
             </li>
           </ol>
 
@@ -334,9 +309,8 @@
         <div class="sec-head sec-head--split">
           <div class="sec-head">
             <span class="eyebrow">Fonctionnalités</span>
-            <h2 class="h2" id="feats-title" data-reveal>Tout ce dont vous avez besoin.<br /><em>Rien de superflu.</em></h2>
+            <h2 class="h2" id="feats-title" data-reveal>L’essentiel. <em>Rien de plus.</em></h2>
           </div>
-          <p class="lead" data-reveal>Six modules pensés pour fonctionner ensemble. Activez ceux dont vous avez besoin, le reste reste discret.</p>
         </div>
 
         <div class="feat-grid">
@@ -344,7 +318,7 @@
           <article class="feat feat--analytics" data-feat="analytics">
             <div class="feat-copy" data-n="01 /06">
               <span class="feat-tag mono">IA Analytics</span>
-              <h3>Comprenez vos données sans passer des heures à les analyser.</h3>
+              <h3>Vos chiffres, expliqués.</h3>
             </div>
             <div class="feat-vis fa">
               <div class="fa-chart">
@@ -361,7 +335,7 @@
           <article class="feat feat--auto" data-feat="auto">
             <div class="feat-copy" data-n="02 /06">
               <span class="feat-tag mono">Automatisations</span>
-              <h3>Transformez les tâches répétitives en workflows automatiques.</h3>
+              <h3>Le répétitif, automatisé.</h3>
             </div>
             <div class="feat-vis fw">
               <div class="fw-node"><span>Déclencheur</span><b>Devis sans réponse · 3 j</b></div>
@@ -376,7 +350,7 @@
           <article class="feat feat--alerts" data-feat="alerts">
             <div class="feat-copy" data-n="03 /06">
               <span class="feat-tag mono">Smart Alerts</span>
-              <h3>Recevez les informations importantes au bon moment.</h3>
+              <h3>L’info qui compte, à temps.</h3>
             </div>
             <div class="feat-vis fal">
               <div class="fal-item fal-item--warn"><i></i><div><b>Trésorerie sous le seuil</b><small>Prévu dans 9 jours</small></div></div>
@@ -389,7 +363,7 @@
           <article class="feat feat--perf" data-feat="perf">
             <div class="feat-copy" data-n="04 /06">
               <span class="feat-tag mono">Performance</span>
-              <h3>Visualisez vos KPI en temps réel.</h3>
+              <h3>Vos KPI en direct.</h3>
             </div>
             <div class="feat-vis fp">
               <div class="fp-gauge">
@@ -408,7 +382,7 @@
           <article class="feat feat--clients" data-feat="clients">
             <div class="feat-copy" data-n="05 /06">
               <span class="feat-tag mono">Clients</span>
-              <h3>Centralisez les informations essentielles.</h3>
+              <h3>Tous vos clients, un écran.</h3>
             </div>
             <div class="feat-vis fc">
               <button type="button" class="fc-row"><span class="fc-av">AB</span><span class="fc-n">Atelier Brume<small>Dernier échange · hier</small></span><span class="fc-pill fc-pill--ok">Actif</span></button>
@@ -421,7 +395,7 @@
           <article class="feat feat--report" data-feat="report">
             <div class="feat-copy" data-n="06 /06">
               <span class="feat-tag mono">Reporting</span>
-              <h3>Générez des rapports clairs automatiquement.</h3>
+              <h3>Des rapports qui s’écrivent seuls.</h3>
               <button type="button" class="btn btn--ghost btn--sm fr-btn" data-report-btn>
                 <span class="fr-btn-label">Générer le rapport</span>
                 <span class="fr-spinner" aria-hidden="true"></span>
@@ -448,7 +422,7 @@
         <div class="wrap cases-head">
           <div class="sec-head">
             <span class="eyebrow">Pour chaque équipe</span>
-            <h2 class="h2" id="cases-title">Un dashboard. <em>Cinq métiers.</em></h2>
+            <h2 class="h2" id="cases-title">Un outil. <em>Cinq métiers.</em></h2>
           </div>
           <div class="cases-nav" aria-hidden="true"><span class="mono" data-cases-count>01 / 05</span><i><b data-cases-bar></b></i></div>
         </div>
@@ -457,35 +431,30 @@
             <li class="case" style="--c: var(--signal)">
               <span class="case-n mono">01</span>
               <h3>Direction</h3>
-              <p>La santé de l’entreprise sur un écran, chaque matin. Les écarts arrivent avant les mauvaises surprises.</p>
               <div class="case-ui case-ui--kpi"><div><small>CA du mois</small><b>128 k€</b><em>+12 %</em></div><div><small>Marge</small><b>32 %</b><em>+1,8 pt</em></div><div><small>Trésorerie</small><b>J+64</b><em class="warn">à surveiller</em></div></div>
               <ul><li>Synthèse IA quotidienne</li><li>Objectifs suivis en direct</li><li>Rapport de direction automatique</li></ul>
             </li>
             <li class="case" style="--c: var(--ai)">
               <span class="case-n mono">02</span>
               <h3>Ventes</h3>
-              <p>Plus aucun devis oublié. L’IA relance au bon moment et signale les affaires qui refroidissent.</p>
               <div class="case-ui case-ui--pipe"><span style="--w:92%">Prospects<b>48</b></span><span style="--w:64%">Devis<b>21</b></span><span style="--w:38%">Négociation<b>9</b></span><span style="--w:22%" class="hot">Signés<b>6</b></span></div>
               <ul><li>Relances automatiques</li><li>Score IA par opportunité</li><li>Prévisions de ventes</li></ul>
             </li>
             <li class="case" style="--c: var(--ok)">
               <span class="case-n mono">03</span>
               <h3>Finance</h3>
-              <p>Factures, encaissements et trésorerie réconciliés sans ressaisie. Les retards de paiement sont relancés seuls.</p>
               <div class="case-ui case-ui--cash"><svg viewBox="0 0 240 70" preserveAspectRatio="none" aria-hidden="true"><path d="M0,50 C30,46 50,52 80,40 C110,28 130,36 160,26 C190,16 210,22 240,10"/><path class="f" d="M160,26 C190,16 210,22 240,10"/></svg><small>Prévision de trésorerie · 90 j</small></div>
               <ul><li>Rapprochement automatique</li><li>Relances de paiement</li><li>Alertes de seuil</li></ul>
             </li>
-            <li class="case" style="--c: #ff4d8d">
+            <li class="case" style="--c: #b9a7ff">
               <span class="case-n mono">04</span>
               <h3>Opérations</h3>
-              <p>Stocks, délais, fournisseurs : l’IA repère le grain de sable avant qu’il ne bloque la machine.</p>
               <div class="case-ui case-ui--ops"><div><i class="ok"></i>Commandes du jour<b>142</b></div><div><i class="warn"></i>Délai fournisseur<b>+2 j</b></div><div><i class="ok"></i>Stock critique<b>0</b></div></div>
               <ul><li>Détection d’anomalies</li><li>Réassort programmé</li><li>Suivi des délais</li></ul>
             </li>
-            <li class="case" style="--c: #ffa24c">
+            <li class="case" style="--c: #dfff7a">
               <span class="case-n mono">05</span>
               <h3>Service client</h3>
-              <p>Chaque demande est triée, priorisée et suivie. Les clients mécontents sont repérés avant de partir.</p>
               <div class="case-ui case-ui--tickets"><span class="p1">Urgent<b>2</b></span><span>Normal<b>14</b></span><span class="ok">Résolus aujourd’hui<b>37</b></span></div>
               <ul><li>Tri automatique des demandes</li><li>Détection d’insatisfaction</li><li>Réponses suggérées par l’IA</li></ul>
             </li>
@@ -499,7 +468,7 @@
       <div class="core-inner wrap">
         <div class="core-copy">
           <span class="eyebrow">L’IA travaille pour vous</span>
-          <h2 class="h2" id="core-title" data-reveal>Pendant que vous vous concentrez sur votre entreprise, <em>votre dashboard travaille.</em></h2>
+          <h2 class="h2" id="core-title" data-reveal>Vous dormez. <em>Il travaille.</em></h2>
         </div>
 
         <div class="core-stage" data-core>
@@ -525,9 +494,8 @@
         <div class="sec-head sec-head--split">
           <div class="sec-head">
             <span class="eyebrow">Démo interactive</span>
-            <h2 class="h2" id="demo-title" data-reveal>Prenez les commandes.<br /><em>C’est votre dashboard.</em></h2>
+            <h2 class="h2" id="demo-title" data-reveal>Essayez-le. <em>Maintenant.</em></h2>
           </div>
-          <p class="lead" data-reveal>Cliquez, filtrez, demandez. Cette démo fonctionne comme le produit, avec des données d’exemple.</p>
         </div>
 
         <div class="demo-app" data-demo>
@@ -571,9 +539,8 @@
         <div class="sec-head sec-head--split">
           <div class="sec-head">
             <span class="eyebrow">Avant · Après</span>
-            <h2 class="h2" id="ba-title" data-reveal>Même entreprise.<br /><em>Autre quotidien.</em></h2>
+            <h2 class="h2" id="ba-title" data-reveal>Avant. <em>Après.</em></h2>
           </div>
-          <p class="lead" data-reveal>Faites glisser la poignée pour comparer.</p>
         </div>
 
         <div class="ba" data-ba style="--pos:50%">
@@ -620,38 +587,12 @@
     <section class="section proof" id="preuves" aria-labelledby="proof-title">
       <div class="wrap">
         <div class="sec-head">
-          <span class="eyebrow">Avis &amp; résultats</span>
-          <h2 class="h2" id="proof-title" data-reveal>Conçu pour les entreprises qui veulent passer <em>au niveau supérieur.</em></h2>
+          <span class="eyebrow">Avis &amp; résultats</span><span class="example-tag" data-example-tag hidden>Exemples illustratifs</span>
+          <h2 class="h2" id="proof-title" data-reveal>Ils ont <em>repris la main.</em></h2>
         </div>
 
-        <!-- Remplacez chaque emplacement par vos vrais logos / chiffres / citations (voir README). -->
-        <ul class="proof-logos" aria-label="Logos clients (emplacements)">
-          <li data-placeholder="logo"><span>Logo client</span></li>
-          <li data-placeholder="logo"><span>Logo client</span></li>
-          <li data-placeholder="logo"><span>Logo client</span></li>
-          <li data-placeholder="logo"><span>Logo client</span></li>
-          <li data-placeholder="logo"><span>Logo client</span></li>
-          <li data-placeholder="logo"><span>Logo client</span></li>
-        </ul>
-
-        <div class="proof-stats">
-          <div class="proof-stat" data-placeholder="stat">
-            <b class="num">+XX&nbsp;%</b>
-            <span>de productivité</span>
-            <small class="mono">À renseigner avec vos données</small>
-          </div>
-          <div class="proof-stat" data-placeholder="stat">
-            <b class="num">XX&nbsp;h</b>
-            <span>économisées par mois</span>
-            <small class="mono">À renseigner avec vos données</small>
-          </div>
-          <div class="proof-stat" data-placeholder="stat">
-            <b class="num">XX&nbsp;%</b>
-            <span>de tâches automatisées</span>
-            <small class="mono">À renseigner avec vos données</small>
-          </div>
-        </div>
-
+        <ul class="proof-logos" data-logos aria-label="Ils utilisent Ordra"></ul>
+        <div class="proof-stats" data-stats></div>
         <div class="proof-reviews" data-reviews aria-label="Avis clients"></div>
       </div>
     </section>
@@ -661,10 +602,9 @@
       <div class="wrap">
         <div class="sec-head sec-head--split">
           <div class="sec-head">
-            <span class="eyebrow">Études de cas</span>
-            <h2 class="h2" id="studies-title" data-reveal>Des entreprises qui ont <em>repris la main.</em></h2>
+            <span class="eyebrow">Études de cas</span><span class="example-tag" data-example-tag hidden>Exemples illustratifs</span>
+            <h2 class="h2" id="studies-title" data-reveal>Des résultats, <em>pas des promesses.</em></h2>
           </div>
-          <p class="lead" data-reveal>Le défi, ce qu’on a mis en place, ce qui a changé. En toute transparence.</p>
         </div>
         <div class="studies-grid" data-studies></div>
       </div>
@@ -676,9 +616,8 @@
         <div class="sec-head sec-head--split">
           <div class="sec-head">
             <span class="eyebrow">Calculateur</span>
-            <h2 class="h2" id="roi-title" data-reveal>Combien de temps allez-vous <em>récupérer ?</em></h2>
+            <h2 class="h2" id="roi-title" data-reveal>Combien d’heures <em>à gagner ?</em></h2>
           </div>
-          <p class="lead" data-reveal>Ajustez les curseurs à votre réalité. Le calcul se met à jour en direct.</p>
         </div>
 
         <div class="roi-box" data-roi>
@@ -732,7 +671,7 @@
         <div class="pricing-head">
           <div class="sec-head">
             <span class="eyebrow">Tarifs</span>
-            <h2 class="h2" id="pricing-title" data-reveal>Un prix clair.<br /><em>Une valeur qui se voit.</em></h2>
+            <h2 class="h2" id="pricing-title" data-reveal>Simple. <em>Rentable.</em></h2>
           </div>
           <div class="billing" role="radiogroup" aria-label="Période de facturation" data-billing>
             <button type="button" role="radio" aria-checked="true" data-period="monthly">Mensuel</button>
@@ -767,7 +706,7 @@
             <div class="plan-glow" aria-hidden="true"></div>
             <header>
               <h3>Pro <span class="plan-flag mono">Recommandé</span></h3>
-              <p>Pour les entreprises qui veulent automatiser davantage</p>
+              <p>Pour automatiser en grand</p>
             </header>
             <div class="plan-price"><b class="num" data-price>249</b><span><span data-currency>€</span> HT<br />/ mois</span></div>
             <p class="plan-note mono" data-note>Facturation mensuelle</p>
@@ -841,7 +780,7 @@
       <div class="wrap faq-grid">
         <div class="sec-head faq-head">
           <span class="eyebrow">Questions fréquentes</span>
-          <h2 class="h2" id="faq-title" data-reveal>Tout ce que vous voulez <em>savoir.</em></h2>
+          <h2 class="h2" id="faq-title" data-reveal>Vos <em>questions.</em></h2>
           <p class="muted">Une autre question ? <a class="link" href="#contact">Écrivez-nous</a>.</p>
         </div>
         <div class="faq-list" data-faq>
@@ -877,8 +816,8 @@
     <section class="section team" id="equipe" aria-labelledby="team-title">
       <div class="wrap">
         <div class="sec-head">
-          <span class="eyebrow">L’équipe</span>
-          <h2 class="h2" id="team-title" data-reveal>Des humains derrière <em>l’IA.</em></h2>
+          <span class="eyebrow">L’équipe</span><span class="example-tag" data-example-tag hidden>Profils fictifs</span>
+          <h2 class="h2" id="team-title" data-reveal>L’équipe <em>derrière.</em></h2>
         </div>
         <ul class="team-grid" data-team></ul>
       </div>
@@ -888,8 +827,8 @@
       <div class="wrap contact-grid">
         <div class="contact-copy">
           <span class="eyebrow">Contact</span>
-          <h2 class="h2" id="contact-title" data-reveal>Parlons de <em>votre projet.</em></h2>
-          <p class="lead">Une question, une démo personnalisée, un besoin sur mesure : écrivez-nous.</p>
+          <h2 class="h2" id="contact-title" data-reveal>On en <em>parle ?</em></h2>
+          
           <ul class="contact-facts">
             <li><span class="cf-ic" data-ic="clock"></span><div><b data-company="responseTime"></b><small data-company="openingHours"></small></div></li>
             <li><span class="cf-ic" data-ic="mail"></span><div><b data-company="email"></b><small>Par email</small></div></li>
@@ -897,10 +836,10 @@
           </ul>
           <div class="map-card" aria-label="Plan d’accès">
             <svg class="map-art" viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-              <rect width="400" height="220" fill="#140c09"/>
-              <g stroke="rgba(255,214,190,.08)" stroke-width="10" fill="none" stroke-linecap="round"><path d="M-10 60 C80 70 140 30 220 50 S340 90 420 70"/><path d="M-10 170 C60 150 150 190 230 160 S350 120 420 140"/><path d="M120 -10 C130 60 110 130 140 230"/><path d="M290 -10 C270 70 300 150 280 230"/></g>
-              <g stroke="rgba(255,214,190,.05)" stroke-width="4" fill="none"><path d="M-10 110 H420"/><path d="M200 -10 V230"/><path d="M40 -10 L90 230"/><path d="M350 -10 L330 230"/></g>
-              <circle cx="205" cy="105" r="40" fill="rgba(255,107,44,.12)"/><circle cx="205" cy="105" r="18" fill="rgba(255,107,44,.25)"/>
+              <rect width="400" height="220" fill="#121211"/>
+              <g stroke="rgba(244,244,240,.08)" stroke-width="10" fill="none" stroke-linecap="round"><path d="M-10 60 C80 70 140 30 220 50 S340 90 420 70"/><path d="M-10 170 C60 150 150 190 230 160 S350 120 420 140"/><path d="M120 -10 C130 60 110 130 140 230"/><path d="M290 -10 C270 70 300 150 280 230"/></g>
+              <g stroke="rgba(244,244,240,.05)" stroke-width="4" fill="none"><path d="M-10 110 H420"/><path d="M200 -10 V230"/><path d="M40 -10 L90 230"/><path d="M350 -10 L330 230"/></g>
+              <circle cx="205" cy="105" r="40" fill="rgba(212,255,58,.12)"/><circle cx="205" cy="105" r="18" fill="rgba(212,255,58,.25)"/>
             </svg>
             <span class="map-pin" aria-hidden="true"></span>
             <a class="btn btn--primary btn--sm map-btn" href="#" data-itinerary target="_blank" rel="noopener">Itinéraire <svg class="ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></svg></a>
@@ -931,7 +870,6 @@
 
     <!-- ═════════════ 13. CTA FINAL ═════════════ -->
     <section class="final" id="commencer" aria-labelledby="final-title" data-final>
-      <canvas class="final-ember" data-ember="final" aria-hidden="true"></canvas>
       <div class="final-light" aria-hidden="true"></div>
       <div class="final-stage" aria-hidden="true">
         <div class="final-rig" data-final-rig>
@@ -942,17 +880,17 @@
               <div><small>Automatisations</small><b class="num">24</b></div>
               <div><small>Temps libéré</small><b class="num">146 h</b></div>
             </div>
-            <svg class="fcm-chart" viewBox="0 0 300 70" preserveAspectRatio="none"><defs><linearGradient id="fcmG" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#ff6b2c" stop-opacity=".25"/><stop offset="1" stop-color="#ff6b2c" stop-opacity="0"/></linearGradient></defs><path d="M0,58 C30,54 45,44 70,46 C95,48 110,32 140,30 C170,28 185,20 210,22 C240,24 260,10 300,6 L300,70 L0,70 Z" fill="url(#fcmG)"/><path d="M0,58 C30,54 45,44 70,46 C95,48 110,32 140,30 C170,28 185,20 210,22 C240,24 260,10 300,6" fill="none" stroke="#ff6b2c" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg>
+            <svg class="fcm-chart" viewBox="0 0 300 70" preserveAspectRatio="none"><defs><linearGradient id="fcmG" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#d4ff3a" stop-opacity=".25"/><stop offset="1" stop-color="#d4ff3a" stop-opacity="0"/></linearGradient></defs><path d="M0,58 C30,54 45,44 70,46 C95,48 110,32 140,30 C170,28 185,20 210,22 C240,24 260,10 300,6 L300,70 L0,70 Z" fill="url(#fcmG)"/><path d="M0,58 C30,54 45,44 70,46 C95,48 110,32 140,30 C170,28 185,20 210,22 C240,24 260,10 300,6" fill="none" stroke="#d4ff3a" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg>
           </div>
           <div class="final-card final-card--a"><span class="fc-ic">✦</span><div><b>Insight IA</b><small>Marge PME en hausse</small></div></div>
           <div class="final-card final-card--b"><span class="fc-ic fc-ic--sig">⚡</span><div><b>Automatisation</b><small>Rapport envoyé</small></div></div>
         </div>
       </div>
       <div class="wrap final-copy">
-        <h2 class="final-title" id="final-title" data-reveal>Votre prochain système de travail <span class="serif">commence ici.</span></h2>
-        <p class="final-sub mono">Centralisez. <span>Automatisez.</span> Analysez. <span>Décidez.</span></p>
+        <h2 class="final-title" id="final-title" data-reveal>Prêt à passer en <span class="serif">pilote auto ?</span></h2>
+        
         <a class="btn btn--primary btn--lg magnetic final-btn" href="#tarifs" data-cta>Commencer maintenant <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a>
-        <p class="final-reassure muted" data-from-price>Mise en route guidée · Sans engagement sur l’offre mensuelle</p>
+        <p class="final-reassure" data-from-price></p>
       </div>
     </section>
   </main>

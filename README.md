@@ -14,7 +14,7 @@ node scripts/build-artifact.mjs   # version « un seul fichier » : dist-artifac
 
 ## Design system
 
-Direction « affiche » définie avec le skill UI/UX Pro Max (style Brutalism, variance 8), adaptée à la palette braise : coins droits, bordures pleines, ombres portées dures orange, aplats, onglets de couleur, aucune lueur ni dégradé sur les composants. Tout est dans `src/styles/system.css` (chargé en dernier).
+Direction « Studio Lime » : fond noir, accent citron vert `#d4ff3a`, violet `#b9a7ff`, titres **Syne** 800 en capitales avec mots surlignés en blocs lime, texte **Inter Tight**, cartes arrondies (24 px) et blocs lime pleins pour les éléments clés (offre Pro, statistique principale, CTA final). Tout est dans `src/styles/lime.css` (chargé en dernier).
 
 ## Outils installés dans le projet
 
@@ -53,9 +53,9 @@ Il est **généré à partir du code** : `npm run film` ouvre `tools/film.html`,
 Pour utiliser une autre vidéo (tournage, Higgsfield…), remplacez `videoUrl` dans `src/config.js` (fichier `.mp4`, lien YouTube ou Vimeo).
 
 ### Direction artistique
-- Palette « braise » : noir chaud, `--signal` flamme (#ff6b2c), `--ai` or (#ffc857), `--pink` corail (#ff4d8d), texte crème. Dégradés `--grad` et `--grad-hot` dans `src/styles/base.css`.
-- Titres en **Anton** (capitales, style affiche) avec accents en **Newsreader** italique en dégradé.
-- Fond animé du hero et du CTA final : shader WebGL maison (`src/modules/ember.js`), réagit à la souris, rendu à demi-résolution et en pause hors écran.
+- Tokens (couleurs, polices, rayons) dans `:root` de `src/styles/base.css` ; composants dans `src/styles/lime.css`.
+- Hero : titre court, cartes flottantes (chiffres, avis) autour du dashboard 3D, avatars.
+- Avatars : illustrations DiceBear « Notionists » (licence CC0), générées par `node scripts/avatars.mjs` dans `src/data/avatars.js`.
 
 ## Contenus à remplacer avant mise en ligne
 
@@ -115,7 +115,7 @@ src/modules/
 | Études de cas | `caseStudies` dans la config |
 | Photos d'équipe | `team` dans la config (photos dans `public/equipe/`) |
 
-Tant qu'une liste (avis, études de cas, équipe) est vide, la page affiche des emplacements marqués « À compléter » : aucun faux client n'est inventé.
+**Contenu d'exemple :** avis, équipe, logos, statistiques et études de cas de `src/config.js` sont **fictifs** et marqués « Exemples illustratifs » sur la page tant que `exampleContent: true`. Remplacez-les par vos vrais clients et passez `exampleContent` à `false` avant la mise en ligne : publier de faux avis présentés comme réels est interdit (pratique commerciale trompeuse). Si une liste est vide, la page affiche des emplacements « À compléter ».
 
 ## Interactions ajoutées
 

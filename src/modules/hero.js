@@ -1,6 +1,5 @@
 import { gsap } from './motion.js';
 import { isFinePointer, prefersReducedMotion } from './utils.js';
-import { mountEmber } from './ember.js';
 
 export function initHero() {
   const hero = document.getElementById('top');
@@ -8,8 +7,6 @@ export function initHero() {
   const stage = hero.querySelector('.hero-stage');
   const light = hero.querySelector('.hero-light');
   const reduced = prefersReducedMotion();
-
-  mountEmber(hero.querySelector('[data-ember="hero"]'), { intensity: 1.05, focus: 0.35 });
 
   if (reduced) {
     rig.style.transform = 'none';
@@ -20,9 +17,9 @@ export function initHero() {
   const tl = gsap.timeline({ defaults: { ease: 'expo.out' }, delay: 0.05 });
   tl.from(hero.querySelector('.hero-badge'), { y: 16, opacity: 0, duration: 1 })
     .from(hero.querySelectorAll('[data-hero-line]'), { yPercent: 35, opacity: 0, duration: 1.3, stagger: 0.12 }, '-=0.75')
-    .from(hero.querySelectorAll('.hero-sub, .hero-ctas, .hero-meta'), { y: 18, opacity: 0, duration: 1, stagger: 0.07 }, '-=0.95')
-    .from(stage, { y: 120, opacity: 0, duration: 1.6 }, 0.45)
-    .from(hero.querySelectorAll('.sat'), { opacity: 0, scale: 0.9, duration: 0.9, stagger: 0.12 }, 1.1);
+    .from(hero.querySelectorAll('.hero-sub, .hero-ctas, .hero-proof'), { y: 18, opacity: 0, duration: 1, stagger: 0.07 }, '-=0.95')
+    .from(hero.querySelectorAll('.hc'), { y: 40, opacity: 0, duration: 1.1, stagger: 0.1 }, 0.35)
+    .from(stage, { y: 120, opacity: 0, duration: 1.6 }, 0.6);
 
   // Au scroll, le dashboard se redresse et s'agrandit (sans épinglage : le scroll reste natif)
   const state = { p: 0, mx: 0, my: 0 };

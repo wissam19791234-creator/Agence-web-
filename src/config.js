@@ -33,16 +33,35 @@ export const CONFIG = {
     openingHours: 'Du lundi au vendredi, 9 h – 18 h',
   },
 
-  // Preuves : laissez vide tant que vous n'avez pas de vraies données.
-  // Les emplacements vides s'affichent comme « à compléter ».
+  // ───────── Preuves ─────────
+  // Contenus d'EXEMPLE (personnes et entreprises fictives, chiffres illustratifs).
+  // Remplacez-les par vos vrais clients avant la mise en ligne, puis passez `exampleContent` à false.
+  // Publier de faux avis présentés comme réels est interdit (pratique commerciale trompeuse).
+  exampleContent: true,
+  stats: [
+    { value: '+38 %', label: 'de productivité' },
+    { value: '12 h', label: 'gagnées par semaine' },
+    { value: '64 %', label: 'de tâches automatisées' },
+  ],
+  logos: ['Nordwise', 'Atelier Brume', 'Maison Ciel', 'Verano', 'Studio Alto', 'Cobalt'],
   testimonials: [
-    // { quote: '…', name: 'Prénom Nom', role: 'Fonction', company: 'Entreprise', rating: 5 },
+    { quote: 'On a gagné une journée par semaine. Le reporting du lundi se fait tout seul.', name: 'Claire Martin', role: 'Directrice générale', company: 'Atelier Brume', rating: 5, avatar: 'claire' },
+    { quote: 'Les relances de devis partent seules. +21 % de signatures en trois mois.', name: 'Thomas Leroy', role: 'Directeur commercial', company: 'Nordwise', rating: 5, avatar: 'thomas' },
+    { quote: 'Enfin une vision claire de la trésorerie, sans tableur.', name: 'Inès Benali', role: 'DAF', company: 'Maison Ciel', rating: 5, avatar: 'ines' },
+    { quote: 'Installé en une semaine. L’équipe l’a adopté dès le premier jour.', name: 'Karim Dupont', role: 'COO', company: 'Verano', rating: 5, avatar: 'karim' },
+    { quote: 'L’assistant IA répond mieux que nos anciens rapports.', name: 'Julie Moreau', role: 'Fondatrice', company: 'Studio Alto', rating: 5, avatar: 'julie' },
+    { quote: 'On a arrêté trois outils. Tout est au même endroit.', name: 'Hugo Bernard', role: 'Responsable opérations', company: 'Cobalt', rating: 4, avatar: 'hugo' },
   ],
   caseStudies: [
-    // { sector: 'Négoce B2B', company: 'Entreprise', challenge: '…', solution: '…', result: '…', metric: '−12 h / semaine' },
+    { sector: 'Négoce B2B', company: 'Nordwise', metric: '+21 %', metricLabel: 'de devis signés', challenge: 'Des devis oubliés, aucune relance.', solution: 'Relances IA à J+3 et score par affaire.', result: 'Plus aucun devis sans suivi.' },
+    { sector: 'Agence créative', company: 'Atelier Brume', metric: '−9 h', metricLabel: 'de reporting / semaine', challenge: 'Un reporting manuel chaque lundi.', solution: 'Rapport direction envoyé à 8 h.', result: 'La direction décide dès le lundi matin.' },
+    { sector: 'Distribution', company: 'Verano', metric: '0', metricLabel: 'rupture de stock en 6 mois', challenge: 'Des ruptures découvertes trop tard.', solution: 'Alertes de seuil et réassort programmé.', result: 'Stocks pilotés en temps réel.' },
   ],
   team: [
-    // { name: 'Prénom Nom', role: 'Fondateur', photo: 'equipe/prenom.jpg' },
+    { name: 'Sarah Lemoine', role: 'CEO & cofondatrice', avatar: 'sarah' },
+    { name: 'Nicolas Faure', role: 'CTO & cofondateur', avatar: 'nicolas' },
+    { name: 'Léa Garnier', role: 'Head of Customer Success', avatar: 'lea' },
+    { name: 'Mehdi Rahal', role: 'Lead IA', avatar: 'mehdi' },
   ],
 
   // Vidéo produit. Laisser vide ('') pour afficher l'animatique intégrée.

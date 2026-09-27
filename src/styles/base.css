@@ -2,64 +2,62 @@
 :root {
   color-scheme: dark;
 
-  /* Fonds : noir chaud, comme une braise éteinte */
-  --ink-0: #0a0706;
-  --ink-1: #110b09;
-  --ink-2: #17100d;
-  --ink-3: #1f1612;
-  --ink-4: #2a1e18;
+  /* « Studio Lime » : noir profond, citron vert, blanc cassé */
+  --ink-0: #0b0b0b;
+  --ink-1: #121211;
+  --ink-2: #161615;
+  --ink-3: #1c1c1a;
+  --ink-4: #262624;
 
-  --line: rgba(255, 214, 190, 0.08);
-  --line-2: rgba(255, 214, 190, 0.14);
-  --line-3: rgba(255, 214, 190, 0.26);
+  --line: #1f1f1d;
+  --line-2: #2a2a27;
+  --line-3: #3a3a36;
 
-  /* Texte crème */
-  --fg: #fbefe4;
-  --fg-2: #cdb9aa;
-  --fg-3: #8f7b6e;
-  --fg-4: #5a4a40;
+  --fg: #f4f4f0;
+  --fg-2: #b4b4ad;
+  --fg-3: #8c8c86;
+  --fg-4: #55554f;
 
-  /* Couleurs de marque */
-  --signal: #ff6b2c;       /* flamme — données, actions */
-  --signal-2: #ff3d2e;     /* rouge braise */
-  --signal-rgb: 255, 107, 44;
-  --ai: #ffc857;           /* or — intelligence */
-  --ai-rgb: 255, 200, 87;
-  --pink: #ff4d8d;         /* corail rose — accents */
-  --pink-rgb: 255, 77, 141;
-  --ok: #5ee6a8;
-  --warn: #ffc857;
-  --bad: #ff5a5a;
-  --on-brand: #1a0a04;
+  --signal: #d4ff3a;       /* citron vert — marque, actions, données */
+  --signal-2: #b8e619;
+  --signal-rgb: 212, 255, 58;
+  --ai: #b9a7ff;           /* lilas — ce que fait l'IA */
+  --ai-rgb: 185, 167, 255;
+  --pink: #ff8fb1;
+  --pink-rgb: 255, 143, 177;
+  --ok: #7cf0b0;
+  --warn: #ffd166;
+  --bad: #ff6b6b;
+  --on-brand: #0b0b0b;
 
-  --grad: linear-gradient(100deg, #ff3d2e 0%, #ff6b2c 38%, #ffc857 100%);
-  --grad-hot: linear-gradient(100deg, #ff4d8d 0%, #ff6b2c 50%, #ffc857 100%);
+  --grad: linear-gradient(100deg, #d4ff3a 0%, #eaff8f 100%);
+  --grad-hot: linear-gradient(100deg, #d4ff3a 0%, #b9a7ff 100%);
 
-  --glass: rgba(30, 20, 16, 0.55);
-  --glass-2: rgba(36, 24, 19, 0.72);
+  --glass: rgba(22, 22, 21, 0.7);
+  --glass-2: rgba(28, 28, 26, 0.85);
 
-  --f-display: 'Anton', 'Impact', 'Arial Narrow', sans-serif;
-  --f-body: 'Schibsted Grotesk', 'Helvetica Neue', Arial, sans-serif;
-  --f-serif: 'Newsreader', 'Iowan Old Style', Georgia, serif;
+  --f-display: 'Syne', 'Arial Black', Arial, sans-serif;
+  --f-body: 'Inter Tight', 'Helvetica Neue', Arial, sans-serif;
+  --f-serif: 'Syne', 'Arial Black', Arial, sans-serif;
   --f-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
 
-  --t-hero: clamp(3.6rem, 1rem + 10vw, 11rem);
-  --t-h1: clamp(2.8rem, 1rem + 6vw, 6.4rem);
-  --t-h2: clamp(2.5rem, 1rem + 4.6vw, 5.4rem);
-  --t-h3: clamp(1.25rem, 1.05rem + .6vw, 1.6rem);
-  --t-lead: clamp(1.05rem, .98rem + .35vw, 1.3rem);
+  --t-hero: clamp(3rem, 1rem + 6.6vw, 7.6rem);
+  --t-h1: clamp(2.6rem, 1rem + 5vw, 5.6rem);
+  --t-h2: clamp(2.2rem, 1rem + 3.6vw, 4.4rem);
+  --t-h3: clamp(1.2rem, 1.05rem + .5vw, 1.5rem);
+  --t-lead: clamp(1.05rem, .98rem + .35vw, 1.25rem);
   --t-body: 1rem;
   --t-small: .875rem;
   --t-micro: .72rem;
 
-  --r-xs: 4px;
-  --r-s: 8px;
-  --r-m: 12px;
-  --r-l: 18px;
+  --r-xs: 8px;
+  --r-s: 14px;
+  --r-m: 18px;
+  --r-l: 24px;
 
   --gutter: clamp(16px, 4vw, 48px);
   --maxw: 1320px;
-  --nav-h: 68px;
+  --nav-h: 72px;
 
   --ease-out: cubic-bezier(.16, 1, .3, 1);
   --ease-io: cubic-bezier(.65, 0, .35, 1);

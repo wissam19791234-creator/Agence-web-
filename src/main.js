@@ -5,7 +5,7 @@ import './styles/sections-b.css';
 import './styles/film.css';
 import './styles/extras.css';
 import './styles/site.css';
-import './styles/system.css';
+import './styles/lime.css';
 
 import { CONFIG } from './config.js';
 import { mountDashboard, logoMark } from './modules/dashboard.js';

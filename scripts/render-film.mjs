@@ -21,13 +21,12 @@ const only = process.argv.includes('--audio-only');
 // Polices locales (le rendu doit être identique, avec ou sans accès à Google Fonts)
 const F = resolve(root, 'node_modules/@fontsource');
 const faces = [
-  ['Anton', 'normal', 400, 'anton/files/anton-latin-400-normal.woff2'],
-  ['Anton', 'normal', 400, 'anton/files/anton-latin-ext-400-normal.woff2'],
+  ['Syne', 'normal', 800, 'syne/files/syne-latin-800-normal.woff2'],
+  ['Syne', 'normal', 700, 'syne/files/syne-latin-700-normal.woff2'],
+  ['Syne', 'normal', 600, 'syne/files/syne-latin-600-normal.woff2'],
   ['IBM Plex Mono', 'normal', 400, 'ibm-plex-mono/files/ibm-plex-mono-latin-400-normal.woff2'],
   ['IBM Plex Mono', 'normal', 500, 'ibm-plex-mono/files/ibm-plex-mono-latin-500-normal.woff2'],
-  ['Newsreader', 'italic', 400, 'newsreader/files/newsreader-latin-400-italic.woff2'],
-  ['Newsreader', 'italic', 300, 'newsreader/files/newsreader-latin-400-italic.woff2'],
-  ...[400, 500, 600, 700].map((w) => ['Schibsted Grotesk', 'normal', w, `schibsted-grotesk/files/schibsted-grotesk-latin-${w}-normal.woff2`]),
+  ...[400, 500, 600, 700].map((w) => ['Inter Tight', 'normal', w, `inter-tight/files/inter-tight-latin-${w}-normal.woff2`]),
 ];
 
 const server = await createServer({ root, logLevel: 'error', server: { port: 5188, strictPort: false, hmr: false, watch: null } });

@@ -61,7 +61,7 @@ function markup() {
 
       <div class="fm-layer fm-feat" data-l="feat">
         ${SLIDES.map((s, i) => `
-          <div class="fm-slide" data-slide="${i}" style="--c:${['#ff6b2c', '#ffc857', '#ff4d8d', '#ff8a3d', '#ffb347', '#ff3d2e'][i]}">
+          <div class="fm-slide" data-slide="${i}" style="--c:${['#d4ff3a', '#eaff8f', '#b9a7ff', '#c9f25a', '#e6ff9a', '#b8e619'][i]}">
             <div class="fm-slide-copy">
               <span class="fm-idx mono">0${i + 1} / 06</span>
               <b class="fm-kw">${s.k}</b>
@@ -99,7 +99,7 @@ function markup() {
       </div>
 
       <div class="fm-layer fm-rise" data-l="rise">
-        <svg viewBox="0 0 400 200" preserveAspectRatio="none"><defs><linearGradient id="fmRise" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#ff6b2c" stop-opacity=".35"/><stop offset="1" stop-color="#ff6b2c" stop-opacity="0"/></linearGradient></defs>
+        <svg viewBox="0 0 400 200" preserveAspectRatio="none"><defs><linearGradient id="fmRise" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#d4ff3a" stop-opacity=".35"/><stop offset="1" stop-color="#d4ff3a" stop-opacity="0"/></linearGradient></defs>
           <path class="area" d="M0,180 C60,176 90,160 140,150 C190,140 220,110 270,92 C320,74 350,40 400,14 L400,200 L0,200 Z" fill="url(#fmRise)"/>
           <path class="ln" pathLength="1" d="M0,180 C60,176 90,160 140,150 C190,140 220,110 270,92 C320,74 350,40 400,14"/>
         </svg>
@@ -116,7 +116,7 @@ function markup() {
       <div class="fm-layer fm-kin" data-l="kin"></div>
     </div>
     <div class="fm-sub" data-sub></div>
-    <div class="fm-cursor"><svg viewBox="0 0 24 24" width="100%" height="100%"><path d="M5 3l14 8-6 1.6L10 19z" fill="#fff" stroke="#0a0706" stroke-width="1.2" stroke-linejoin="round"/></svg><i class="fm-ripple"></i></div>
+    <div class="fm-cursor"><svg viewBox="0 0 24 24" width="100%" height="100%"><path d="M5 3l14 8-6 1.6L10 19z" fill="#fff" stroke="#0b0b0b" stroke-width="1.2" stroke-linejoin="round"/></svg><i class="fm-ripple"></i></div>
     <i class="fm-flash"></i>
     <i class="fm-bar fm-bar--t"></i><i class="fm-bar fm-bar--b"></i>
     <i class="fm-vig"></i>
@@ -307,7 +307,7 @@ export function buildFilm(root) {
     .fromTo('.fm-activate', { '--on': 0 }, { '--on': 1, duration: 0.2 }, 34.75)
     .to(cursor, { autoAlpha: 0, duration: 0.3 }, 35.6)
     .fromTo($$('.fm-link em'), { xPercent: -100 }, { xPercent: 400, duration: 0.6, repeat: 12, ease: 'none', stagger: 0.3 }, 34.8)
-    .to(nodes, { boxShadow: '0 0 0 1px rgba(255,107,44,.6), 0 0 40px -6px rgba(255,107,44,.7)', stagger: 0.2, duration: 0.3, yoyo: true, repeat: 5 }, 34.8);
+    .to(nodes, { boxShadow: '0 0 0 1px rgba(212,255,58,.6), 0 0 40px -6px rgba(212,255,58,.7)', stagger: 0.2, duration: 0.3, yoyo: true, repeat: 5 }, 34.8);
   hits.push({ t: 34.72, type: 'kick' });
   const toasts = $$('.fm-toast');
   toasts.forEach((to, i) => {
@@ -325,8 +325,8 @@ export function buildFilm(root) {
     .fromTo('.fm-clock .m', { rotate: 0 }, { rotate: 360 * 10, duration: 2.6, ease: 'power2.inOut' }, 40.3)
     .fromTo('.fm-clock .h', { rotate: 0 }, { rotate: 360 * 1.5, duration: 2.6, ease: 'power2.inOut' }, 40.3);
   $$('.fm-days span').forEach((d, i) => {
-    tl.to(d, { color: '#0a0706', backgroundColor: '#fbefe4', duration: 0.1 }, 40.4 + i * 0.5)
-      .to(d, { color: '#8f7b6e', backgroundColor: 'rgba(255,255,255,0)', duration: 0.3 }, 40.85 + i * 0.5);
+    tl.to(d, { color: '#0b0b0b', backgroundColor: '#f4f4f0', duration: 0.1 }, 40.4 + i * 0.5)
+      .to(d, { color: '#8c8c86', backgroundColor: 'rgba(255,255,255,0)', duration: 0.3 }, 40.85 + i * 0.5);
     hits.push({ t: 40.4 + i * 0.5, type: 'tick' });
   });
   caption('Du lundi au vendredi. Sans relâche.', 40.6, 2.2);
