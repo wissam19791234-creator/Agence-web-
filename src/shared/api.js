@@ -8,9 +8,21 @@ const LATENCY = { fast: 250, normal: 550, slow: 1400 };
 const delay = (ms) => new Promise((r) => setTimeout(r, ms));
 const clone = (v) => JSON.parse(JSON.stringify(v));
 
+// État local : en mémoire pour la session, recopié dans le navigateur quand c'est permis.
+// (Dans un cadre restreint, localStorage est bloqué : la mémoire prend le relais,
+// sinon une automatisation créée disparaîtrait au changement de page.)
 const KEY = 'scalify-demo-v1';
-function load() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } }
-function save(patch) { const s = { ...load(), ...patch }; try { localStorage.setItem(KEY, JSON.stringify(s)); } catch { /* stockage indisponible */ } return s; }
+let mem = null;
+function load() {
+  if (mem) return mem;
+  try { mem = JSON.parse(localStorage.getItem(KEY)) || {}; } catch { mem = {}; }
+  return mem;
+}
+function save(patch) {
+  mem = { ...load(), ...patch };
+  try { localStorage.setItem(KEY, JSON.stringify(mem)); } catch { /* stockage indisponible : la mémoire suffit */ }
+  return mem;
+}
 
 export const api = {
   /** Workspace courant, utilisateur et état d'onboarding. */
@@ -18,8 +30,12 @@ export const api = {
     const s = load();
     return { user: { ...D.USER, ...(s.user || {}) }, workspace: D.WORKSPACES[0], goals: s.onboardingGoals || [], demo: true };
   },
-  async saveOnboarding({ name, email, goals, sources }) {
-    save({ user: { name: name || D.USER.name, email: email || D.USER.email, initials: (name || 'Vous').slice(0, 2).toUpperCase() }, onboardingGoals: goals, sources });
+  async saveOnboarding({ name, email, goals, sources } = {}) {
+    const cur = load();
+    const user = { ...(cur.user || {}) };
+    if (name) { user.name = name; user.initials = name.slice(0, 2).toUpperCase(); }
+    if (email) user.email = email;
+    save({ user, ...(goals ? { onboardingGoals: goals } : {}), ...(sources ? { sources } : {}) });
     await delay(LATENCY.fast);
     return true;
   },
@@ -76,5 +92,5 @@ export const api = {
   saveLayout(layout) { save({ layout }); },
   savedViews() { return load().views || []; },
   saveView(view) { const views = [...(load().views || []), view]; save({ views }); return views; },
-  reset() { try { localStorage.removeItem(KEY); } catch { /* ignore */ } },
+  reset() { mem = {}; try { localStorage.removeItem(KEY); } catch { /* ignore */ } },
 };

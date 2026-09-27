@@ -6,10 +6,11 @@
   <meta name="description" content="Scalify analyse votre activité en continu, détecte les problèmes et les opportunités, et vous dit quoi faire. Gratuit pour commencer, sans carte bancaire." />
   <link rel="canonical" href="%SITE_URL%/" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Scalify · Vos données, enfin au travail pour vous" />
+  <meta property="og:title" content="Scalify · Vos données, au travail" />
   <meta property="og:description" content="Un centre de commande intelligent qui analyse votre activité, détecte les opportunités et vous dit ce qui mérite votre attention." />
   <meta property="og:image" content="%SITE_URL%/og.png" />
   <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preload" as="image" href="/media/ribbon-hero.webp" type="image/webp" />
   <!--JSONLD-->
 </head>
 <body class="site">
@@ -17,54 +18,59 @@
 
   <main id="main">
     <!-- ═════════ HERO ═════════ -->
-    <section class="hero">
-      <div class="hero-bg" aria-hidden="true"><i class="hero-grid"></i><i class="hero-glow"></i></div>
-      <div class="wrap hero-in">
-        <a class="hero-badge pill" href="/features/#briefing"><span class="pill pill--accent">Nouveau</span>Briefing IA chaque matin <span aria-hidden="true">→</span></a>
-        <h1 class="hero-title">Vos données.<br /><span class="hero-title-2">Enfin au travail pour vous.</span></h1>
-        <p class="hero-sub">Un centre de commande intelligent qui analyse votre activité, détecte les opportunités et vous dit ce qui mérite votre attention.</p>
+    <section class="hero band band--sky">
+      <div class="hero-stage">
+        <img class="ribbon hero-ribbon" src="/media/ribbon-hero.webp" alt="" width="2400" height="1100" fetchpriority="high" />
+        <h1 class="display hero-title"><span class="dl">Vos données.</span><span class="dl">Au travail.</span></h1>
+        <img class="ribbon hero-ribbon hero-ribbon--front" src="/media/ribbon-hero-front.webp" alt="" width="2400" height="1100" />
+        <span data-stk="coin" data-rot="-14" data-size="104" class="st st--1"></span>
+        <span data-stk="rocket" data-rot="18" data-size="112" class="st st--2"></span>
+        <span data-stk="spark" data-rot="-8" data-size="96" class="st st--3"></span>
+        <span data-stk="check" data-rot="12" data-size="84" class="st st--4"></span>
+        <span data-stk="free" data-rot="-10" data-size="118" class="st st--5"></span>
+      </div>
+      <div class="wrap hero-copy">
+        <p class="hero-sub">Le centre de commande intelligent qui analyse votre activité, détecte les opportunités et vous dit quoi faire.</p>
         <div class="hero-ctas">
           <a class="btn btn--primary btn--lg" href="/signup/">Commencer gratuitement</a>
           <button class="btn btn--secondary btn--lg" type="button" data-video-open><span class="play-ic" aria-hidden="true">▶</span>Voir la démo · 30 s</button>
         </div>
-        <p class="hero-note"><span>Gratuit</span><span>Sans carte bancaire</span><span>Prêt en 2 minutes</span></p>
+        <ul class="hero-note"><li>Gratuit</li><li>Sans carte bancaire</li><li>Prêt en 2 minutes</li></ul>
       </div>
-
-      <!-- Démo produit interactive -->
       <div class="wrap demo-wrap">
         <div class="demo" data-demo aria-label="Démonstration interactive du centre de commande Scalify"></div>
-        <p class="demo-caption"><span class="pill">Données de démonstration</span> Tout est cliquable : changez la période, survolez la courbe, posez une question à l’IA.</p>
+        <p class="demo-caption"><span class="pill">Données de démonstration</span> Tout est cliquable : période, courbe, question à l’IA.</p>
       </div>
     </section>
 
     <!-- ═════════ POUR QUI ═════════ -->
-    <section class="teams" aria-label="Pour qui">
-      <p>Conçu pour les équipes modernes</p>
-      <ul><li>Direction</li><li>E-commerce</li><li>Marketing</li><li>Ventes</li><li>Finance</li><li>Opérations</li></ul>
+    <section class="teams band" aria-label="Pour qui">
+      <p class="label">Conçu pour les équipes modernes</p>
+      <ul class="teams-list"><li class="t-lav">Direction</li><li class="t-mint">E-commerce</li><li class="t-sky">Marketing</li><li class="t-white">Ventes</li><li class="t-lav">Finance</li><li class="t-mint">Opérations</li></ul>
     </section>
 
     <!-- ═════════ COMMENT ÇA MARCHE ═════════ -->
-    <section class="sec how" id="comment">
+    <section class="sec band" id="comment">
       <div class="wrap">
         <header class="sec-head">
           <p class="eyebrow">Comment ça marche</p>
-          <h2>Trois étapes. <span class="muted">Deux minutes.</span></h2>
+          <h2 class="display sec-title">3 étapes.<br />2 minutes.</h2>
         </header>
         <ol class="how-grid">
-          <li class="card how-step" data-reveal>
-            <span class="how-n mono">01</span>
+          <li class="how-step how-step--sky" data-reveal>
+            <span class="how-n">1</span>
             <h3>Connectez vos outils</h3>
             <p>Ventes, trafic, CRM, paiements. En quelques clics.</p>
-            <div class="how-vis how-vis--sources" aria-hidden="true"><span>Stripe</span><span>Shopify</span><span>HubSpot</span><span>GA4</span></div>
+            <div class="how-vis how-vis--sources" aria-hidden="true"><span>Stripe</span><span>Shopify</span><span>HubSpot</span><span>GA4</span><span>CSV</span></div>
           </li>
-          <li class="card how-step how-step--ai" data-reveal>
-            <span class="how-n mono">02</span>
+          <li class="how-step how-step--lav" data-reveal>
+            <span class="how-n">2</span>
             <h3>L’IA analyse en continu</h3>
             <p>Elle surveille chaque indicateur, jour et nuit.</p>
-            <div class="how-vis how-core" data-core aria-hidden="true"><canvas data-core-canvas></canvas><div class="core-fallback"><i></i><i></i><i></i></div></div>
+            <div class="how-vis how-core" data-tilt aria-hidden="true"><img src="/media/ribbon-loop.webp" alt="" width="1200" height="1200" loading="lazy" /></div>
           </li>
-          <li class="card how-step" data-reveal>
-            <span class="how-n mono">03</span>
+          <li class="how-step how-step--mint" data-reveal>
+            <span class="how-n">3</span>
             <h3>Vous décidez</h3>
             <p>Des priorités claires et des actions prêtes à lancer.</p>
             <div class="how-vis how-vis--todo" aria-hidden="true"><span><i></i>Relancer 214 clients inactifs</span><span><i></i>Vérifier le trafic mobile</span><span class="is-done"><i></i>Rapport envoyé</span></div>
@@ -74,50 +80,53 @@
     </section>
 
     <!-- ═════════ COPILOT ═════════ -->
-    <section class="sec copilot-sec" id="copilot">
+    <section class="sec band band--concrete" id="copilot">
       <div class="wrap cps">
         <header class="sec-head sec-head--left">
-          <p class="eyebrow eyebrow--ai">AI Copilot</p>
-          <h2>Posez la question.<br /><span class="muted">Recevez la réponse et l’action.</span></h2>
-          <p class="sec-sub">Le Copilot lit vos indicateurs : il explique, montre les données utilisées et propose quoi faire.</p>
+          <p class="eyebrow">AI Copilot</p>
+          <h2 class="display sec-title">Demandez.<br />Il répond.</h2>
+          <p class="sec-sub">Il lit vos indicateurs, explique, cite ses sources et propose l’action.</p>
           <ul class="cps-points">
-            <li><span class="ic-box">✦</span>Comprend le contexte de chaque page</li>
-            <li><span class="ic-box">✓</span>Cite les données utilisées</li>
-            <li><span class="ic-box">→</span>Applique l’action en un clic, annulable</li>
+            <li><span data-stk="spark" data-size="34"></span>Comprend le contexte de chaque page</li>
+            <li><span data-stk="chart" data-size="34"></span>Montre les données utilisées</li>
+            <li><span data-stk="check" data-size="34"></span>Applique l’action en un clic, annulable</li>
           </ul>
         </header>
-        <div class="card cps-app" id="landing-copilot" data-copilot></div>
+        <div class="cps-app" id="landing-copilot" data-copilot></div>
       </div>
     </section>
 
     <!-- ═════════ INSIGHTS ═════════ -->
-    <section class="sec" id="insights">
+    <section class="sec band" id="insights">
       <div class="wrap">
         <header class="sec-head">
           <p class="eyebrow">Smart Insights</p>
-          <h2>Ne regardez plus vos données.<br /><span class="muted">Comprenez-les.</span></h2>
+          <h2 class="display sec-title">Comprenez<br />vos chiffres.</h2>
+          <span data-stk="trend" data-rot="-12" data-size="92" class="sec-stk sec-stk--l"></span>
+          <span data-stk="bolt" data-rot="14" data-size="86" class="sec-stk sec-stk--r"></span>
         </header>
         <div class="ins-grid" data-insights></div>
       </div>
     </section>
 
-    <!-- ═════════ FONCTIONNALITÉS ═════════ -->
-    <section class="sec" id="fonctionnalites">
+    <!-- ═════════ CENTRE DE COMMANDE ═════════ -->
+    <section class="sec band band--sky band--ribbon" id="fonctionnalites">
+      <img class="ribbon sec-ribbon" src="/media/ribbon-arc.webp" alt="" width="1800" height="900" loading="lazy" />
       <div class="wrap">
         <header class="sec-head">
           <p class="eyebrow">Le centre de commande</p>
-          <h2>Tout votre pilotage.<br /><span class="muted">Un seul endroit.</span></h2>
+          <h2 class="display sec-title">Tout au<br />même endroit.</h2>
         </header>
         <div class="bento" data-bento></div>
       </div>
     </section>
 
-    <!-- ═════════ SCÉNARIOS ═════════ -->
-    <section class="sec" id="cas">
+    <!-- ═════════ CAS D'USAGE ═════════ -->
+    <section class="sec band" id="cas">
       <div class="wrap">
         <header class="sec-head">
           <p class="eyebrow">Cas d’usage</p>
-          <h2>Voyez comment les équipes l’utilisent.</h2>
+          <h2 class="display sec-title">Comme ça,<br />au quotidien.</h2>
           <p class="sec-sub"><span class="pill">Scénarios illustratifs</span></p>
         </header>
         <div class="cases" data-cases></div>
@@ -125,11 +134,11 @@
     </section>
 
     <!-- ═════════ INTÉGRATIONS ═════════ -->
-    <section class="sec" id="integrations">
+    <section class="sec band band--concrete" id="integrations">
       <div class="wrap integ">
         <header class="sec-head sec-head--left">
           <p class="eyebrow">Intégrations</p>
-          <h2>Branché sur votre stack.</h2>
+          <h2 class="display sec-title">Branché sur<br />votre stack.</h2>
           <p class="sec-sub">Import CSV et API pour tout le reste.</p>
         </header>
         <ul class="integ-grid" data-integrations></ul>
@@ -137,44 +146,48 @@
     </section>
 
     <!-- ═════════ SÉCURITÉ ═════════ -->
-    <section class="sec" id="securite">
+    <section class="sec band" id="securite">
       <div class="wrap">
         <header class="sec-head">
           <p class="eyebrow">Sécurité</p>
-          <h2>Vos données restent les vôtres.</h2>
+          <h2 class="display sec-title">Vos données<br />restent à vous.</h2>
+          <span data-stk="lock" data-rot="10" data-size="92" class="sec-stk sec-stk--r"></span>
         </header>
         <ul class="sec-grid">
-          <li class="card"><span class="ic-tile" data-ic="lock"></span><h3>Chiffrement</h3><p>En transit et au repos.</p></li>
-          <li class="card"><span class="ic-tile" data-ic="shield"></span><h3>Infrastructure sécurisée</h3><p>Environnements isolés, sauvegardes régulières.</p></li>
-          <li class="card"><span class="ic-tile" data-ic="eye"></span><h3>Confidentialité</h3><p>Vos données n’entraînent aucun modèle public.</p></li>
-          <li class="card"><span class="ic-tile" data-ic="key"></span><h3>Accès par rôle</h3><p>Chacun voit uniquement ce qu’il doit voir.</p></li>
-          <li class="card"><span class="ic-tile" data-ic="list"></span><h3>Journal d’activité</h3><p>Chaque action est tracée.</p></li>
+          <li><span class="ic-tile ic-tile--sun" data-ic="lock"></span><h3>Chiffrement</h3><p>En transit et au repos.</p></li>
+          <li><span class="ic-tile ic-tile--sky" data-ic="shield"></span><h3>Infrastructure sécurisée</h3><p>Environnements isolés, sauvegardes régulières.</p></li>
+          <li><span class="ic-tile ic-tile--lav" data-ic="eye"></span><h3>Confidentialité</h3><p>Vos données n’entraînent aucun modèle public.</p></li>
+          <li><span class="ic-tile ic-tile--mint" data-ic="key"></span><h3>Accès par rôle</h3><p>Chacun voit uniquement ce qu’il doit voir.</p></li>
+          <li><span class="ic-tile ic-tile--ember" data-ic="list"></span><h3>Journal d’activité</h3><p>Chaque action est tracée.</p></li>
         </ul>
-        <p class="center"><a class="link" href="/security/">Tout savoir sur la sécurité →</a></p>
+        <p class="center"><a class="btn btn--secondary" href="/security/">Tout savoir sur la sécurité</a></p>
       </div>
     </section>
 
-    <!-- ═════════ PREUVES ═════════ -->
-    <section class="sec" id="avis" data-proof></section>
+    <!-- ═════════ PREUVES / ACCÈS ANTICIPÉ ═════════ -->
+    <section class="sec band sec--tight" id="avis" data-proof></section>
 
     <!-- ═════════ TARIFS ═════════ -->
-    <section class="sec" id="tarifs">
+    <section class="sec band band--sky" id="tarifs">
       <div class="wrap">
         <header class="sec-head">
           <p class="eyebrow">Tarifs</p>
-          <h2>Commencez gratuitement.<br /><span class="muted">Évoluez quand vous voulez.</span></h2>
+          <h2 class="display sec-title">Gratuit pour<br />commencer.</h2>
+          <span data-stk="coin" data-rot="-16" data-size="96" class="sec-stk sec-stk--l"></span>
+          <span data-stk="star" data-rot="8" data-size="70" class="sec-stk sec-stk--r"></span>
         </header>
         <div data-pricing></div>
       </div>
     </section>
 
     <!-- ═════════ FAQ ═════════ -->
-    <section class="sec" id="faq">
+    <section class="sec band" id="faq">
       <div class="wrap faq">
         <header class="sec-head sec-head--left">
           <p class="eyebrow">FAQ</p>
-          <h2>Questions fréquentes</h2>
-          <p class="sec-sub">Autre question ? <a class="link" href="mailto:scalifyfr@gmail.com">Écrivez-nous</a>.</p>
+          <h2 class="display sec-title">Questions&nbsp;?</h2>
+          <p class="sec-sub">Une autre question ? <a class="link" href="mailto:scalifyfr@gmail.com">Écrivez-nous</a>.</p>
+          <img class="faq-s" src="/media/ribbon-s.webp" alt="" width="1200" height="1200" loading="lazy" />
         </header>
         <div class="faq-list">
           <details class="faq-item"><summary><span>Qu’est-ce que Scalify ?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>Un centre de commande qui réunit vos indicateurs, les analyse avec l’IA et vous indique les priorités, les risques et les actions à lancer.</p></div></details>
@@ -190,15 +203,7 @@
     </section>
 
     <!-- ═════════ CTA FINAL ═════════ -->
-    <section class="final">
-      <div class="final-glow" aria-hidden="true"></div>
-      <div class="wrap final-in">
-        <span class="final-mark" data-logo-mark aria-hidden="true"></span>
-        <h2>Vos données vous disent déjà quelque chose.<br /><span class="final-accent">Commencez à les écouter.</span></h2>
-        <a class="btn btn--primary btn--lg" href="/signup/">Commencer gratuitement</a>
-        <p class="hero-note"><span>Sans carte bancaire</span><span>Annulable à tout moment</span></p>
-      </div>
-    </section>
+    <!--@final-->
   </main>
 
   <!--@footer-->

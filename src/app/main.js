@@ -312,6 +312,9 @@ export const appCtx = {
   hydrateIcons($('[data-nav]'));
   rewriteLinks();
   initMenus();
+  // Prénom transmis par l'onboarding (le stockage du navigateur peut être bloqué)
+  const params = new URLSearchParams(location.search);
+  if (params.get('name')) await api.saveOnboarding({ name: params.get('name') });
   const s = await api.session();
   $('[data-user-name]').textContent = s.user.name;
   $('[data-user-email]').textContent = s.user.email;
@@ -339,7 +342,8 @@ export const appCtx = {
   // Briefing automatique à la première visite du jour
   let seen = null;
   try { seen = localStorage.getItem('scalify-brief'); } catch { /* ignore */ }
-  const fromOnboarding = new URLSearchParams(location.search).has('welcome');
+  const fromOnboarding = params.has('welcome');
+  if (fromOnboarding) { try { history.replaceState(history.state, '', location.pathname + location.hash); } catch { /* ignore */ } }
   if (!fromOnboarding && seen !== new Date().toDateString()) setTimeout(openBriefing, reduced() ? 0 : 900);
   if (fromOnboarding) toast('Votre centre de commande est prêt.', { tone: 'success' });
 }());

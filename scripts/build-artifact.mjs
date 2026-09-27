@@ -56,4 +56,11 @@ for (const page of PAGES) {
   rmSync(tmp, { recursive: true, force: true });
   console.log(`dist-artifact/${name(page)} — ${(html.length / 1024).toFixed(0)} Ko`);
 }
+// Pages légales : le lien « accueil » pointe vers index.html (nom de la page principale publiée)
+for (const f of ['confidentialite', 'conditions', 'mentions-legales', 'merci', '404']) {
+  const src = readFileSync(resolve(root, `public/${f}.html`), 'utf8')
+    .replaceAll('href="./"', 'href="index.html"')
+    .replaceAll('href="./#', 'href="index.html#');
+  writeFileSync(resolve(OUT, `${f}.html`), src);
+}
 if (!existsSync(resolve(OUT, 'ordra.html'))) process.exit(1);

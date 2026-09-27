@@ -176,7 +176,7 @@ function ready() {
       const x = FIRST_INSIGHTS[k];
       return `<li style="--d:${i * 0.12}s"><span class="ob-opt-ic">${icon(x.ic, 18)}</span><div><small>${x.k}</small><b>${x.t}</b><p>${x.d}</p></div></li>`;
     }).join('')}</ul>
-    <a class="btn btn--primary btn--lg ob-go" href="${href('/app/')}${IS_ARTIFACT ? '' : '?welcome'}">Ouvrir mon centre de commande ${icon('arrow', 16)}</a>
+    <a class="btn btn--primary btn--lg ob-go" href="${href('/app/')}?welcome=1${state.name ? `&name=${encodeURIComponent(state.name)}` : ''}">Ouvrir mon centre de commande ${icon('arrow', 16)}</a>
     <p class="ob-note">Votre workspace est prêt. Le briefing du matin arrivera demain à 8 h.</p>`);
 }
 

@@ -41,14 +41,12 @@ export function areaChart(el, o, tries = 0) {
   const ticks = [0, 0.5, 1].map((f) => min + (max - min) * f);
   const n = o.points.length;
   const labelIdx = [0, Math.floor(n / 2), n - 1];
-  const gid = `g${Math.random().toString(36).slice(2, 8)}`;
   el.innerHTML = `
     <svg class="chart" viewBox="0 0 ${W} ${H}" width="100%" height="${H}" role="img" aria-label="${o.label} : ${fmt.by(o.format, o.points.at(-1))} le dernier jour">
-      <defs><linearGradient id="${gid}" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="var(--accent)" stop-opacity=".22"/><stop offset="1" stop-color="var(--accent)" stop-opacity="0"/></linearGradient></defs>
       ${ticks.map((t) => `<line class="grid" x1="${pad.l}" x2="${W - pad.r}" y1="${y(t)}" y2="${y(t)}"/><text class="axis" x="${pad.l - 8}" y="${y(t) + 4}" text-anchor="end">${compact(t, o.format)}</text>`).join('')}
       ${labelIdx.map((i) => `<text class="axis" x="${x(i, n)}" y="${H - 6}" text-anchor="${i === 0 ? 'start' : i === n - 1 ? 'end' : 'middle'}">${o.dates ? DAY.format(o.dates[i]) : ''}</text>`).join('')}
       ${prev ? `<path class="line-prev" d="${smooth(prev)}"/>` : ''}
-      <path class="area" d="${area}" fill="url(#${gid})"/>
+      <path class="area" d="${area}"/>
       <path class="line" d="${line}" pathLength="1"/>
       <g class="cross" opacity="0"><line class="cross-x" y1="${pad.t}" y2="${H - pad.b}"/><circle class="cross-dot" r="4.5"/></g>
       <rect class="hit" x="${pad.l}" y="0" width="${W - pad.l - pad.r}" height="${H}" fill="transparent"/>

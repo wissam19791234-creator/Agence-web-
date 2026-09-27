@@ -13,21 +13,24 @@
   <!--@header-->
   <main id="main">
     <section class="page-hero">
+      <img class="ribbon ribbon--wave" src="/media/ribbon-wave.webp" alt="" width="2400" height="700" />
+      <span data-stk="doc" data-rot="-10" data-size="90" class="st st--p1"></span>
+      <span data-stk="spark" data-rot="12" data-size="80" class="st st--p2"></span>
       <div class="wrap">
         <nav class="crumbs" aria-label="Fil d’Ariane"><a href="/">Accueil</a><span aria-hidden="true">/</span><span aria-current="page">Ressources</span></nav>
-        <h1>Tout pour bien démarrer.</h1>
+        <h1 class="display">Bien<br />démarrer.</h1>
         <p>Guides, nouveautés et documentation, au même endroit.</p>
       </div>
     </section>
-    <section class="sec" style="padding-top:0">
+    <section class="sec band">
       <div class="wrap">
         <ul class="res-grid">
-          <li class="card res"><span class="ic-tile" data-ic="bolt"></span><h3>Démarrer en 5 minutes</h3><p>Créer son workspace, choisir ses objectifs, lire son premier briefing.</p><a class="link" href="/signup/">Commencer →</a></li>
-          <li class="card res"><span class="ic-tile" data-ic="spark"></span><h3>Bien utiliser le Copilot</h3><p>Les questions qui donnent les meilleures réponses, et comment appliquer les actions.</p><a class="link" href="/app/ai/">Essayer dans la démo →</a></li>
-          <li class="card res"><span class="ic-tile" data-ic="flow"></span><h3>Vos 3 premières automatisations</h3><p>Alerte de baisse, briefing du matin, relance des clients inactifs.</p><a class="link" href="/app/automations/">Voir les modèles →</a></li>
+          <li class="res"><span data-stk="rocket" data-rot="-8" data-size="58"></span><h3>Démarrer en 5 minutes</h3><p>Créer son workspace, choisir ses objectifs, lire son premier briefing.</p><a class="link" href="/signup/">Commencer →</a></li>
+          <li class="res"><span data-stk="chat" data-rot="6" data-size="58"></span><h3>Bien utiliser le Copilot</h3><p>Les questions qui donnent les meilleures réponses, et comment appliquer les actions.</p><a class="link" href="/app/ai/">Essayer dans la démo →</a></li>
+          <li class="res"><span data-stk="bolt" data-rot="-6" data-size="58"></span><h3>Vos 3 premières automatisations</h3><p>Alerte de baisse, briefing du matin, relance des clients inactifs.</p><a class="link" href="/app/automations/">Voir les modèles →</a></li>
         </ul>
         <div class="res-split">
-          <section class="card res-block" id="changelog">
+          <section class="res-block" id="changelog">
             <h2>Nouveautés</h2>
             <ol class="changelog">
               <li><span class="pill pill--accent">Nouveau</span><div><b>Briefing IA quotidien</b><p>Chaque matin : 3 changements, 2 opportunités, 1 point d’attention.</p></div></li>
@@ -35,7 +38,7 @@
               <li><span class="pill">Nouveau</span><div><b>Widgets personnalisables</b><p>Choisissez, réorganisez, enregistrez votre vue.</p></div></li>
             </ol>
           </section>
-          <section class="card res-block" id="api">
+          <section class="res-block" id="api">
             <h2>API</h2>
             <p>Envoyez vos données depuis n’importe quel outil et récupérez indicateurs, insights et rapports.</p>
             <pre class="code"><code>POST /v1/events
@@ -49,14 +52,7 @@
         </div>
       </div>
     </section>
-    <section class="final">
-      <div class="final-glow" aria-hidden="true"></div>
-      <div class="wrap final-in">
-        <h2>Prêt à voir vos données travailler ?<br /><span class="final-accent">C’est gratuit.</span></h2>
-        <a class="btn btn--primary btn--lg" href="/signup/">Commencer gratuitement</a>
-        <p class="hero-note"><span>Sans carte bancaire</span><span>Prêt en 2 minutes</span></p>
-      </div>
-    </section>
+    <!--@final-->
   </main>
   <!--@footer-->
   <script type="module" src="/src/pages/main.js"></script>

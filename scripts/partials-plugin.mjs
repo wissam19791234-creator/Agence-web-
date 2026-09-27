@@ -1,9 +1,10 @@
-// Plugin Vite : injecte les fragments partagés (<head>, en-tête, pied de page, logo)
+// Plugin Vite : injecte les fragments partagés (<head>, en-tête, CTA final, pied de page, logo)
 // dans chaque page HTML, au développement comme au build.
 import { readFileSync, mkdirSync, copyFileSync, existsSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { logo } from '../src/shared/brand.js';
+import { splitDisplayTitles } from '../src/shared/display.js';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const part = (n) => readFileSync(resolve(root, `src/partials/${n}.html`), 'utf8');
@@ -16,11 +17,13 @@ export function partialsPlugin() {
     name: 'scalify-partials',
     enforce: 'pre',
     transformIndexHtml(html) {
-      return html
+      return splitDisplayTitles(html
         .replace('<!--@head-->', part('head'))
         .replace('<!--@header-->', part('header'))
         .replace('<!--@footer-->', part('footer'))
-        .replaceAll('<!--@logo-->', logo(26));
+        .replace('<!--@final-->', part('final'))
+        .replaceAll('<!--@logo-ink-->', logo(40, 'ink'))
+        .replaceAll('<!--@logo-->', logo(36)));
     },
   };
 }

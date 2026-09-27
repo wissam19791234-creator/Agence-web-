@@ -8,7 +8,6 @@ import { mountDemo } from './demo.js';
 import { renderInsights, renderBento, renderCases } from './sections.js';
 import { mountCopilot } from '../shared/copilot-ui.js';
 import { IS_ARTIFACT } from '../shared/paths.js';
-import { reduced } from '../shared/ui.js';
 
 const safe = (name, fn) => { try { fn(); } catch (err) { console.error(`[${name}]`, err); } };
 
@@ -57,23 +56,4 @@ safe('video', () => {
   document.querySelectorAll('[data-video-open]').forEach((b) => b.addEventListener('click', open));
   modal.querySelectorAll('[data-video-close]').forEach((b) => b.addEventListener('click', close));
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !modal.hidden) close(); });
-});
-
-// Noyau IA 3D : uniquement sur ordinateur, chargé à l'approche, jamais sur mobile
-safe('core', () => {
-  const stage = document.querySelector('[data-core]');
-  if (!stage) return;
-  const light = window.matchMedia('(max-width: 900px), (pointer: coarse)').matches || (navigator.hardwareConcurrency || 8) <= 4;
-  const gl = (() => { try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch { return false; } })();
-  if (light || !gl) { stage.classList.add('no-webgl'); return; }
-  const io = new IntersectionObserver(async ([e]) => {
-    if (!e.isIntersecting) return;
-    io.disconnect();
-    try {
-      const mod = await import('../shared/core3d.js');
-      await mod.startCore(stage.querySelector('canvas'), stage, { reduced: reduced() });
-      stage.classList.add('is-3d');
-    } catch { stage.classList.add('no-webgl'); }
-  }, { rootMargin: '400px' });
-  io.observe(stage);
 });

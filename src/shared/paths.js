@@ -5,7 +5,7 @@
 export const IS_ARTIFACT = typeof __ARTIFACT__ !== 'undefined' && __ARTIFACT__;
 
 const FLAT = {
-  '/': './', '/product/': 'product.html', '/features/': 'features.html', '/pricing/': 'pricing.html',
+  '/': 'index.html', '/product/': 'product.html', '/features/': 'features.html', '/pricing/': 'pricing.html',
   '/security/': 'security.html', '/resources/': 'resources.html', '/login/': 'login.html', '/signup/': 'signup.html',
   '/app/': 'app.html',
 };
@@ -24,8 +24,15 @@ export function href(path) {
   return `${flat}${q}${h}`;
 }
 
-/** Réécrit tous les liens internes de la page (href commençant par « / »). */
+/** Réécrit tous les liens internes de la page (href commençant par « / ») et les images /media/. */
 export function rewriteLinks(root = document) {
   if (!IS_ARTIFACT) return;
   root.querySelectorAll('a[href^="/"]').forEach((a) => { a.setAttribute('href', href(a.getAttribute('href'))); });
+  root.querySelectorAll('img[src^="/media/"], source[src^="/media/"], video[poster^="/media/"]').forEach((el) => {
+    if (el.getAttribute('src')) el.setAttribute('src', el.getAttribute('src').slice(1));
+    if (el.getAttribute('poster')) el.setAttribute('poster', el.getAttribute('poster').slice(1));
+  });
 }
+
+/** Chemin d'un fichier média selon le contexte (production ou aperçu publié). */
+export const media = (file) => (IS_ARTIFACT ? `media/${file}` : `/media/${file}`);

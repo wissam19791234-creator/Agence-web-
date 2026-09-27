@@ -1,22 +1,21 @@
-// Identité Scalify : monogramme « S » en paliers (croissance) + point IA.
+// Identité Scalify : pastille ronde contour noir, « S » en paliers (croissance) + point bleu (IA).
 import { CONFIG } from '../config.js';
 
 export const BRAND = CONFIG.brand;
 
-/** Monogramme seul. `tone` : 'accent' (tuile citron) ou 'mono' (contour). */
-export function logoMark(size = 28, tone = 'accent') {
-  const tile = tone === 'accent'
-    ? '<rect width="32" height="32" rx="9" fill="var(--accent, #c6f432)"/>'
-    : '<rect x=".75" y=".75" width="30.5" height="30.5" rx="8.5" fill="none" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5"/>';
-  const ink = tone === 'accent' ? 'var(--accent-ink, #0a0b0d)' : 'currentColor';
+/** Monogramme seul (pastille). `tone` : 'paper' (fond blanc) ou 'ink' (fond noir, pour les bandes sombres). */
+export function logoMark(size = 32, tone = 'paper') {
+  const bg = tone === 'ink' ? '#000' : '#fff';
+  const fg = tone === 'ink' ? '#fff' : '#000';
+  const ring = tone === 'ink' ? '#fff' : '#000';
   return `<svg class="logo-mark" width="${size}" height="${size}" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-    ${tile}
-    <path d="M21.5 10.5H13.6a3 3 0 0 0 0 6h4.8a3 3 0 0 1 0 6H10.5" fill="none" stroke="${ink}" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
-    <circle cx="23.2" cy="21.9" r="1.9" fill="${ink}"/>
+    <circle cx="16" cy="16" r="15.2" fill="${bg}" stroke="${ring}" stroke-width="1.4"/>
+    <path d="M21 10.8H13.9a2.85 2.85 0 0 0 0 5.7h4.3a2.85 2.85 0 0 1 0 5.7H11" fill="none" stroke="${fg}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="22.4" cy="21.8" r="2" fill="#4da2ff" stroke="${ring}" stroke-width=".8"/>
   </svg>`;
 }
 
-/** Logo complet (monogramme + nom). */
-export function logo(size = 28) {
-  return `<span class="logo">${logoMark(size)}<span class="logo-word">${BRAND}</span></span>`;
+/** Logo complet (pastille + nom en capitales). */
+export function logo(size = 34, tone = 'paper') {
+  return `<span class="logo">${logoMark(size, tone)}<span class="logo-word">${BRAND}</span></span>`;
 }

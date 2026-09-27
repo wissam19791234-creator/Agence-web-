@@ -1,7 +1,8 @@
 // Éléments communs aux pages marketing : navigation, CTA collant, apparitions au scroll,
 // FAQ animée, tarifs, intégrations, preuves sociales.
 import { CONFIG } from '../config.js';
-import { logoMark } from '../shared/brand.js';
+import { hydrateStickers, sticker } from '../shared/stickers.js';
+import { displayLines, fitDisplayTitles } from '../shared/display.js';
 import { icon } from '../shared/icons.js';
 import { rewriteLinks, href } from '../shared/paths.js';
 import { esc, fmt, reduced } from '../shared/ui.js';
@@ -9,7 +10,7 @@ import { esc, fmt, reduced } from '../shared/ui.js';
 export function initChrome() {
   rewriteLinks();
   document.querySelectorAll('[data-year]').forEach((el) => { el.textContent = new Date().getFullYear(); });
-  document.querySelectorAll('[data-logo-mark]').forEach((el) => { el.innerHTML = logoMark(56); });
+  hydrateStickers();
   document.querySelectorAll('[data-ic]').forEach((el) => { if (!el.innerHTML.trim()) el.innerHTML = icon(el.dataset.ic, 18); });
 
   // Navigation : fond au scroll + lien actif
@@ -45,18 +46,26 @@ export function initChrome() {
     const st = { past: false, end: false };
     const upd = () => sticky.classList.toggle('is-on', st.past && !st.end);
     new IntersectionObserver(([e]) => { st.past = !e.isIntersecting; upd(); }).observe(hero);
-    if (final) new IntersectionObserver(([e]) => { st.end = e.isIntersecting; upd(); }).observe(final);
+    // masqué dès que le CTA final est visible, et après lui (pied de page)
+    if (final) new IntersectionObserver(([e]) => { st.end = e.isIntersecting || e.boundingClientRect.top < 0; upd(); }).observe(final);
   }
 
-  // Apparitions au scroll (une fois, sans bloquer le contenu si JS est lent)
-  if (!reduced()) {
-    const io = new IntersectionObserver((entries) => entries.forEach((e) => {
-      if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
-    }), { rootMargin: '0px 0px -8% 0px' });
-    document.querySelectorAll('[data-reveal], .sec-head').forEach((el) => { el.classList.add('will-reveal'); io.observe(el); });
+  // Relief : le nœud 3D suit légèrement le pointeur (ordinateur uniquement)
+  if (!reduced() && window.matchMedia('(pointer: fine)').matches) {
+    document.querySelectorAll('[data-tilt]').forEach((box) => {
+      const img = box.querySelector('img');
+      box.addEventListener('pointermove', (e) => {
+        const r = box.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - 0.5;
+        const y = (e.clientY - r.top) / r.height - 0.5;
+        img.style.transform = `perspective(700px) rotateY(${x * 18}deg) rotateX(${-y * 18}deg) scale(1.04)`;
+      });
+      box.addEventListener('pointerleave', () => { img.style.transform = ''; });
+    });
   }
 
   initFaq();
+  fitDisplayTitles();
 }
 
 /** FAQ : ouverture animée des <details>. */
@@ -150,17 +159,17 @@ export function renderProof(root) {
       <div class="quotes">${t.map((q) => `<figure class="card quote"><blockquote>« ${esc(q.quote)} »</blockquote><figcaption><b>${esc(q.name)}</b><span>${esc(q.role)} · ${esc(q.company)}</span></figcaption></figure>`).join('')}</div></div>`;
     return;
   }
-  root.innerHTML = `<div class="wrap"><div class="card early">
+  root.innerHTML = `<div class="wrap"><div class="early">
     <div class="early-copy">
       <p class="eyebrow">Accès anticipé</p>
-      <h2>Rejoignez les premières équipes.</h2>
-      <p class="sec-sub">${CONFIG.brand} se construit avec ses premiers utilisateurs : accès prioritaire aux nouveautés et ligne directe avec l’équipe produit.</p>
+      <h2 class="display">${displayLines('Rejoignez<br />les premières<br />équipes.')}</h2>
+      <p class="sec-sub">${CONFIG.brand} se construit avec ses premiers utilisateurs : nouveautés en avant-première et ligne directe avec l’équipe produit.</p>
       <a class="btn btn--primary btn--lg" href="${href('/signup/')}">Rejoindre l’accès anticipé</a>
     </div>
     <ul class="early-list">
-      <li>${icon('spark', 16)}<span><b>Influencez la roadmap</b>Vos demandes passent en priorité.</span></li>
-      <li>${icon('users', 16)}<span><b>Accompagnement direct</b>Un échange avec l’équipe pour configurer votre espace.</span></li>
-      <li>${icon('target', 16)}<span><b>Tarif fondateur</b>Conservé tant que vous restez abonné.</span></li>
+      <li>${sticker('spark', { size: 44, rot: -8 })}<span><b>Influencez la roadmap</b>Vos demandes passent en priorité.</span></li>
+      <li>${sticker('chat', { size: 44, rot: 6 })}<span><b>Accompagnement direct</b>Un échange avec l’équipe pour configurer votre espace.</span></li>
+      <li>${sticker('coin', { size: 44, rot: -10 })}<span><b>Tarif fondateur</b>Conservé tant que vous restez abonné.</span></li>
     </ul>
   </div></div>`;
 }
