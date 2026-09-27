@@ -12,7 +12,12 @@ import { countTo, fmt, reduced, toast, trendBadge } from '../shared/ui.js';
 const KPIS = ['revenue', 'visitors', 'conversion', 'returning'];
 const PERIOD_DAYS = { '7d': 7, '30d': 30, '90d': 90 };
 
-export function mountDemo(el) {
+/**
+ * @param {HTMLElement} el
+ * @param {{ lazy?: boolean, notify?: boolean }} [opts] lazy : premier rendu quand la démo devient visible ;
+ *   notify : notification contextuelle automatique (désactivées pour le film, qui pilote lui-même l'animation).
+ */
+export function mountDemo(el, { lazy = true, notify = true } = {}) {
   if (!el) return;
   const state = { metric: 'revenue', period: '30d' };
   el.innerHTML = `
@@ -141,17 +146,24 @@ export function mountDemo(el) {
   $('.dm-bell').addEventListener('click', () => { notif.hidden = false; requestAnimationFrame(() => notif.classList.add('is-in')); });
 
   // Premier rendu quand la démo devient visible (courbes qui se construisent sous les yeux)
-  const io = new IntersectionObserver(([e]) => {
-    if (!e.isIntersecting) return;
-    io.disconnect();
+  const start = () => {
     render();
+    if (!notify) return;
     setTimeout(() => {
       if (!drawer.hidden) return;
       notif.hidden = false;
       requestAnimationFrame(() => notif.classList.add('is-in'));
     }, reduced() ? 0 : 4500);
-  }, { threshold: 0.25 });
-  io.observe(el);
+  };
+  if (!lazy) start();
+  else {
+    const io = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting) return;
+      io.disconnect();
+      start();
+    }, { threshold: 0.25 });
+    io.observe(el);
+  }
   let rw = 0;
   new ResizeObserver(() => { const w = chart.clientWidth; if (Math.abs(w - rw) > 40 && rw) renderChart(); rw = w; }).observe(chart);
 }

@@ -1,8 +1,11 @@
-// Film produit intégré : une bande-annonce de 60 s façon « launch video »
-// (coupes sur le beat, typographie cinétique, mouvements de caméra, curseur simulé).
+// Film produit : une bande-annonce façon « launch video » (coupes sur le beat, typographie
+// cinétique, mouvements de caméra, curseur simulé), au style du site : papier pastel,
+// contours noirs, stickers et rubans 3D. Le tableau de bord filmé est la vraie démo du site.
 import { gsap } from './motion.js';
 import { CONFIG } from '../config.js';
-import { mountDashboard, logoMark } from './dashboard.js';
+import { logoMark } from '../shared/brand.js';
+import { mountDemo } from '../landing/demo.js';
+import { hydrateStickers } from '../shared/stickers.js';
 import { icon } from './icons.js';
 import { buildScore } from './sound.js';
 
@@ -85,17 +88,18 @@ function markup() {
 
       <div class="fm-layer fm-logo" data-l="logo">
         <i class="fm-line"></i><i class="fm-burst"></i>
+        <img class="fm-ribbon" src="/media/ribbon-hero.webp" alt="" />
         <div class="fm-brand"><span class="fm-mark">${logoMark(64)}</span><span class="fm-word">${letters}</span></div>
         <p class="fm-tag">Vos données. <span class="serif">Au travail.</span></p>
       </div>
 
       <div class="fm-layer fm-dash" data-l="dash">
-        <div class="fm-dash-rig"><div class="dash-frame" data-film-dash></div><i class="fm-sweep"></i></div>
+        <div class="fm-dash-rig"><div class="demo" data-film-dash></div><i class="fm-sweep"></i></div>
       </div>
 
       <div class="fm-layer fm-feat" data-l="feat">
         ${SLIDES.map((s, i) => `
-          <div class="fm-slide" data-slide="${i}" style="--c:${['#d4ff3a', '#eaff8f', '#b9a7ff', '#c9f25a', '#e6ff9a', '#b8e619'][i]}">
+          <div class="fm-slide" data-slide="${i}" style="--c:${['#dceeff', '#e9ccff', '#55db9c', '#cccccc', '#dceeff', '#e9ccff'][i]}">
             <div class="fm-slide-copy">
               <span class="fm-idx mono">0${i + 1} / 06</span>
               <b class="fm-kw">${s.k}</b>
@@ -128,19 +132,24 @@ function markup() {
           <span class="fm-lbl mono">Avant</span>
           ${['clients_final_v4.xlsx', '312 non lus', 'Relancer Nordwise !!', 'reporting (copie).xlsx', '17:48 — pas fini'].map((t) => `<div class="fm-mess">${t}</div>`).join('')}
         </div>
-        <div class="fm-after"><span class="fm-lbl mono">Après</span><div class="dash-frame" data-film-dash></div></div>
+        <div class="fm-after"><span class="fm-lbl mono">Après</span><div class="demo" data-film-dash></div></div>
         <i class="fm-wipe"></i>
       </div>
 
       <div class="fm-layer fm-rise" data-l="rise">
-        <svg viewBox="0 0 400 200" preserveAspectRatio="none"><defs><linearGradient id="fmRise" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#d4ff3a" stop-opacity=".35"/><stop offset="1" stop-color="#d4ff3a" stop-opacity="0"/></linearGradient></defs>
-          <path class="area" d="M0,180 C60,176 90,160 140,150 C190,140 220,110 270,92 C320,74 350,40 400,14 L400,200 L0,200 Z" fill="url(#fmRise)"/>
+        <svg viewBox="0 0 400 200" preserveAspectRatio="none">
+          <path class="area" d="M0,180 C60,176 90,160 140,150 C190,140 220,110 270,92 C320,74 350,40 400,14 L400,200 L0,200 Z"/>
           <path class="ln" pathLength="1" d="M0,180 C60,176 90,160 140,150 C190,140 220,110 270,92 C320,74 350,40 400,14"/>
         </svg>
         <i class="fm-tip"></i>
       </div>
 
       <div class="fm-layer fm-end" data-l="end">
+        <img class="fm-ribbon" src="/media/ribbon-hero.webp" alt="" />
+        <span data-stk="rocket" data-rot="-14" data-size="170" class="fm-st1"></span>
+        <span data-stk="coin" data-rot="10" data-size="140" class="fm-st2"></span>
+        <span data-stk="check" data-rot="-8" data-size="130" class="fm-st3"></span>
+        <span data-stk="free" data-rot="8" data-size="190" class="fm-st4"></span>
         <span class="fm-mark">${logoMark(56)}</span>
         <b class="fm-end-t">Vos données. <span class="serif">Au travail.</span></b>
         <a class="btn btn--primary fm-cta" href="#" tabindex="-1">Commencer gratuitement ${icon('arrow', 16)}</a>
@@ -150,7 +159,7 @@ function markup() {
       <div class="fm-layer fm-kin" data-l="kin"></div>
     </div>
     <div class="fm-sub" data-sub></div>
-    <div class="fm-cursor"><svg viewBox="0 0 24 24" width="100%" height="100%"><path d="M5 3l14 8-6 1.6L10 19z" fill="#fff" stroke="#0b0b0b" stroke-width="1.2" stroke-linejoin="round"/></svg><i class="fm-ripple"></i></div>
+    <div class="fm-cursor"><svg viewBox="0 0 24 24" width="100%" height="100%"><path d="M5 3l14 8-6 1.6L10 19z" fill="#000" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg><i class="fm-ripple"></i></div>
     <i class="fm-flash"></i>
     <i class="fm-bar fm-bar--t"></i><i class="fm-bar fm-bar--b"></i>
     <i class="fm-vig"></i>
@@ -162,7 +171,8 @@ export function buildFilm(root) {
   root.innerHTML = markup();
   const $ = (s) => root.querySelector(s);
   const $$ = (s) => [...root.querySelectorAll(s)];
-  root.querySelectorAll('[data-film-dash]').forEach((f) => mountDashboard(f));
+  root.querySelectorAll('[data-film-dash]').forEach((f) => mountDemo(f, { lazy: false, notify: false }));
+  hydrateStickers(root);
   $('[data-film-price]').textContent = 'Gratuit pour commencer · sans carte bancaire';
 
   const cam = $('[data-cam]');
@@ -201,13 +211,14 @@ export function buildFilm(root) {
       .fromTo(sub, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.35, immediateRender: false }, t)
       .to(sub, { autoAlpha: 0, duration: 0.2 }, t + dur);
   };
+  // Secousse de caméra (léger zoom pour ne jamais découvrir les bords du cadre)
   const shake = (t, dur, amp) => {
     const n = Math.round(dur / 0.05);
     for (let i = 0; i < n; i++) {
       const k = amp * (0.4 + (i / n) * 0.6);
-      tl.to(cam, { xPercent: (Math.random() - 0.5) * k, yPercent: (Math.random() - 0.5) * k, duration: 0.05, ease: 'none' }, t + i * 0.05);
+      tl.to(cam, { scale: 1.04, xPercent: (Math.random() - 0.5) * k, yPercent: (Math.random() - 0.5) * k, duration: 0.05, ease: 'none' }, t + i * 0.05);
     }
-    tl.to(cam, { xPercent: 0, yPercent: 0, duration: 0.05 }, t + n * 0.05);
+    tl.to(cam, { scale: 1, xPercent: 0, yPercent: 0, duration: 0.05 }, t + n * 0.05);
   };
   // Cadre la caméra sur un point (fractions du cadre) avec un zoom s
   const focus = (fx, fy, s, t, d = 0.8, ease = 'power3.inOut') => {
@@ -258,12 +269,12 @@ export function buildFilm(root) {
   tl.fromTo(rig, { rotateX: 58, yPercent: 40, scale: 0.55, autoAlpha: 0 }, { rotateX: 0, yPercent: 0, scale: 1, autoAlpha: 1, duration: 1.3, ease: 'expo.out' }, 7.95)
     .fromTo('.fm-sweep', { xPercent: -120 }, { xPercent: 820, duration: 1.1, ease: 'power2.inOut' }, 8.6);
   hits.push({ t: 7.95, type: 'whoosh' });
-  focus(0.566, 0.254, 1.65, 9.5);
+  focus(0.57, 0.3, 1.35, 9.5);
   caption('Vos chiffres. En temps réel.', 9.9, 1.2);
-  focus(0.462, 0.5, 1.75, 11.15, 0.45, 'power4.inOut');
+  focus(0.49, 0.53, 1.7, 11.15, 0.45, 'power4.inOut');
   hits.push({ t: 11.15, type: 'whoosh' });
   caption('Vos tendances. Anticipées.', 11.5, 1.0);
-  focus(0.8, 0.41, 2.3, 12.55, 0.45, 'power4.inOut');
+  focus(0.84, 0.46, 2.1, 12.55, 0.45, 'power4.inOut');
   hits.push({ t: 12.55, type: 'whoosh' });
   caption('Vos priorités. Signalées par l’IA.', 12.9, 0.9);
   focus(0.5, 0.5, 1, 13.85, 0.6, 'expo.inOut');
@@ -276,7 +287,8 @@ export function buildFilm(root) {
   const slides = $$('.fm-slide');
   slides.forEach((s, i) => {
     const t = 15 + i * 2.5;
-    tl.fromTo(s, { autoAlpha: i === 0 ? 0 : 1, xPercent: 100, skewX: -8 }, { autoAlpha: 1, xPercent: 0, skewX: 0, duration: 0.42, ease: 'expo.out' }, t)
+    // départ à 112 % : l'inclinaison ne laisse dépasser aucun coin dans le cadre avant l'entrée
+    tl.fromTo(s, { autoAlpha: i === 0 ? 0 : 1, xPercent: 112, skewX: -8 }, { autoAlpha: 1, xPercent: 0, skewX: 0, duration: 0.42, ease: 'expo.out' }, t)
       .fromTo(s.querySelector('.fm-kw'), { yPercent: 100, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 0.45, ease: 'expo.out' }, t + 0.1)
       .fromTo(s.querySelector('.fm-ui'), { scale: 0.85, autoAlpha: 0, rotateY: -18 }, { scale: 1, autoAlpha: 1, rotateY: 0, duration: 0.6, ease: 'expo.out' }, t + 0.15);
     hits.push({ t, type: 'whoosh', arg: 0.3 });
@@ -340,7 +352,7 @@ export function buildFilm(root) {
     .fromTo('.fm-activate', { '--on': 0 }, { '--on': 1, duration: 0.2 }, 34.75)
     .to(cursor, { autoAlpha: 0, duration: 0.3 }, 35.6)
     .fromTo($$('.fm-link em'), { xPercent: -100 }, { xPercent: 400, duration: 0.6, repeat: 12, ease: 'none', stagger: 0.3 }, 34.8)
-    .to(nodes, { boxShadow: '0 0 0 1px rgba(212,255,58,.6), 0 0 40px -6px rgba(212,255,58,.7)', stagger: 0.2, duration: 0.3, yoyo: true, repeat: 5 }, 34.8);
+    .to(nodes, { scale: 1.06, rotate: -1.5, stagger: 0.2, duration: 0.3, yoyo: true, repeat: 5 }, 34.8);
   hits.push({ t: 34.72, type: 'kick' });
   const toasts = $$('.fm-toast');
   toasts.forEach((to, i) => {
@@ -358,8 +370,8 @@ export function buildFilm(root) {
     .fromTo('.fm-clock .m', { rotate: 0 }, { rotate: 360 * 10, duration: 2.6, ease: 'power2.inOut' }, 40.3)
     .fromTo('.fm-clock .h', { rotate: 0 }, { rotate: 360 * 1.5, duration: 2.6, ease: 'power2.inOut' }, 40.3);
   $$('.fm-days span').forEach((d, i) => {
-    tl.to(d, { color: '#0b0b0b', backgroundColor: '#f4f4f0', duration: 0.1 }, 40.4 + i * 0.5)
-      .to(d, { color: '#8c8c86', backgroundColor: 'rgba(255,255,255,0)', duration: 0.3 }, 40.85 + i * 0.5);
+    tl.to(d, { color: '#ffffff', backgroundColor: '#000000', duration: 0.1 }, 40.4 + i * 0.5)
+      .to(d, { color: '#000000', backgroundColor: '#ffffff', duration: 0.3 }, 40.85 + i * 0.5);
     hits.push({ t: 40.4 + i * 0.5, type: 'tick' });
   });
   caption('Du lundi au vendredi. Sans relâche.', 40.6, 2.2);

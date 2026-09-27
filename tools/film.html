@@ -3,10 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=1920, initial-scale=1" />
-  <title>Rendu du film — Ordra</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" />
+  <title>Rendu du film — Scalify</title>
   <style>
-    html, body { margin: 0; background: #000; overflow: hidden; }
+    html, body { margin: 0; background: #dceeff; overflow: hidden; }
     #stage { position: fixed; inset: 0; width: 1920px; height: 1080px; container-type: size; overflow: hidden; }
   </style>
 </head>
@@ -14,15 +13,23 @@
   <!-- Page utilisée uniquement pour exporter le film en MP4 (scripts/render-film.mjs) -->
   <div id="stage" class="player-anim"></div>
   <script type="module">
-    import '../src/film/styles/base.css';
-    import '../src/film/styles/dashboard.css';
+    import '@fontsource/anton/400.css';
+    import '@fontsource/inter-tight/500.css';
+    import '@fontsource/inter-tight/600.css';
+    import '@fontsource/inter-tight/700.css';
+    import '@fontsource/inter-tight/800.css';
+    import '../src/styles/tokens.css';
+    import '../src/styles/product.css';
     import '../src/film/styles/film.css';
-    import '../src/film/styles/lime.css';
     import { buildFilm, cutToSource, CUT_DURATION } from '../src/film/film.js';
     const film = buildFilm(document.getElementById('stage'));
     window.film = film;
     window.filmCut = { map: cutToSource, duration: CUT_DURATION };
-    document.fonts.ready.then(() => { window.filmReady = true; });
+    await document.fonts.ready;
+    await Promise.all([...document.images].map((i) => (i.complete ? null : new Promise((r) => { i.onload = r; i.onerror = r; }))));
+    // deux images de rendu : la démo a tracé ses graphiques à sa taille finale
+    await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+    window.filmReady = true;
   </script>
 </body>
 </html>

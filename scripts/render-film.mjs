@@ -4,7 +4,7 @@
 import { createServer } from 'vite';
 import { chromium } from 'playwright-core';
 import { spawn } from 'node:child_process';
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import ffmpegPath from 'ffmpeg-static';
@@ -28,30 +28,15 @@ const H = 1080;
 mkdirSync(OUT, { recursive: true });
 const only = process.argv.includes('--audio-only');
 
-// Polices locales (le rendu doit être identique, avec ou sans accès à Google Fonts)
-const F = resolve(root, 'node_modules/@fontsource');
-const faces = [
-  ['Syne', 'normal', 800, 'syne/files/syne-latin-800-normal.woff2'],
-  ['Syne', 'normal', 700, 'syne/files/syne-latin-700-normal.woff2'],
-  ['Syne', 'normal', 600, 'syne/files/syne-latin-600-normal.woff2'],
-  ['IBM Plex Mono', 'normal', 400, 'ibm-plex-mono/files/ibm-plex-mono-latin-400-normal.woff2'],
-  ['IBM Plex Mono', 'normal', 500, 'ibm-plex-mono/files/ibm-plex-mono-latin-500-normal.woff2'],
-  ...[400, 500, 600, 700].map((w) => ['Inter Tight', 'normal', w, `inter-tight/files/inter-tight-latin-${w}-normal.woff2`]),
-];
-
 const server = await createServer({ root, logLevel: 'error', server: { port: 5188, strictPort: false, hmr: false, watch: null } });
 await server.listen();
 const url = `http://localhost:${server.config.server.port}/tools/film.html`;
 
 const exe = process.env.CHROME_PATH || ['/opt/pw-browsers/chromium-1194/chrome-linux/chrome'].find(existsSync);
 const browser = await chromium.launch({ executablePath: exe, args: ['--force-color-profile=srgb', '--hide-scrollbars'] });
+// Polices servies en local par Vite (@fontsource) : rendu identique avec ou sans accès réseau
 const page = await browser.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: 1 });
-const css = faces.map(([f, s, w, file], i) => `@font-face{font-family:'${f}';font-style:${s};font-weight:${w};src:url(/__font/${i}.woff2) format('woff2')}`).join('\n');
-await page.route('https://fonts.googleapis.com/**', (r) => r.fulfill({ body: css, contentType: 'text/css' }));
-await page.route('**/__font/*', (r) => {
-  const i = +r.request().url().match(/(\d+)\.woff2/)[1];
-  r.fulfill({ body: readFileSync(resolve(F, faces[i][3])), contentType: 'font/woff2' });
-});
+page.on('pageerror', (e) => console.error('page:', e.message));
 await page.goto(url, { waitUntil: 'networkidle' });
 await page.waitForFunction(() => window.filmReady === true);
 const DURATION = await page.evaluate((full) => (full ? 60 : window.filmCut.duration), FULL);
@@ -91,7 +76,7 @@ if (!only) {
 
   // Affiche (poster) et version légère pour mobile
   const still = (t, out, scale) => new Promise((r) => spawn(ffmpegPath, ['-y', '-loglevel', 'error', '-ss', String(t), '-i', mp4, '-frames:v', '1', ...(scale ? ['-vf', `scale=${scale}`] : []), '-q:v', '3', out]).on('close', r));
-  await still(FULL ? 2.9 : 9.4, resolve(OUT, 'scalify-demo-poster.jpg'), '1280:-2');
+  await still(FULL ? 2.9 : 8.6, resolve(OUT, 'scalify-demo-poster.jpg'), '1280:-2'); // logo + ruban
   await new Promise((r) => spawn(ffmpegPath, ['-y', '-loglevel', 'error', '-i', mp4, '-vf', 'scale=960:-2,fps=30', '-c:v', 'libx264', '-preset', 'slow', '-crf', '24', '-c:a', 'aac', '-b:a', '128k', '-movflags', '+faststart', resolve(OUT, 'scalify-demo-mobile.mp4')], { stdio: 'inherit' }).on('close', r));
   await new Promise((r) => spawn(ffmpegPath, ['-y', '-loglevel', 'error', '-i', mp4, '-vf', 'scale=1280:-2,fps=30', '-c:v', 'libvpx-vp9', '-b:v', '1400k', '-deadline', 'good', '-cpu-used', '5', '-row-mt', '1', '-c:a', 'libopus', '-b:a', '128k', resolve(OUT, 'scalify-demo.webm')], { stdio: 'inherit' }).on('close', r));
   console.log('Film exporté :', mp4);
