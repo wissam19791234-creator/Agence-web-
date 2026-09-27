@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <!--@head-->
+  <title>Vue d’ensemble · Scalify</title>
+  <meta name="description" content="Le centre de commande Scalify : indicateurs, insights IA, automatisations, rapports et objectifs." />
+  <meta name="robots" content="noindex" />
+</head>
+<body class="app-body">
+  <a class="skip" href="#view">Aller au contenu</a>
+  <div class="app" data-app>
+    <!-- Barre latérale -->
+    <aside class="side" data-side aria-label="Navigation de l’application">
+      <div class="side-top">
+        <div data-menu class="ws">
+          <button type="button" class="ws-btn" data-menu-btn aria-expanded="false" aria-haspopup="menu"><span data-logo-mark-sm></span><span class="ws-name"><b data-ws-name>Maison Demo</b><small>Données de démo</small></span><span data-ic="chevronDown"></span></button>
+          <div class="menu" data-menu-panel hidden role="menu">
+            <p class="menu-label">Workspaces</p>
+            <button type="button" class="menu-item" role="menuitem" data-menu-close><span data-logo-mark-sm></span>Maison Demo <span data-ic="check" class="menu-check"></span></button>
+            <div class="menu-sep"></div>
+            <a class="menu-item" role="menuitem" href="/signup/"><span data-ic="plus"></span>Créer un workspace</a>
+          </div>
+        </div>
+        <button type="button" class="side-search" data-palette-open><span data-ic="search"></span><span>Rechercher…</span><kbd>⌘K</kbd></button>
+      </div>
+      <nav class="side-nav" data-nav></nav>
+      <div class="side-foot">
+        <div class="upsell">
+          <b>Connectez vos vraies données</b>
+          <p>Vous explorez un workspace de démonstration.</p>
+          <a class="btn btn--primary btn--sm" href="/app/settings/#sources" data-route="settings">Connecter des données</a>
+        </div>
+        <a class="side-link" href="/app/settings/" data-route="settings"><span data-ic="settings"></span>Paramètres<kbd class="side-kbd">G S</kbd></a>
+      </div>
+    </aside>
+    <div class="side-scrim" data-scrim hidden></div>
+
+    <!-- Contenu -->
+    <div class="main">
+      <header class="top">
+        <button type="button" class="btn btn--ghost btn--icon btn--sm top-burger" data-side-toggle aria-label="Ouvrir la navigation"><span data-ic="menu"></span></button>
+        <nav class="crumbs" aria-label="Fil d’Ariane" data-crumbs></nav>
+        <div class="top-r">
+          <button type="button" class="btn btn--ghost btn--icon btn--sm top-search" data-palette-open aria-label="Rechercher" data-tip="Rechercher  ⌘K" data-tip-pos="bottom"><span data-ic="search"></span></button>
+          <div data-menu class="notif-wrap">
+            <button type="button" class="btn btn--ghost btn--icon btn--sm" data-menu-btn aria-expanded="false" aria-label="Notifications" data-tip="Notifications" data-tip-pos="bottom"><span data-ic="bell"></span><i class="notif-dot" data-notif-dot hidden></i></button>
+            <div class="menu menu--right notif-panel" data-menu-panel hidden data-notif-panel></div>
+          </div>
+          <button type="button" class="btn btn--ai btn--sm" data-ask-open><span data-ic="spark"></span><span class="hide-sm">Demander à l’IA</span><kbd class="hide-sm">⌘J</kbd></button>
+          <div data-menu>
+            <button type="button" class="avatar" data-menu-btn aria-expanded="false" aria-label="Menu du profil" data-user-initials>VO</button>
+            <div class="menu menu--right" data-menu-panel hidden role="menu">
+              <div class="menu-user"><b data-user-name>Vous</b><small data-user-email>vous@exemple.fr</small></div>
+              <div class="menu-sep"></div>
+              <a class="menu-item" role="menuitem" href="/app/settings/" data-route="settings" data-menu-close><span data-ic="settings"></span>Paramètres</a>
+              <button type="button" class="menu-item" role="menuitem" data-shortcuts-open data-menu-close><span data-ic="layout"></span>Raccourcis clavier <kbd>?</kbd></button>
+              <button type="button" class="menu-item" role="menuitem" data-briefing-open data-menu-close><span data-ic="sun"></span>Briefing du jour</button>
+              <a class="menu-item" role="menuitem" href="/" data-menu-close><span data-ic="home"></span>Site Scalify</a>
+              <div class="menu-sep"></div>
+              <a class="menu-item" role="menuitem" href="/login/"><span data-ic="logout"></span>Se déconnecter</a>
+            </div>
+          </div>
+        </div>
+      </header>
+      <div class="demo-bar"><span class="pill pill--ai"><span data-ic="info"></span>Workspace de démonstration</span><span class="hide-sm">Les chiffres sont fictifs. Connectez une source pour voir les vôtres.</span></div>
+      <main id="view" class="view" tabindex="-1" aria-live="polite"></main>
+    </div>
+
+    <!-- Panneau « Demander à l'IA » -->
+    <aside class="ask" data-ask hidden aria-label="Copilot IA">
+      <header class="ask-h"><b><span data-ic="spark"></span>Copilot</b><span class="pill" data-ask-ctx>Contexte</span><button type="button" class="btn btn--ghost btn--icon btn--sm" data-ask-close aria-label="Fermer"><span data-ic="x"></span></button></header>
+      <div class="ask-body" id="ask-cp" data-ask-cp></div>
+    </aside>
+  </div>
+
+  <!-- Palette de commandes -->
+  <div class="overlay" data-palette hidden>
+    <div class="overlay-bg" data-palette-close></div>
+    <div class="palette palette--modal" role="dialog" aria-modal="true" aria-label="Recherche globale">
+      <label class="palette-in"><span data-ic="search"></span><input type="text" placeholder="Rechercher partout…" data-palette-input aria-label="Rechercher" autocomplete="off" /><kbd>Échap</kbd></label>
+      <ul class="palette-list" data-palette-list role="listbox"></ul>
+      <div class="palette-foot"><span><kbd>↑</kbd><kbd>↓</kbd> naviguer</span><span><kbd>↵</kbd> ouvrir</span><span><kbd>⌘J</kbd> demander à l’IA</span></div>
+    </div>
+  </div>
+
+  <!-- Fenêtre modale générique -->
+  <div class="overlay" data-modal hidden>
+    <div class="overlay-bg" data-modal-close></div>
+    <div class="modal" role="dialog" aria-modal="true" data-modal-box></div>
+  </div>
+
+  <!-- Bulle « Demander à l'IA » sur une sélection -->
+  <button type="button" class="sel-ask" data-sel-ask hidden><span data-ic="spark"></span>Expliquer ceci</button>
+
+  <script type="module" src="/src/app/main.js"></script>
+</body>
+</html>

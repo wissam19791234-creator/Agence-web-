@@ -62,13 +62,13 @@ writeFileSync(resolve(OUT, 'score.json'), JSON.stringify(score));
 
 // ── Audio ──
 console.log('Mixage de la bande-son…');
-const wav = resolve(OUT, 'ordra-film.wav');
+const wav = resolve(OUT, 'scalify-demo.wav');
 await renderSoundtrack(score, wav, { duration: DURATION, root, ...(FULL ? {} : { plan: PLAN_30 }) });
 
 if (!only) {
   // ── Images : 60 i/s natifs (mouvements parfaitement fluides, sans images fantômes) ──
   console.log('Capture des images…');
-  const mp4 = resolve(OUT, 'ordra-film.mp4');
+  const mp4 = resolve(OUT, 'scalify-demo.mp4');
   const ff = spawn(ffmpegPath, [
     '-y', '-loglevel', 'error',
     '-f', 'image2pipe', '-framerate', String(FPS), '-c:v', 'mjpeg', '-i', '-',
@@ -91,9 +91,9 @@ if (!only) {
 
   // Affiche (poster) et version légère pour mobile
   const still = (t, out, scale) => new Promise((r) => spawn(ffmpegPath, ['-y', '-loglevel', 'error', '-ss', String(t), '-i', mp4, '-frames:v', '1', ...(scale ? ['-vf', `scale=${scale}`] : []), '-q:v', '3', out]).on('close', r));
-  await still(FULL ? 2.9 : 9.4, resolve(OUT, 'ordra-film-poster.jpg'), '1280:-2');
-  await new Promise((r) => spawn(ffmpegPath, ['-y', '-loglevel', 'error', '-i', mp4, '-vf', 'scale=960:-2,fps=30', '-c:v', 'libx264', '-preset', 'slow', '-crf', '24', '-c:a', 'aac', '-b:a', '128k', '-movflags', '+faststart', resolve(OUT, 'ordra-film-mobile.mp4')], { stdio: 'inherit' }).on('close', r));
-  await new Promise((r) => spawn(ffmpegPath, ['-y', '-loglevel', 'error', '-i', mp4, '-vf', 'scale=1280:-2,fps=30', '-c:v', 'libvpx-vp9', '-b:v', '1400k', '-deadline', 'good', '-cpu-used', '5', '-row-mt', '1', '-c:a', 'libopus', '-b:a', '128k', resolve(OUT, 'ordra-film.webm')], { stdio: 'inherit' }).on('close', r));
+  await still(FULL ? 2.9 : 9.4, resolve(OUT, 'scalify-demo-poster.jpg'), '1280:-2');
+  await new Promise((r) => spawn(ffmpegPath, ['-y', '-loglevel', 'error', '-i', mp4, '-vf', 'scale=960:-2,fps=30', '-c:v', 'libx264', '-preset', 'slow', '-crf', '24', '-c:a', 'aac', '-b:a', '128k', '-movflags', '+faststart', resolve(OUT, 'scalify-demo-mobile.mp4')], { stdio: 'inherit' }).on('close', r));
+  await new Promise((r) => spawn(ffmpegPath, ['-y', '-loglevel', 'error', '-i', mp4, '-vf', 'scale=1280:-2,fps=30', '-c:v', 'libvpx-vp9', '-b:v', '1400k', '-deadline', 'good', '-cpu-used', '5', '-row-mt', '1', '-c:a', 'libopus', '-b:a', '128k', resolve(OUT, 'scalify-demo.webm')], { stdio: 'inherit' }).on('close', r));
   console.log('Film exporté :', mp4);
 }
 

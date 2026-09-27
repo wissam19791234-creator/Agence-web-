@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <!--@head-->
+  <title>Connexion · Scalify</title>
+  <meta name="description" content="Connectez-vous à votre centre de commande Scalify." />
+  <link rel="canonical" href="%SITE_URL%/login/" />
+</head>
+<body class="auth">
+  <div class="auth-bg" aria-hidden="true"></div>
+  <header class="auth-top">
+    <a href="/" aria-label="Scalify, accueil"><!--@logo--></a>
+    <a class="auth-alt" href="/signup/">Pas encore de compte ? <b>Commencer gratuitement</b></a>
+  </header>
+  <main class="ob">
+    <section class="ob-card card">
+      <h1>Bon retour.</h1>
+      <p class="ob-sub">Connectez-vous à votre centre de commande.</p>
+      <form class="ob-form" data-login novalidate>
+        <div class="field"><label for="l-email">Email</label><input id="l-email" class="input" type="email" name="email" autocomplete="email" required autofocus /></div>
+        <div class="field"><label for="l-pass">Mot de passe <a class="field-link" href="#" data-magic>Recevoir un lien de connexion</a></label><input id="l-pass" class="input" type="password" name="password" autocomplete="current-password" required minlength="6" /></div>
+        <p class="field-err" data-err role="alert" hidden></p>
+        <button class="btn btn--primary btn--lg" type="submit">Se connecter</button>
+        <p class="ob-note">Espace de démonstration : n’importe quel email et un mot de passe de 6 caractères ou plus.</p>
+      </form>
+      <div class="ob-done" data-magic-done hidden><span class="ob-done-ic">✓</span><h2>Vérifiez votre boîte mail.</h2><p>Si un compte existe pour cette adresse, un lien de connexion vient d’être envoyé. Il est valable 15 minutes.</p><a class="btn btn--secondary" href="/login/">Retour</a></div>
+    </section>
+  </main>
+  <script type="module" src="/src/onboarding/login.js"></script>
+</body>
+</html>

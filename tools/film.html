@@ -14,11 +14,11 @@
   <!-- Page utilisée uniquement pour exporter le film en MP4 (scripts/render-film.mjs) -->
   <div id="stage" class="player-anim"></div>
   <script type="module">
-    import '../src/styles/base.css';
-    import '../src/styles/dashboard.css';
-    import '../src/styles/film.css';
-    import '../src/styles/lime.css';
-    import { buildFilm, cutToSource, CUT_DURATION } from '../src/modules/film.js';
+    import '../src/film/styles/base.css';
+    import '../src/film/styles/dashboard.css';
+    import '../src/film/styles/film.css';
+    import '../src/film/styles/lime.css';
+    import { buildFilm, cutToSource, CUT_DURATION } from '../src/film/film.js';
     const film = buildFilm(document.getElementById('stage'));
     window.film = film;
     window.filmCut = { map: cutToSource, duration: CUT_DURATION };
