@@ -1,9 +1,8 @@
 import { CONFIG } from '../config.js';
 import { gsap } from './motion.js';
 import { prefersReducedMotion } from './utils.js';
-
-// Durées des chapitres de l'animatique (secondes) — proportionnelles au storyboard 60 s.
-const SCENES = [2.5, 4.5, 5, 5, 4.5, 3.5];
+import { buildFilm, CHAPTERS, FILM_DURATION } from './film.js';
+import { createSoundtrack } from './sound.js';
 
 function mediaFor(url) {
   const yt = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([\w-]{11})/);
@@ -17,110 +16,137 @@ function mediaFor(url) {
   return `<video src="${url}" controls autoplay playsinline preload="none"></video>`;
 }
 
+const PLAY_ICON = '<svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>';
+const PAUSE_ICON = '<svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>';
+const REPLAY_ICON = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4.5 12a7.5 7.5 0 102.2-5.3"/><path d="M4.5 4.5v4h4"/></svg>';
+
 export function initVideo() {
   const player = document.querySelector('[data-player]');
   if (!player) return;
   const toggle = player.querySelector('[data-player-toggle]');
   const mini = player.querySelector('[data-player-mini]');
+  const soundBtn = player.querySelector('[data-player-sound]');
   const anim = player.querySelector('[data-player-anim]');
   const media = player.querySelector('[data-player-media]');
-  const scenes = [...anim.querySelectorAll('.pa-scene')];
   const chapters = [...player.querySelectorAll('[data-player-chapters] li')];
-  const hasVideo = !!CONFIG.videoUrl;
 
-  const setMiniIcon = (playing) => {
-    mini.innerHTML = playing
-      ? '<svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>'
-      : '<svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>';
-    mini.setAttribute('aria-label', playing ? 'Pause' : 'Lecture');
-  };
-
-  // ─── Lecture d'une vraie vidéo ───
-  if (hasVideo) {
+  // ─── Vraie vidéo configurée ───
+  if (CONFIG.videoUrl) {
+    soundBtn.hidden = true;
     const start = () => {
       media.hidden = false;
       media.innerHTML = mediaFor(CONFIG.videoUrl);
       player.classList.add('is-playing');
-      media.querySelector('video, iframe')?.focus();
     };
     toggle.addEventListener('click', start);
     mini.addEventListener('click', () => {
       const v = media.querySelector('video');
       if (!v) return start();
       v.paused ? v.play() : v.pause();
-      setMiniIcon(!v.paused);
+      mini.innerHTML = v.paused ? PLAY_ICON : PAUSE_ICON;
     });
     chapters.forEach((li, i) => li.querySelector('button').addEventListener('click', () => {
       if (!media.querySelector('video')) start();
       const v = media.querySelector('video');
-      if (v) v.currentTime = [0, 5, 15, 30, 45, 55][i];
+      if (v) v.currentTime = CHAPTERS[i];
     }));
     return;
   }
 
-  // ─── Animatique intégrée ───
-  const total = SCENES.reduce((a, b) => a + b, 0);
-  const offsets = SCENES.map((_, i) => SCENES.slice(0, i).reduce((a, b) => a + b, 0));
-  let t = 0;
-  let playing = false;
-  let last = 0;
-  let current = -1;
+  // ─── Film intégré ───
+  let film = null;
+  const sound = createSoundtrack();
+  let nextEv = 0;
+  let schedTimer = null;
+
+  const ensureFilm = () => {
+    if (film) return film;
+    anim.hidden = false;
+    film = buildFilm(anim);
+    anim.filmTimeline = film.tl; // accès pour les tests automatisés
+    film.tl.eventCallback('onUpdate', render);
+    film.tl.eventCallback('onComplete', () => { stopSched(); setState('ended'); });
+    return film;
+  };
 
   const render = () => {
-    let idx = offsets.findLastIndex((o) => t >= o);
-    if (idx < 0) idx = 0;
-    if (idx !== current) {
-      scenes.forEach((s, i) => s.classList.toggle('is-on', i === idx));
-      chapters.forEach((c, i) => c.classList.toggle('is-current', i === idx));
-      current = idx;
-    }
+    const t = film.tl.time();
     chapters.forEach((c, i) => {
-      const fill = Math.min(1, Math.max(0, (t - offsets[i]) / SCENES[i]));
+      const a = CHAPTERS[i];
+      const b = CHAPTERS[i + 1] ?? FILM_DURATION;
+      const fill = Math.min(1, Math.max(0, (t - a) / (b - a)));
       c.style.setProperty('--fill', fill.toFixed(3));
+      c.classList.toggle('is-current', t >= a && t < b);
     });
   };
 
-  const tick = (now) => {
-    if (!playing) return;
-    const dt = (now - last) / 1000;
-    last = now;
-    t += dt;
-    if (t >= total) {
-      t = total;
-      render();
-      pause();
-      return;
+  // Planification audio en avance sur la timeline
+  const seekScore = (t) => { nextEv = film.score.findIndex((e) => e.t >= t - 0.01); if (nextEv < 0) nextEv = film.score.length; };
+  const tickSched = () => {
+    if (!sound || !film) return;
+    const t = film.tl.time();
+    const base = sound.now();
+    while (nextEv < film.score.length && film.score[nextEv].t < t + 0.15) {
+      const e = film.score[nextEv++];
+      if (e.t >= t - 0.05) sound.play(e.type, base + (e.t - t), e.arg);
     }
-    render();
-    requestAnimationFrame(tick);
+  };
+  const startSched = () => { stopSched(); seekScore(film.tl.time()); schedTimer = setInterval(tickSched, 25); tickSched(); };
+  function stopSched() { if (schedTimer) clearInterval(schedTimer); schedTimer = null; }
+
+  const setState = (s) => {
+    player.dataset.state = s;
+    mini.innerHTML = s === 'playing' ? PAUSE_ICON : s === 'ended' ? REPLAY_ICON : PLAY_ICON;
+    mini.setAttribute('aria-label', s === 'playing' ? 'Pause' : s === 'ended' ? 'Revoir' : 'Lecture');
   };
 
   const play = () => {
-    if (t >= total) { t = 0; current = -1; }
-    anim.hidden = false;
+    ensureFilm();
+    sound?.unlock();
+    if (film.tl.progress() >= 1) film.tl.seek(0);
     player.classList.add('is-playing');
-    playing = true;
-    last = performance.now();
-    setMiniIcon(true);
-    requestAnimationFrame(tick);
+    film.tl.play();
+    startSched();
+    setState('playing');
   };
-  function pause() {
-    playing = false;
-    setMiniIcon(false);
-  }
+  const pause = () => {
+    if (!film) return;
+    film.tl.pause();
+    stopSched();
+    setState('paused');
+  };
 
   toggle.addEventListener('click', play);
-  mini.addEventListener('click', () => (playing ? pause() : play()));
-  anim.addEventListener('click', () => (playing ? pause() : play()));
+  mini.addEventListener('click', () => (film && film.tl.isActive() ? pause() : play()));
+  anim.addEventListener('click', (e) => {
+    if (e.target.closest('a')) return;
+    film?.tl.isActive() ? pause() : play();
+  });
   chapters.forEach((li, i) => li.querySelector('button').addEventListener('click', () => {
-    t = offsets[i] + 0.01;
-    current = -1;
+    ensureFilm();
+    film.tl.seek(CHAPTERS[i] + 0.001, false);
     render();
-    if (!playing) play();
+    play();
   }));
 
+  if (sound) {
+    soundBtn.addEventListener('click', () => {
+      const m = !sound.muted;
+      sound.setMuted(m);
+      soundBtn.setAttribute('aria-pressed', String(!m));
+      soundBtn.setAttribute('aria-label', m ? 'Activer le son' : 'Couper le son');
+    });
+  } else {
+    soundBtn.hidden = true;
+  }
+
+  // Raccourci clavier : espace quand le lecteur a le focus
+  player.addEventListener('keydown', (e) => {
+    if (e.key === 'k' || (e.key === ' ' && e.target === player)) { e.preventDefault(); film?.tl.isActive() ? pause() : play(); }
+  });
+
   // Pause automatique hors écran
-  new IntersectionObserver(([e]) => { if (!e.isIntersecting && playing) pause(); }, { threshold: 0.2 }).observe(player);
+  new IntersectionObserver(([e]) => { if (!e.isIntersecting && film?.tl.isActive()) pause(); }, { threshold: 0.25 }).observe(player);
 
   // Transition d'entrée dans le viewport
   if (!prefersReducedMotion()) {
@@ -130,4 +156,5 @@ export function initVideo() {
       scrollTrigger: { trigger: player, start: 'top 95%', end: 'top 35%', scrub: 0.8 },
     });
   }
+  setState('idle');
 }

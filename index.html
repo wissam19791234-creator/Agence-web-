@@ -35,6 +35,7 @@
         <a href="#faq">FAQ</a>
       </nav>
       <div class="nav-actions">
+        <button class="nav-k mono" type="button" data-cmdk-open aria-label="Ouvrir la palette de commandes"><kbd>⌘</kbd><kbd>K</kbd></button>
         <a class="btn btn--primary btn--sm magnetic" href="#tarifs" data-cta>Commencer maintenant</a>
         <button class="nav-burger" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Ouvrir le menu">
           <span></span><span></span>
@@ -121,6 +122,19 @@
       </div>
     </section>
 
+    <!-- ═════════════ BANDE D'OUTILS ═════════════ -->
+    <section class="tools" aria-label="Se connecte à vos outils">
+      <p class="tools-label mono">Se branche sur les outils que vous utilisez déjà</p>
+      <div class="marquee" data-marquee>
+        <div class="marquee-track" data-marquee-track>
+          <span><i data-ic="mail"></i>Messagerie</span><span><i data-ic="crm"></i>CRM</span><span><i data-ic="table"></i>Tableurs</span>
+          <span><i data-ic="doc"></i>Facturation</span><span><i data-ic="calendar"></i>Agenda</span><span><i data-ic="chat"></i>Messagerie d’équipe</span>
+          <span><i data-ic="chart"></i>Comptabilité</span><span><i data-ic="folder"></i>Stockage de fichiers</span><span><i data-ic="users"></i>Support client</span>
+          <span><i data-ic="task"></i>Gestion de projet</span><span><i data-ic="grid"></i>E-commerce</span><span><i data-ic="link"></i>API &amp; webhooks</span>
+        </div>
+      </div>
+    </section>
+
     <!-- ═════════════ 2. INTRODUCTION CINÉMATIQUE ═════════════ -->
     <section class="cine" id="produit" aria-label="Présentation">
       <div class="cine-sticky">
@@ -134,6 +148,14 @@
           <div class="cine-reflect" aria-hidden="true"></div>
         </div>
         <p class="cine-line cine-line--3" data-cine="3">Voici votre nouveau <span class="serif">centre de contrôle.</span></p>
+      </div>
+    </section>
+
+    <!-- ═════════════ MANIFESTE ═════════════ -->
+    <section class="manifesto" aria-label="Manifeste">
+      <div class="wrap">
+        <span class="eyebrow">Pourquoi Ordra</span>
+        <p class="manifesto-text" data-manifesto>Chaque jour, vos équipes cherchent une information, recopient un chiffre, relancent un client, compilent un reporting. Des heures qui ne font pas avancer l’entreprise. Ordra reprend ce travail, en continu, pour que chacun se concentre sur ce qui compte vraiment : <em>vendre, servir, décider.</em></p>
       </div>
     </section>
 
@@ -157,41 +179,14 @@
               <div class="player-poster-copy">
                 <span class="mono">ORDRA — FILM PRODUIT</span>
                 <strong>Du chaos au <span class="serif">contrôle.</span></strong>
+                <span class="player-poster-hint mono">Son activé · 1 min</span>
               </div>
               <span class="player-duration mono">01:00</span>
             </div>
 
             <!-- Animatique intégrée (utilisée tant qu'aucune vidéo n'est configurée) -->
-            <div class="player-anim" data-player-anim hidden>
-              <div class="pa-scene" data-scene="0">
-                <div class="pa-chaos">
-                  <span>factures_v3_FINAL.xlsx</span><span>Re: Re: Relance devis</span><span>CRM — 214 contacts sans suivi</span>
-                  <span>Slack · 38 non lus</span><span>Tâche en retard</span><span>export_ventes (2).csv</span>
-                  <span>Où est le dernier reporting ?</span><span>Doc partagé — accès refusé</span>
-                </div>
-                <p class="pa-caption">Vos données sont partout.</p>
-              </div>
-              <div class="pa-scene" data-scene="1">
-                <div class="pa-dash dash-frame" data-dashboard></div>
-                <p class="pa-caption">Un seul endroit pour tout voir.</p>
-              </div>
-              <div class="pa-scene" data-scene="2">
-                <div class="pa-tabs"><span>Vue d’ensemble</span><span>Analytics</span><span>Clients</span><span>Rapports</span></div>
-                <p class="pa-caption">Chaque fonction à portée de clic.</p>
-              </div>
-              <div class="pa-scene" data-scene="3">
-                <div class="pa-flow"><span>Devis envoyé</span><i></i><span>Attente 3 jours</span><i></i><span class="is-ai">Relance IA</span><i></i><span>Réponse client</span></div>
-                <p class="pa-caption">L’IA prend le relais sur les tâches répétitives.</p>
-              </div>
-              <div class="pa-scene" data-scene="4">
-                <div class="pa-stats"><div><b>Temps</b><span>récupéré</span></div><div><b>Décisions</b><span>plus rapides</span></div><div><b>Erreurs</b><span>en moins</span></div></div>
-                <p class="pa-caption">Des résultats visibles, chaque semaine.</p>
-              </div>
-              <div class="pa-scene" data-scene="5">
-                <div class="pa-end"><span class="pa-logo" data-logo></span><strong>Votre entreprise. <span class="serif">Pilotée par l’IA.</span></strong></div>
-                <p class="pa-caption">Commencez maintenant.</p>
-              </div>
-            </div>
+            <!-- Film intégré (joué tant qu'aucune vidéo n'est configurée) — construit par src/modules/film.js -->
+            <div class="player-anim" data-player-anim hidden></div>
 
             <div class="player-media" data-player-media hidden></div>
 
@@ -204,6 +199,10 @@
           <div class="player-bar">
             <button class="player-mini" type="button" data-player-mini aria-label="Lecture">
               <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>
+            </button>
+            <button class="player-mini player-sound" type="button" data-player-sound aria-pressed="true" aria-label="Couper le son">
+              <svg class="snd-on" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 010 6M18 6.5a7.5 7.5 0 010 11"/></svg>
+              <svg class="snd-off" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M16 9.5l5 5M21 9.5l-5 5"/></svg>
             </button>
             <ol class="player-chapters" data-player-chapters>
               <li style="--w:8.33%"><button type="button" data-chapter="0"><span class="mono">00:00</span>Le chaos</button><i></i></li>
@@ -443,6 +442,58 @@
       </div>
     </section>
 
+    <!-- ═════════════ CAS D'USAGE (défilement horizontal) ═════════════ -->
+    <section class="cases" id="equipes" aria-labelledby="cases-title">
+      <div class="cases-pin">
+        <div class="wrap cases-head">
+          <div class="sec-head">
+            <span class="eyebrow">Pour chaque équipe</span>
+            <h2 class="h2" id="cases-title">Un dashboard. <em>Cinq métiers.</em></h2>
+          </div>
+          <div class="cases-nav" aria-hidden="true"><span class="mono" data-cases-count>01 / 05</span><i><b data-cases-bar></b></i></div>
+        </div>
+        <div class="cases-viewport" data-cases-viewport>
+          <ol class="cases-track" data-cases-track>
+            <li class="case" style="--c: var(--signal)">
+              <span class="case-n mono">01</span>
+              <h3>Direction</h3>
+              <p>La santé de l’entreprise sur un écran, chaque matin. Les écarts arrivent avant les mauvaises surprises.</p>
+              <div class="case-ui case-ui--kpi"><div><small>CA du mois</small><b>128 k€</b><em>+12 %</em></div><div><small>Marge</small><b>32 %</b><em>+1,8 pt</em></div><div><small>Trésorerie</small><b>J+64</b><em class="warn">à surveiller</em></div></div>
+              <ul><li>Synthèse IA quotidienne</li><li>Objectifs suivis en direct</li><li>Rapport de direction automatique</li></ul>
+            </li>
+            <li class="case" style="--c: var(--ai)">
+              <span class="case-n mono">02</span>
+              <h3>Ventes</h3>
+              <p>Plus aucun devis oublié. L’IA relance au bon moment et signale les affaires qui refroidissent.</p>
+              <div class="case-ui case-ui--pipe"><span style="--w:92%">Prospects<b>48</b></span><span style="--w:64%">Devis<b>21</b></span><span style="--w:38%">Négociation<b>9</b></span><span style="--w:22%" class="hot">Signés<b>6</b></span></div>
+              <ul><li>Relances automatiques</li><li>Score IA par opportunité</li><li>Prévisions de ventes</li></ul>
+            </li>
+            <li class="case" style="--c: var(--ok)">
+              <span class="case-n mono">03</span>
+              <h3>Finance</h3>
+              <p>Factures, encaissements et trésorerie réconciliés sans ressaisie. Les retards de paiement sont relancés seuls.</p>
+              <div class="case-ui case-ui--cash"><svg viewBox="0 0 240 70" preserveAspectRatio="none" aria-hidden="true"><path d="M0,50 C30,46 50,52 80,40 C110,28 130,36 160,26 C190,16 210,22 240,10"/><path class="f" d="M160,26 C190,16 210,22 240,10"/></svg><small>Prévision de trésorerie · 90 j</small></div>
+              <ul><li>Rapprochement automatique</li><li>Relances de paiement</li><li>Alertes de seuil</li></ul>
+            </li>
+            <li class="case" style="--c: #c9a8ff">
+              <span class="case-n mono">04</span>
+              <h3>Opérations</h3>
+              <p>Stocks, délais, fournisseurs : l’IA repère le grain de sable avant qu’il ne bloque la machine.</p>
+              <div class="case-ui case-ui--ops"><div><i class="ok"></i>Commandes du jour<b>142</b></div><div><i class="warn"></i>Délai fournisseur<b>+2 j</b></div><div><i class="ok"></i>Stock critique<b>0</b></div></div>
+              <ul><li>Détection d’anomalies</li><li>Réassort programmé</li><li>Suivi des délais</li></ul>
+            </li>
+            <li class="case" style="--c: #7fd6ff">
+              <span class="case-n mono">05</span>
+              <h3>Service client</h3>
+              <p>Chaque demande est triée, priorisée et suivie. Les clients mécontents sont repérés avant de partir.</p>
+              <div class="case-ui case-ui--tickets"><span class="p1">Urgent<b>2</b></span><span>Normal<b>14</b></span><span class="ok">Résolus aujourd’hui<b>37</b></span></div>
+              <ul><li>Tri automatique des demandes</li><li>Détection d’insatisfaction</li><li>Réponses suggérées par l’IA</li></ul>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
     <!-- ═════════════ 7. L'IA TRAVAILLE POUR VOUS ═════════════ -->
     <section class="core" id="ia" aria-labelledby="core-title">
       <div class="core-inner wrap">
@@ -614,6 +665,62 @@
       </div>
     </section>
 
+    <!-- ═════════════ CALCULATEUR ═════════════ -->
+    <section class="section roi" id="calculateur" aria-labelledby="roi-title">
+      <div class="wrap">
+        <div class="sec-head sec-head--split">
+          <div class="sec-head">
+            <span class="eyebrow">Calculateur</span>
+            <h2 class="h2" id="roi-title" data-reveal>Combien de temps allez-vous <em>récupérer ?</em></h2>
+          </div>
+          <p class="lead" data-reveal>Ajustez les curseurs à votre réalité. Le calcul se met à jour en direct.</p>
+        </div>
+
+        <div class="roi-box" data-roi>
+          <form class="roi-inputs" data-roi-form>
+            <div class="roi-field">
+              <label for="roi-team">Personnes dans l’équipe</label>
+              <output class="mono" for="roi-team" data-out="team">8</output>
+              <input id="roi-team" type="range" min="1" max="100" step="1" value="8" data-roi-input="team" />
+            </div>
+            <div class="roi-field">
+              <label for="roi-hours">Heures par semaine et par personne sur des tâches répétitives</label>
+              <output class="mono" for="roi-hours" data-out="hours">6 h</output>
+              <input id="roi-hours" type="range" min="1" max="20" step="1" value="6" data-roi-input="hours" />
+            </div>
+            <div class="roi-field">
+              <label for="roi-cost">Coût horaire chargé</label>
+              <output class="mono" for="roi-cost" data-out="cost">45 €</output>
+              <input id="roi-cost" type="range" min="20" max="150" step="5" value="45" data-roi-input="cost" />
+            </div>
+            <div class="roi-field">
+              <label for="roi-rate">Part automatisable <span class="roi-hint">(hypothèse à ajuster)</span></label>
+              <output class="mono" for="roi-rate" data-out="rate">40 %</output>
+              <input id="roi-rate" type="range" min="10" max="80" step="5" value="40" data-roi-input="rate" />
+            </div>
+          </form>
+
+          <div class="roi-result" aria-live="polite">
+            <div class="roi-big">
+              <small>Temps récupéré chaque mois</small>
+              <b class="num"><span data-roi="hours">0</span> h</b>
+            </div>
+            <div class="roi-grid">
+              <div><small>Valeur de ce temps</small><b class="num" data-roi="value">0 €</b></div>
+              <div><small>Offre conseillée</small><b data-roi="plan">Pro</b></div>
+              <div><small>Coût mensuel de l’offre</small><b class="num" data-roi="cost">0 €</b></div>
+              <div><small>Installation amortie en</small><b class="num" data-roi="payback">—</b></div>
+            </div>
+            <div class="roi-bars" aria-hidden="true">
+              <div class="roi-bar"><span>Abonnement</span><i data-roi-bar="cost"></i></div>
+              <div class="roi-bar roi-bar--v"><span>Temps récupéré</span><i data-roi-bar="value"></i></div>
+            </div>
+            <p class="roi-foot">Estimation indicative basée sur vos réglages. <a class="link" href="#tarifs">Voir les offres</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ═════════════ 11. TARIFS ═════════════ -->
     <section class="section pricing" id="tarifs" aria-labelledby="pricing-title">
       <div class="wrap">
@@ -624,7 +731,7 @@
           </div>
           <div class="billing" role="radiogroup" aria-label="Période de facturation" data-billing>
             <button type="button" role="radio" aria-checked="true" data-period="monthly">Mensuel</button>
-            <button type="button" role="radio" aria-checked="false" data-period="annual">Annuel <span class="billing-save mono">−20 %</span></button>
+            <button type="button" role="radio" aria-checked="false" data-period="annual">Annuel <span class="billing-save mono">−20 %<span class="billing-extra"> · installation offerte</span></span></button>
             <i class="billing-thumb" aria-hidden="true"></i>
           </div>
         </div>
@@ -635,8 +742,12 @@
               <h3>Starter</h3>
               <p>Pour commencer</p>
             </header>
-            <div class="plan-price"><b class="num" data-price>49</b><span><span data-currency>€</span> HT<br />/ mois</span></div>
+            <div class="plan-price"><b class="num" data-price>89</b><span><span data-currency>€</span> HT<br />/ mois</span></div>
             <p class="plan-note mono" data-note>Facturation mensuelle</p>
+            <div class="plan-setup" data-setup>
+              <span class="plan-setup-ic" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 015 5L12 19l-4 1 1-4z"/><path d="M13 8l3 3"/></svg></span>
+              <span class="plan-setup-txt"><b data-setup-price></b><small data-setup-label>Installation &amp; paramétrage · une fois</small></span>
+            </div>
             <a class="btn btn--ghost plan-cta" href="#tarifs" data-cta>Commencer maintenant</a>
             <ul class="plan-list">
               <li>Dashboard centralisé</li>
@@ -653,8 +764,12 @@
               <h3>Pro <span class="plan-flag mono">Recommandé</span></h3>
               <p>Pour les entreprises qui veulent automatiser davantage</p>
             </header>
-            <div class="plan-price"><b class="num" data-price>129</b><span><span data-currency>€</span> HT<br />/ mois</span></div>
+            <div class="plan-price"><b class="num" data-price>249</b><span><span data-currency>€</span> HT<br />/ mois</span></div>
             <p class="plan-note mono" data-note>Facturation mensuelle</p>
+            <div class="plan-setup" data-setup>
+              <span class="plan-setup-ic" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 015 5L12 19l-4 1 1-4z"/><path d="M13 8l3 3"/></svg></span>
+              <span class="plan-setup-txt"><b data-setup-price></b><small data-setup-label>Installation &amp; paramétrage · une fois</small></span>
+            </div>
             <a class="btn btn--primary plan-cta magnetic" href="#tarifs" data-cta>Commencer maintenant</a>
             <ul class="plan-list">
               <li><b>Tout Starter, plus :</b></li>
@@ -673,6 +788,10 @@
             </header>
             <div class="plan-price plan-price--custom"><b>Sur mesure</b></div>
             <p class="plan-note mono">Devis selon votre organisation</p>
+            <div class="plan-setup">
+              <span class="plan-setup-ic" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 015 5L12 19l-4 1 1-4z"/><path d="M13 8l3 3"/></svg></span>
+              <span class="plan-setup-txt"><b>Projet d’intégration dédié</b><small>Installation chiffrée avec vous</small></span>
+            </div>
             <a class="btn btn--ghost plan-cta" href="#commencer">Parler à l’équipe</a>
             <ul class="plan-list">
               <li><b>Tout Pro, plus :</b></li>
@@ -700,6 +819,11 @@
                 <tr><th scope="row">Rapports automatiques</th><td>Mensuels</td><td>Hebdo + à la demande</td><td>Personnalisés</td></tr>
                 <tr><th scope="row">SSO / rôles avancés</th><td class="no">—</td><td class="no">—</td><td class="yes">Inclus</td></tr>
                 <tr><th scope="row">Support</th><td>Email</td><td>Prioritaire</td><td>Dédié</td></tr>
+                <tr class="compare-group"><th scope="rowgroup" colspan="4">Installation &amp; mise en route</th></tr>
+                <tr><th scope="row">Frais d’installation (une fois)</th><td data-setup-cell="starter"></td><td data-setup-cell="pro"></td><td>Sur devis</td></tr>
+                <tr><th scope="row">Connexion de vos outils</th><td>Jusqu’à 5 sources</td><td>Toutes vos sources</td><td>Toutes + intégrations sur mesure</td></tr>
+                <tr><th scope="row">Workflows configurés pour vous</th><td>1</td><td>3</td><td>Selon projet</td></tr>
+                <tr><th scope="row">Formation de l’équipe</th><td>Guide vidéo</td><td>Session de 2 h</td><td>Sur site ou à distance</td></tr>
               </tbody>
             </table>
           </div>
@@ -744,6 +868,12 @@
       </div>
     </section>
 
+    <!-- ═════════════ BANDEAU GÉANT ═════════════ -->
+    <div class="mega" aria-hidden="true">
+      <div class="mega-row" data-mega="1"><span>Centralisez <i>✦</i> Automatisez <i>✦</i> Analysez <i>✦</i> Décidez <i>✦</i> Centralisez <i>✦</i> Automatisez <i>✦</i> Analysez <i>✦</i> Décidez <i>✦</i></span></div>
+      <div class="mega-row mega-row--alt" data-mega="-1"><span>Moins de saisie <i>✦</i> Moins d’oublis <i>✦</i> Plus de décisions <i>✦</i> Moins de saisie <i>✦</i> Moins d’oublis <i>✦</i> Plus de décisions <i>✦</i></span></div>
+    </div>
+
     <!-- ═════════════ 13. CTA FINAL ═════════════ -->
     <section class="final" id="commencer" aria-labelledby="final-title" data-final>
       <div class="final-light" aria-hidden="true"></div>
@@ -766,7 +896,7 @@
         <h2 class="final-title" id="final-title" data-reveal>Votre prochain système de travail <span class="serif">commence ici.</span></h2>
         <p class="final-sub mono">Centralisez. <span>Automatisez.</span> Analysez. <span>Décidez.</span></p>
         <a class="btn btn--primary btn--lg magnetic final-btn" href="#tarifs" data-cta>Commencer maintenant <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a>
-        <p class="final-reassure muted">Mise en route guidée · Sans engagement sur l’offre mensuelle</p>
+        <p class="final-reassure muted" data-from-price>Mise en route guidée · Sans engagement sur l’offre mensuelle</p>
       </div>
     </section>
   </main>
@@ -803,6 +933,24 @@
     </div>
     <div class="footer-word" aria-hidden="true" data-brand>Ordra</div>
   </footer>
+
+  <!-- Palette de commandes (⌘K) -->
+  <div class="cmdk" data-cmdk hidden>
+    <div class="cmdk-backdrop" data-cmdk-close></div>
+    <div class="cmdk-panel" role="dialog" aria-modal="true" aria-label="Palette de commandes">
+      <div class="cmdk-search">
+        <span aria-hidden="true">✦</span>
+        <label class="sr-only" for="cmdk-input">Rechercher une action</label>
+        <input id="cmdk-input" type="text" autocomplete="off" placeholder="Où voulez-vous aller ?" role="combobox" aria-expanded="true" aria-controls="cmdk-list" data-cmdk-input />
+        <kbd class="mono">Échap</kbd>
+      </div>
+      <ul class="cmdk-list" id="cmdk-list" role="listbox" data-cmdk-list></ul>
+      <div class="cmdk-foot mono"><span>↑↓ naviguer</span><span>↵ ouvrir</span><span>⌘K / Ctrl K</span></div>
+    </div>
+  </div>
+  <div class="kbd-hint mono" data-kbd-hint hidden><kbd>⌘</kbd><kbd>K</kbd> pour naviguer partout</div>
+
+  <nav class="rail" aria-label="Progression dans la page" data-rail></nav>
 
   <!-- CTA collant mobile -->
   <div class="sticky-cta" data-sticky-cta>

@@ -12,14 +12,23 @@ export const CONFIG = {
   // Formats acceptés : fichier .mp4/.webm, lien YouTube ou Vimeo.
   videoUrl: '', // VIDEO_PLACEHOLDER_URL
 
-  // Tarifs (HT, par mois). `null` = sur devis.
+  // Tarifs (HT). `null` = sur devis.
   pricing: {
     currency: '€',
     annualDiscount: 0.2,
+    // Abonnement mensuel
     plans: {
-      starter: 49,
-      pro: 129,
+      starter: 89,
+      pro: 249,
       enterprise: null,
     },
+    // Frais d'installation et de paramétrage (payés une fois)
+    setup: {
+      starter: 490,
+      pro: 1490,
+      enterprise: null,
+    },
+    // Offrir l'installation aux clients qui choisissent l'engagement annuel
+    setupWaivedAnnual: true,
   },
 };

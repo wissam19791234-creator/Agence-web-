@@ -78,9 +78,19 @@ export function initBeforeAfter() {
 export function initPricing() {
   const group = document.querySelector('[data-billing]');
   if (!group) return;
-  const { currency, annualDiscount, plans } = CONFIG.pricing;
+  const { currency, annualDiscount, plans, setup = {}, setupWaivedAnnual } = CONFIG.pricing;
   const buttons = [...group.querySelectorAll('[data-period]')];
+  const money = (v) => `${fmt(v)} ${currency}`;
   document.querySelectorAll('[data-currency]').forEach((c) => { c.textContent = currency; });
+  document.querySelectorAll('[data-from-price]').forEach((el) => {
+    el.textContent = `À partir de ${money(plans.starter)} HT / mois · Mise en route accompagnée${setupWaivedAnnual ? ' · Installation offerte en annuel' : ''}`;
+  });
+  const save = group.querySelector('.billing-save');
+  if (save) save.innerHTML = `−${Math.round(annualDiscount * 100)} %${setupWaivedAnnual ? '<span class="billing-extra"> · installation offerte</span>' : ''}`;
+  document.querySelectorAll('[data-setup-cell]').forEach((td) => {
+    const v = setup[td.dataset.setupCell];
+    td.textContent = v == null ? 'Sur devis' : `${money(v)} HT${setupWaivedAnnual ? ' · offerte en annuel' : ''}`;
+  });
 
   const apply = (period) => {
     const annual = period === 'annual';
@@ -104,7 +114,19 @@ export function initPricing() {
       if (note) {
         note.textContent = annual
           ? `Facturé ${fmt(value * 12)} ${currency} HT par an`
-          : 'Facturation mensuelle';
+          : 'Facturation mensuelle · sans engagement';
+      }
+      const box = card.querySelector('[data-setup]');
+      const fee = setup[card.dataset.plan];
+      if (box && fee != null) {
+        const waived = annual && setupWaivedAnnual;
+        box.classList.toggle('is-waived', waived);
+        box.querySelector('[data-setup-price]').innerHTML = waived
+          ? `<s>${money(fee)}</s> Installation offerte`
+          : `+ ${money(fee)} HT`;
+        box.querySelector('[data-setup-label]').textContent = waived
+          ? 'Avec l’engagement annuel'
+          : 'Installation & paramétrage · une fois';
       }
     });
   };

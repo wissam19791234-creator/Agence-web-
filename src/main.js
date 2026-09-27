@@ -2,6 +2,8 @@ import './styles/base.css';
 import './styles/dashboard.css';
 import './styles/sections-a.css';
 import './styles/sections-b.css';
+import './styles/film.css';
+import './styles/extras.css';
 
 import { CONFIG } from './config.js';
 import { mountDashboard, logoMark } from './modules/dashboard.js';
@@ -17,6 +19,7 @@ import { initCore } from './modules/core.js';
 import { initDemo } from './modules/demo.js';
 import { initBeforeAfter, initPricing, initAccordions, initFinal } from './modules/sections.js';
 import { splitWords } from './modules/utils.js';
+import { initMarquee, initMega, initManifesto, initCases, initRoi, initCommandPalette, initRail, initTilt } from './modules/extras.js';
 
 function applyBrand() {
   document.querySelectorAll('[data-brand]').forEach((el) => { el.textContent = CONFIG.brand; });
@@ -55,6 +58,14 @@ safe('pricing', initPricing);
 safe('accordions', initAccordions);
 safe('final', initFinal);
 safe('stickyCta', initStickyCta);
+safe('marquee', initMarquee);
+safe('mega', initMega);
+safe('manifesto', initManifesto);
+safe('cases', initCases);
+safe('roi', initRoi);
+safe('cmdk', initCommandPalette);
+safe('rail', initRail);
+safe('tilt', initTilt);
 safe('reveals', () => initReveals(splitWords));
 
 // Recalcule les déclencheurs une fois les polices chargées (hauteurs de texte définitives)
