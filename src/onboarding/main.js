@@ -8,7 +8,10 @@ import { api } from '../shared/api.js';
 import { icon } from '../shared/icons.js';
 import { href, IS_ARTIFACT, rewriteLinks } from '../shared/paths.js';
 import { esc, reduced, sendForm, wait } from '../shared/ui.js';
+import { hydrateStickers } from '../shared/stickers.js';
 
+rewriteLinks();
+hydrateStickers();
 const root = document.querySelector('[data-ob]');
 const bar = document.querySelector('[data-bar]');
 const pct = document.querySelector('[data-pct]');

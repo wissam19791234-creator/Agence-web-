@@ -10,7 +10,11 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const part = (n) => readFileSync(resolve(root, `src/partials/${n}.html`), 'utf8');
 
 export const APP_ROUTES = ['overview', 'analytics', 'ai', 'insights', 'automations', 'reports', 'goals', 'settings'];
-export const PAGES = ['index', 'product', 'features', 'pricing', 'security', 'resources', 'login', 'signup', 'app'];
+// Pages « à plat » servies en /nom.html (légal, merci, 404) ; les autres ont leur dossier (/pricing/…)
+export const FLAT_PAGES = ['mentions-legales', 'confidentialite', 'conditions', 'merci', '404'];
+export const PAGES = ['index', 'product', 'features', 'pricing', 'security', 'resources', 'login', 'signup', 'app', ...FLAT_PAGES];
+/** Fichier HTML source d'une page, relatif à la racine du projet. */
+export const pageFile = (p) => (p === 'index' ? 'index.html' : FLAT_PAGES.includes(p) ? `${p}.html` : `${p}/index.html`);
 
 export function partialsPlugin() {
   return {

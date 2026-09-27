@@ -5,6 +5,7 @@ import '../styles/app.css';
 import { api } from '../shared/api.js';
 import { logoMark } from '../shared/brand.js';
 import { mountCopilot } from '../shared/copilot-ui.js';
+import { hydrateStickers } from '../shared/stickers.js';
 import { icon } from '../shared/icons.js';
 import { IS_ARTIFACT, rewriteLinks, href } from '../shared/paths.js';
 import { esc, initMenus, shortcuts, skeleton, toast, reduced } from '../shared/ui.js';
@@ -17,7 +18,8 @@ const view = $('#view');
 // ───────── Icônes et marque dans le HTML statique ─────────
 function hydrateIcons(root = document) {
   $$('[data-ic]', root).forEach((el) => { if (!el.innerHTML.trim()) el.innerHTML = icon(el.dataset.ic, 16); });
-  $$('[data-logo-mark-sm]', root).forEach((el) => { el.innerHTML = logoMark(22); });
+  $$('[data-logo-mark-sm]', root).forEach((el) => { el.innerHTML = logoMark(26); });
+  hydrateStickers(root);
 }
 
 // ───────── Navigation latérale ─────────
@@ -340,10 +342,15 @@ export const appCtx = {
   });
 
   // Briefing automatique à la première visite du jour
+  // (stockage bloqué, ex. aperçu intégré : simple notification pour ne pas l'ouvrir à chaque chargement)
   let seen = null;
-  try { seen = localStorage.getItem('scalify-brief'); } catch { /* ignore */ }
+  let canStore = true;
+  try { seen = localStorage.getItem('scalify-brief'); } catch { canStore = false; }
   const fromOnboarding = params.has('welcome');
   if (fromOnboarding) { try { history.replaceState(history.state, '', location.pathname + location.hash); } catch { /* ignore */ } }
-  if (!fromOnboarding && seen !== new Date().toDateString()) setTimeout(openBriefing, reduced() ? 0 : 900);
+  if (!fromOnboarding && seen !== new Date().toDateString()) {
+    if (canStore) setTimeout(openBriefing, reduced() ? 0 : 900);
+    else toast('Votre briefing du jour est prêt.', { tone: 'ai', timeout: 9000, action: { label: 'Ouvrir', run: openBriefing } });
+  }
   if (fromOnboarding) toast('Votre centre de commande est prêt.', { tone: 'success' });
 }());

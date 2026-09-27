@@ -8,6 +8,9 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "artifact": "node scripts/build-artifact.mjs",
+    "ribbons": "node scripts/render-ribbons.mjs",
+    "og": "node scripts/render-og.mjs",
     "film": "node scripts/render-film.mjs",
     "film:audio": "node scripts/render-film.mjs --audio-only"
   },

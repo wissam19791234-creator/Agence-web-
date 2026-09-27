@@ -5,8 +5,10 @@ import '../styles/auth.css';
 import { icon } from '../shared/icons.js';
 import { href, rewriteLinks } from '../shared/paths.js';
 import { wait } from '../shared/ui.js';
+import { hydrateStickers } from '../shared/stickers.js';
 
 rewriteLinks();
+hydrateStickers();
 const f = document.querySelector('[data-login]');
 const err = f.querySelector('[data-err]');
 const fail = (msg, field) => {

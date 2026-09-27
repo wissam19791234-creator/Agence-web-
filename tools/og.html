@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <title>Image de partage — Scalify</title>
+  <!-- Page utilisée uniquement pour générer public/og.png (scripts/render-og.mjs) -->
+  <style>
+    html, body { margin: 0; }
+    .og { position: relative; width: 1200px; height: 630px; overflow: hidden; background: var(--sky); }
+    .og-bar { position: absolute; left: 0; right: 0; top: 0; height: 40px; display: flex; align-items: center; gap: 26px; padding-left: 24px; background: #000; color: #fff; white-space: nowrap; font: 700 15px/1 var(--f-sans); letter-spacing: .04em; text-transform: uppercase; }
+    .og-bar i { font-style: normal; color: var(--sun); }
+    .og-logo { position: absolute; left: 64px; top: 78px; }
+    .og-logo .logo-word { font-size: 34px; }
+    .og-ribbon { position: absolute; left: -260px; top: 150px; width: 1760px; height: auto; }
+    .og-title { position: absolute; left: 64px; top: 158px; font-size: 176px; line-height: .88; }
+    .og-foot { position: absolute; left: 64px; bottom: 54px; display: flex; align-items: center; gap: 12px; }
+    .og-foot .btn { --h: 58px; padding: 0 28px; font-size: 20px; }
+    .og-tag { display: inline-flex; align-items: center; height: 58px; padding: 0 24px; border-radius: 999px; border: 1px solid #000; background: #fff; font: 700 19px/1 var(--f-sans); letter-spacing: .01em; }
+    .og .st { position: absolute; }
+    .s1 { right: 262px; top: 66px; } .s2 { right: 72px; top: 96px; } .s3 { right: 206px; bottom: 132px; } .s4 { right: 34px; bottom: 30px; }
+  </style>
+</head>
+<body>
+  <div class="og" id="og">
+    <div class="og-bar"><span>Briefing IA chaque matin</span><i>✦</i><span>Gratuit pour commencer</span><i>✦</i><span>Sans carte bancaire</span><i>✦</i><span>Prêt en 2 minutes</span><i>✦</i><span>Votre centre de commande intelligent</span></div>
+    <div class="og-logo" data-logo></div>
+    <img class="og-ribbon" src="/media/ribbon-wave.webp" alt="" />
+    <h1 class="display og-title"><span class="dl">Vos données.</span><span class="dl">Au travail.</span></h1>
+    <span data-stk="coin" data-rot="-12" data-size="104" class="st s1"></span>
+    <span data-stk="rocket" data-rot="14" data-size="132" class="st s2"></span>
+    <span data-stk="check" data-rot="-8" data-size="96" class="st s3"></span>
+    <span data-stk="free" data-rot="10" data-size="156" class="st s4"></span>
+    <div class="og-foot"><span class="btn btn--primary">Commencer gratuitement</span><span class="og-tag">Le centre de commande intelligent</span></div>
+  </div>
+  <script type="module">
+    import '@fontsource/anton/400.css';
+    import '@fontsource/inter-tight/500.css';
+    import '@fontsource/inter-tight/700.css';
+    import '../src/styles/tokens.css';
+    import { logo } from '../src/shared/brand.js';
+    import { hydrateStickers } from '../src/shared/stickers.js';
+
+    document.querySelector('[data-logo]').innerHTML = logo(48);
+    hydrateStickers();
+    await document.fonts.ready;
+    await Promise.all([...document.images].map((i) => (i.complete ? null : new Promise((r) => { i.onload = r; i.onerror = r; }))));
+    window.ogReady = true;
+  </script>
+</body>
+</html>

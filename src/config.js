@@ -11,9 +11,6 @@ export const CONFIG = {
   // Vide = démonstration sans envoi.
   formEndpoint: 'https://formsubmit.co/ajax/scalifyfr@gmail.com',
 
-  // Google Analytics 4 (ex. 'G-XXXXXXX'). Chargé seulement après accord du visiteur.
-  gaId: '',
-
   company: {
     legalName: '[Raison sociale]',
     siteUrl: 'https://www.votre-domaine.fr',
