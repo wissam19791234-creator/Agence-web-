@@ -47,7 +47,10 @@ export const CONFIG = {
 
   // Vidéo produit. Laisser vide ('') pour afficher l'animatique intégrée.
   // Formats acceptés : fichier .mp4/.webm, lien YouTube ou Vimeo.
-  videoUrl: '', // VIDEO_PLACEHOLDER_URL
+  videoUrl: 'media/ordra-film.mp4', // VIDEO_PLACEHOLDER_URL — généré par `npm run film`
+  videoUrlMobile: 'media/ordra-film-mobile.mp4',
+  videoUrlWebm: 'media/ordra-film.webm', // secours pour les navigateurs sans H.264
+  videoPoster: 'media/ordra-film-poster.jpg',
 
   // Tarifs (HT). `null` = sur devis.
   pricing: {

@@ -73,7 +73,8 @@ export function initCore() {
       return !!(c.getContext('webgl2') || c.getContext('webgl'));
     } catch { return false; }
   })();
-  if (!hasWebGL) {
+  const light = window.matchMedia('(max-width: 760px), (pointer: coarse)').matches || (navigator.hardwareConcurrency || 8) <= 4;
+  if (!hasWebGL || light) {
     sec.classList.add('no-webgl');
     return;
   }

@@ -93,7 +93,7 @@
   display: inline-block; text-transform: none; font-size: .78em; line-height: 1.05; letter-spacing: -.035em; padding: 0 .06em .06em;
   background: var(--grad-hot); background-size: 200% 100%;
   -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: none;
-  animation: title-flow 8s ease-in-out infinite alternate;
+  background-position: 30% 0;
   filter: drop-shadow(0 8px 40px rgba(var(--signal-rgb), .35));
 }
 @keyframes title-flow { from { background-position: 0% 0; } to { background-position: 100% 0; } }

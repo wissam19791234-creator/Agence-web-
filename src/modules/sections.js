@@ -8,20 +8,23 @@ export function initBeforeAfter() {
   const ba = document.querySelector('[data-ba]');
   if (!ba) return;
   const handle = ba.querySelector('[data-ba-handle]');
+  const after = ba.querySelector('.ba-after');
   let pos = 50;
+  const paint = (v) => {
+    after.style.clipPath = `inset(0 0 0 ${v}%)`;
+    handle.style.left = `${v}%`;
+  };
 
   const set = (v, animate = false) => {
     pos = clamp(v, 0, 100);
     const apply = () => {
-      ba.style.setProperty('--pos', `${pos}%`);
+      paint(pos);
       handle.setAttribute('aria-valuenow', String(Math.round(pos)));
       handle.setAttribute('aria-valuetext', `${Math.round(pos)} % avant, ${Math.round(100 - pos)} % après`);
     };
     if (animate && !prefersReducedMotion()) {
-      const cur = { v: parseFloat(ba.style.getPropertyValue('--pos')) || 50 };
-      gsap.to(cur, { v: pos, duration: 0.6, ease: 'power3.out', onUpdate: () => {
-        ba.style.setProperty('--pos', `${cur.v}%`);
-      }, onComplete: apply });
+      const cur = { v: parseFloat(handle.style.left) || 50 };
+      gsap.to(cur, { v: pos, duration: 0.6, ease: 'power3.out', onUpdate: () => paint(cur.v), onComplete: apply });
       handle.setAttribute('aria-valuenow', String(Math.round(pos)));
     } else apply();
   };
@@ -68,9 +71,9 @@ export function initBeforeAfter() {
       io.disconnect();
       const cur = { v: 50 };
       intro = gsap.timeline()
-        .to(cur, { v: 72, duration: 0.9, ease: 'power2.inOut', onUpdate: () => ba.style.setProperty('--pos', `${cur.v}%`) })
-        .to(cur, { v: 30, duration: 1.1, ease: 'power2.inOut', onUpdate: () => ba.style.setProperty('--pos', `${cur.v}%`) })
-        .to(cur, { v: 50, duration: 0.9, ease: 'power2.inOut', onUpdate: () => ba.style.setProperty('--pos', `${cur.v}%`), onComplete: () => set(50) });
+        .to(cur, { v: 72, duration: 0.9, ease: 'power2.inOut', onUpdate: () => paint(cur.v) })
+        .to(cur, { v: 30, duration: 1.1, ease: 'power2.inOut', onUpdate: () => paint(cur.v) })
+        .to(cur, { v: 50, duration: 0.9, ease: 'power2.inOut', onUpdate: () => paint(cur.v), onComplete: () => set(50) });
     }, { threshold: 0.6 });
     io.observe(ba);
   }

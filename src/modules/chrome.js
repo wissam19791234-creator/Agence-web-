@@ -4,7 +4,7 @@ import { isFinePointer, prefersReducedMotion } from './utils.js';
 
 export function initNav() {
   const nav = document.getElementById('nav');
-  const progress = nav.querySelector('.nav-progress');
+  const progressBar = nav.querySelector('.nav-progress i');
   const burger = nav.querySelector('.nav-burger');
   const menu = document.getElementById('mobile-menu');
   const links = [...nav.querySelectorAll('.nav-links a')];
@@ -14,7 +14,7 @@ export function initNav() {
     const y = window.scrollY;
     const max = document.documentElement.scrollHeight - window.innerHeight;
     nav.classList.toggle('is-scrolled', y > 20);
-    progress.style.setProperty('--p', max > 0 ? (y / max).toFixed(4) : 0);
+    progressBar.style.transform = `scaleX(${max > 0 ? (y / max).toFixed(4) : 0})`;
     const menuOpen = burger.getAttribute('aria-expanded') === 'true';
     nav.classList.toggle('is-hidden', !menuOpen && y > 600 && y > lastY + 4 && !nav.contains(document.activeElement));
     if (y < lastY - 4 || y < 600) nav.classList.remove('is-hidden');
@@ -76,6 +76,8 @@ export function initNav() {
 }
 
 export function initCursor() {
+  return; // curseur personnalisé retiré : le curseur natif est plus fiable
+  // eslint-disable-next-line no-unreachable
   if (!isFinePointer() || prefersReducedMotion()) return;
   const ring = document.querySelector('.cursor');
   const dot = document.querySelector('.cursor-dot');
@@ -103,6 +105,8 @@ export function initCursor() {
 }
 
 export function initMagnetic() {
+  return; // effet magnétique retiré (trop « générique »)
+  // eslint-disable-next-line no-unreachable
   if (!isFinePointer() || prefersReducedMotion()) return;
   document.querySelectorAll('.magnetic').forEach((el) => {
     const strength = 0.28;
@@ -128,19 +132,12 @@ export function initMagnetic() {
 export function initStickyCta() {
   const bar = document.querySelector('[data-sticky-cta]');
   if (!bar) return;
-  const hero = document.getElementById('top');
-  const pricing = document.getElementById('tarifs');
-  const final = document.getElementById('commencer');
-  const update = () => {
-    const y = window.scrollY;
-    const heroEnd = hero.offsetTop + hero.offsetHeight * 0.6;
-    const vh = window.innerHeight;
-    const inPricing = pricing.getBoundingClientRect().top < vh && pricing.getBoundingClientRect().bottom > 0;
-    const inFinal = final.getBoundingClientRect().top < vh;
-    bar.classList.toggle('is-visible', y > heroEnd && !inPricing && !inFinal);
-  };
-  window.addEventListener('scroll', update, { passive: true });
-  update();
+  const state = { heroGone: false, pricing: false, final: false };
+  const update = () => bar.classList.toggle('is-visible', state.heroGone && !state.pricing && !state.final);
+  const watch = (el, key, test) => new IntersectionObserver(([e]) => { state[key] = test(e); update(); }).observe(el);
+  watch(document.getElementById('top'), 'heroGone', (e) => !e.isIntersecting && e.boundingClientRect.top < 0);
+  watch(document.getElementById('tarifs'), 'pricing', (e) => e.isIntersecting);
+  watch(document.getElementById('commencer'), 'final', (e) => e.isIntersecting || e.boundingClientRect.top < 0);
 }
 
 /** Révélation des titres mot à mot + éléments [data-reveal]. */

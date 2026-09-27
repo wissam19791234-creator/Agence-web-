@@ -22,7 +22,7 @@ float noise(vec2 p){
 float fbm(vec2 p){
   float v = 0.0, a = 0.5;
   mat2 r = mat2(0.8, -0.6, 0.6, 0.8);
-  for (int i = 0; i < 5; i++){ v += a * noise(p); p = r * p * 2.02; a *= 0.5; }
+  for (int i = 0; i < 4; i++){ v += a * noise(p); p = r * p * 2.02; a *= 0.5; }
   return v;
 }
 vec3 ramp(float t){
@@ -62,7 +62,7 @@ void main(){
   gl_FragColor = vec4(col, 1.0);
 }`;
 
-export function mountEmber(canvas, { intensity = 1, focus = 0, scale = 0.5 } = {}) {
+export function mountEmber(canvas, { intensity = 1, focus = 0, scale = 0.34 } = {}) {
   const gl = canvas.getContext('webgl', { antialias: false, alpha: false, powerPreference: 'high-performance', preserveDrawingBuffer: false });
   if (!gl) { canvas.classList.add('is-fallback'); return null; }
   const sh = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return s; };
@@ -84,7 +84,7 @@ export function mountEmber(canvas, { intensity = 1, focus = 0, scale = 0.5 } = {
   gl.uniform1f(uFocus, focus);
 
   const mobile = window.innerWidth < 760;
-  const res = mobile ? scale * 0.8 : scale;
+  const res = mobile ? scale * 0.7 : scale;
   const resize = () => {
     const w = Math.max(1, Math.round(canvas.clientWidth * res));
     const h = Math.max(1, Math.round(canvas.clientHeight * res));
@@ -93,6 +93,7 @@ export function mountEmber(canvas, { intensity = 1, focus = 0, scale = 0.5 } = {
   };
   resize();
   new ResizeObserver(resize).observe(canvas);
+  canvas.style.imageRendering = 'auto';
 
   const mouse = { x: 0.5, y: 0.75, tx: 0.5, ty: 0.75 };
   if (isFinePointer()) {
@@ -108,8 +109,12 @@ export function mountEmber(canvas, { intensity = 1, focus = 0, scale = 0.5 } = {
   let visible = true;
   let raf = 0;
   const t0 = performance.now() - 12000;
+  let lastDraw = 0;
   const frame = (now) => {
     raf = 0;
+    // 30 i/s suffisent pour une matière qui bouge lentement : moitié moins de calcul GPU
+    if (now - lastDraw < 32) { if (visible && !reduced && !document.hidden) raf = requestAnimationFrame(frame); return; }
+    lastDraw = now;
     mouse.x += (mouse.tx - mouse.x) * 0.05;
     mouse.y += (mouse.ty - mouse.y) * 0.05;
     gl.uniform1f(uTime, (now - t0) / 1000);

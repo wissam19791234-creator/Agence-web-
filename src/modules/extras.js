@@ -319,6 +319,8 @@ export function initRail() {
 
 // ───────── Cartes qui s'inclinent sous le pointeur ─────────
 export function initTilt() {
+  return; // inclinaison 3D retirée au profit des ombres portées dures
+  // eslint-disable-next-line no-unreachable
   if (!isFinePointer() || reduced()) return;
   document.querySelectorAll('.feat, .plan, .case').forEach((el) => {
     const rx = gsap.quickTo(el, 'rotationX', { duration: 0.6, ease: 'power3.out' });

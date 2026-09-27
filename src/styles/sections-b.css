@@ -79,8 +79,8 @@
 .fw-link i { position: absolute; left: 0; top: -40%; width: 1px; height: 40%; background: var(--signal); box-shadow: 0 0 8px var(--signal); }
 .feat--auto.is-in .fw-link i { animation: link-drip 1.6s linear infinite; }
 .feat--auto.is-in .fw-link:nth-of-type(4) i { animation-delay: .8s; }
-@keyframes link-drip { to { top: 120%; } }
-.feat--auto.is-in .fw-node { animation: node-lit 3.2s ease-in-out infinite; }
+@keyframes link-drip { from { transform: translateY(0); } to { transform: translateY(400%); } }
+.feat--auto.is-in .fw-node { animation: none; }
 .feat--auto.is-in .fw-node:nth-child(3) { animation-delay: .8s; }
 .feat--auto.is-in .fw-node:nth-child(5) { animation-delay: 1.6s; }
 @keyframes node-lit { 0%, 30%, 100% { box-shadow: none; } 12% { box-shadow: 0 0 0 1px rgba(var(--signal-rgb), .5), 0 0 24px -6px rgba(var(--signal-rgb), .6); } }

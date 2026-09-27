@@ -65,7 +65,7 @@ function glowTexture(color) {
 export function startCore(canvas, container, { reduced = false } = {}) {
   const mobile = window.innerWidth < 760;
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
-  const dpr = Math.min(window.devicePixelRatio || 1, mobile ? 1.5 : 1.75);
+  const dpr = Math.min(window.devicePixelRatio || 1, mobile ? 1.25 : 1.5);
   renderer.setPixelRatio(dpr);
   renderer.setClearColor(0x000000, 0);
 
@@ -77,7 +77,7 @@ export function startCore(canvas, container, { reduced = false } = {}) {
   scene.add(root);
 
   // Sphère de particules (répartition de Fibonacci)
-  const COUNT = mobile ? 1400 : 3200;
+  const COUNT = mobile ? 1100 : 2400;
   const pos = new Float32Array(COUNT * 3);
   const seeds = new Float32Array(COUNT);
   const golden = Math.PI * (3 - Math.sqrt(5));
@@ -188,9 +188,12 @@ export function startCore(canvas, container, { reduced = false } = {}) {
   let raf = 0;
   let prev = performance.now();
   let elapsed = 0;
-  const loop = () => {
+  let lastDraw = 0;
+  const loop = (ts = performance.now()) => {
     raf = 0;
     if (!visible) return;
+    if (ts - lastDraw < 32) { raf = requestAnimationFrame(loop); return; }
+    lastDraw = ts;
     const now = performance.now();
     const dt = Math.min((now - prev) / 1000, 0.05);
     prev = now;

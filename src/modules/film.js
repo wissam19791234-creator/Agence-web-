@@ -243,7 +243,7 @@ export function buildFilm(root) {
   const slides = $$('.fm-slide');
   slides.forEach((s, i) => {
     const t = 15 + i * 2.5;
-    tl.fromTo(s, { autoAlpha: 0, xPercent: 70, skewX: -14 }, { autoAlpha: 1, xPercent: 0, skewX: 0, duration: 0.38, ease: 'expo.out' }, t)
+    tl.fromTo(s, { autoAlpha: i === 0 ? 0 : 1, xPercent: 100, skewX: -8 }, { autoAlpha: 1, xPercent: 0, skewX: 0, duration: 0.42, ease: 'expo.out' }, t)
       .fromTo(s.querySelector('.fm-kw'), { yPercent: 100, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 0.45, ease: 'expo.out' }, t + 0.1)
       .fromTo(s.querySelector('.fm-ui'), { scale: 0.85, autoAlpha: 0, rotateY: -18 }, { scale: 1, autoAlpha: 1, rotateY: 0, duration: 0.6, ease: 'expo.out' }, t + 0.15);
     hits.push({ t, type: 'whoosh', arg: 0.3 });
@@ -282,7 +282,8 @@ export function buildFilm(root) {
       count(ui.querySelector('[data-num]'), 87, t + 0.35, 1.2, 'expo.out', (v) => `${Math.round(v)} %`);
     }
     if (i < slides.length - 1) {
-      tl.to(s, { xPercent: -70, skewX: 14, autoAlpha: 0, duration: 0.26, ease: 'power3.in' }, t + 2.26);
+      // le mot-clé suivant « pousse » la diapositive (coupe synchronisée sur le beat)
+      tl.to(s, { xPercent: -100, skewX: 8, duration: 0.42, ease: 'expo.out' }, t + 2.5).set(s, { autoAlpha: 0 }, t + 2.92);
     }
   });
   tl.to(slides.at(-1), { scale: 1.3, autoAlpha: 0, duration: 0.4, ease: 'power3.in' }, 29.4);

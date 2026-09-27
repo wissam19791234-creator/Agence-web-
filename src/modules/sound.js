@@ -193,6 +193,6 @@ export function buildScore(hits = []) {
   add(43.4, 'riser', 1.5);
   add(53.4, 'riser', 1.5);
   add(55, 'pad', 5);
-  hits.forEach((h) => add(h.t, h.type, h.arg));
+  hits.forEach((h) => ev.push({ t: h.t, type: h.type, arg: h.arg, hit: true }));
   return ev.sort((a, b) => a.t - b.t);
 }

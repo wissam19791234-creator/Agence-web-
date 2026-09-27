@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1920, initial-scale=1" />
+  <title>Rendu du film — Ordra</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@1,6..72,300;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap" />
+  <style>
+    html, body { margin: 0; background: #000; overflow: hidden; }
+    #stage { position: fixed; inset: 0; width: 1920px; height: 1080px; container-type: size; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <!-- Page utilisée uniquement pour exporter le film en MP4 (scripts/render-film.mjs) -->
+  <div id="stage" class="player-anim"></div>
+  <script type="module">
+    import '../src/styles/base.css';
+    import '../src/styles/dashboard.css';
+    import '../src/styles/film.css';
+    import '../src/styles/system.css';
+    import { buildFilm } from '../src/modules/film.js';
+    const film = buildFilm(document.getElementById('stage'));
+    window.film = film;
+    document.fonts.ready.then(() => { window.filmReady = true; });
+  </script>
+</body>
+</html>

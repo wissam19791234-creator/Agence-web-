@@ -1,8 +1,8 @@
 import { CONFIG } from '../config.js';
 import { gsap } from './motion.js';
 import { prefersReducedMotion } from './utils.js';
-import { buildFilm, CHAPTERS, FILM_DURATION } from './film.js';
-import { createSoundtrack } from './sound.js';
+const CHAPTERS = [0, 5, 15, 30, 45, 55];
+const FILM_DURATION = 60;
 
 function mediaFor(url) {
   const yt = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([\w-]{11})/);
@@ -13,7 +13,10 @@ function mediaFor(url) {
   if (vm) {
     return `<iframe src="https://player.vimeo.com/video/${vm[1]}?autoplay=1&title=0&byline=0" title="Vidéo de présentation" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
   }
-  return `<video src="${url}" controls autoplay playsinline preload="none"></video>`;
+  const small = window.matchMedia('(max-width: 760px)').matches && CONFIG.videoUrlMobile;
+  const src = small ? CONFIG.videoUrlMobile : url;
+  const webm = url === CONFIG.videoUrl && CONFIG.videoUrlWebm ? `<source src="${CONFIG.videoUrlWebm}" type="video/webm" />` : '';
+  return `<video ${CONFIG.videoPoster ? `poster="${CONFIG.videoPoster}"` : ''} controls autoplay playsinline preload="auto"><source src="${src}" type="video/mp4" />${webm}</video>`;
 }
 
 const PLAY_ICON = '<svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>';
@@ -34,9 +37,22 @@ export function initVideo() {
   if (CONFIG.videoUrl) {
     soundBtn.hidden = true;
     const start = () => {
+      if (media.querySelector('video, iframe')) return;
       media.hidden = false;
       media.innerHTML = mediaFor(CONFIG.videoUrl);
       player.classList.add('is-playing');
+      const v = media.querySelector('video');
+      if (!v) return;
+      v.addEventListener('timeupdate', () => {
+        chapters.forEach((c, i) => {
+          const a = CHAPTERS[i], b = CHAPTERS[i + 1] ?? FILM_DURATION;
+          c.style.setProperty('--fill', Math.min(1, Math.max(0, (v.currentTime - a) / (b - a))).toFixed(3));
+          c.classList.toggle('is-current', v.currentTime >= a && v.currentTime < b);
+        });
+      });
+      v.addEventListener('play', () => { mini.innerHTML = PAUSE_ICON; });
+      v.addEventListener('pause', () => { mini.innerHTML = PLAY_ICON; });
+      v.play()?.catch(() => {});
     };
     toggle.addEventListener('click', start);
     mini.addEventListener('click', () => {
@@ -53,7 +69,9 @@ export function initVideo() {
     return;
   }
 
-  // ─── Film intégré ───
+  // ─── Film intégré (repli si aucune vidéo n'est configurée) ───
+  import('./film.js').then(({ buildFilm }) => import('./sound.js').then(({ createSoundtrack }) => initLiveFilm(buildFilm, createSoundtrack)));
+  function initLiveFilm(buildFilm, createSoundtrack) {
   let film = null;
   const sound = createSoundtrack();
   let nextEv = 0;
@@ -157,4 +175,5 @@ export function initVideo() {
     });
   }
   setState('idle');
+  }
 }

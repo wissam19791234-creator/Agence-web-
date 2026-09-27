@@ -73,7 +73,7 @@
 .db-top-right { display: flex; align-items: center; gap: 14px; }
 .db-live { display: inline-flex; align-items: center; gap: 7px; font-family: var(--f-mono); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--ok); }
 .db-live i { width: 6px; height: 6px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0 3px rgba(94,230,168,.15); animation: db-pulse 2s ease-in-out infinite; }
-@keyframes db-pulse { 50% { box-shadow: 0 0 0 6px rgba(94,230,168,0); } }
+@keyframes db-pulse { 50% { opacity: .35; } }
 .db-icon-btn { position: relative; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--db-line); color: var(--fg-2); }
 .db-badge { position: absolute; top: 7px; right: 8px; width: 6px; height: 6px; border-radius: 50%; background: var(--ai); box-shadow: 0 0 0 2px var(--db-bg); }
 

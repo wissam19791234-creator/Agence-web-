@@ -12,6 +12,10 @@ npm run preview    # prévisualiser le build
 node scripts/build-artifact.mjs   # version « un seul fichier » : dist-artifact/ordra.html
 ```
 
+## Design system
+
+Direction « affiche » définie avec le skill UI/UX Pro Max (style Brutalism, variance 8), adaptée à la palette braise : coins droits, bordures pleines, ombres portées dures orange, aplats, onglets de couleur, aucune lueur ni dégradé sur les composants. Tout est dans `src/styles/system.css` (chargé en dernier).
+
 ## Outils installés dans le projet
 
 - **Skill UI/UX Pro Max** (`.claude/skills/ui-ux-pro-max/`, licence MIT) : base de styles, palettes, typographies et règles UX, utilisable par Claude Code dans ce projet.
@@ -29,18 +33,24 @@ node scripts/build-artifact.mjs   # version « un seul fichier » : dist-artifac
 | Données et réponses de la démo interactive | `src/modules/demo.js` |
 
 ### Vidéo
-Renseignez `videoUrl` dans `src/config.js` (fichier `.mp4`/`.webm`, lien YouTube ou Vimeo). Tant qu'elle est vide, le lecteur joue un **film intégré de 60 s** façon bande-annonce de lancement (`src/modules/film.js`) :
+Le film de 60 s est un **vrai fichier MP4** (`public/media/ordra-film.mp4`, 1080p 60 i/s, + version mobile 540p et affiche JPEG), lu par un lecteur `<video>` natif : aucun calcul d'animation pendant la lecture.
+
+Il est **généré à partir du code** : `npm run film` ouvre `tools/film.html`, capture le montage (`src/modules/film.js`) image par image, mixe la bande-son et encode avec ffmpeg. Modifiez le montage ou les textes, relancez la commande : la vidéo est à jour.
 
 | Temps | Chapitre | Ce qu'on voit |
 | --- | --- | --- |
-| 0–5 s | Le chaos | « Lundi. 08:57. », avalanche de notifications, compteur de non-lus, caméra qui tremble, « Trop d'outils. Trop d'onglets. » |
+| 0–5 s | Le chaos | « Lundi. 08:57. », avalanche de notifications, compteur de non-lus, cartons plein cadre « Trop d'outils. Trop d'onglets. » |
 | 5–15 s | Le dashboard | Ligne de lumière → logo, le dashboard arrive en 3D, zooms caméra sur les KPI, le graphique puis l'insight IA |
-| 15–30 s | Les fonctions | Montage rapide de 6 modules (Analytics, Alertes, Clients, Rapports, Assistant, Performance) |
-| 30–45 s | L'automatisation | Workflow qui se construit, curseur qui active l'automatisation, notifications en cascade, semaine en accéléré |
+| 15–30 s | Les fonctions | Six modules qui se « poussent » à chaque temps de la musique |
+| 30–45 s | L'automatisation | Workflow, curseur qui active l'automatisation, notifications en cascade, semaine en accéléré |
 | 45–55 s | Les résultats | Avant / après en volet, typographie cinétique, courbe de croissance |
-| 55–60 s | À vous | Logo, promesse, bouton « Commencer maintenant », prix d'appel |
+| 55–60 s | À vous | Logo, promesse, bouton, prix d'appel |
 
-La bande-son (120 BPM, synchronisée sur les coupes) est **générée dans le navigateur** (`src/modules/sound.js`) : aucun fichier audio, bouton pour couper le son. Ce film sert aussi de storyboard précis pour tourner la vraie vidéo.
+**Montage** (d'après les pratiques des vidéos de lancement SaaS) : coupes sur le temps (120 BPM), typographie qui pousse l'interface, whooshes à attaque franche calés sur l'arrivée des mouvements de caméra, rampes de vitesse sur les zooms.
+
+**Son** (`scripts/soundtrack.mjs`) : musique composée (Am–F–C–G), batterie, basse en sidechain, arpège avec delay ping-pong, réverbération, impacts et whooshes de synthèse, et **sons d'interface réels sous licence CC0** (bibliothèque [uisfx](https://github.com/romainsimon/uisfx) : notifications, clics, frappe, validation). Mastering ffmpeg à −14 LUFS (standard des plateformes).
+
+Pour utiliser une autre vidéo (tournage, Higgsfield…), remplacez `videoUrl` dans `src/config.js` (fichier `.mp4`, lien YouTube ou Vimeo).
 
 ### Direction artistique
 - Palette « braise » : noir chaud, `--signal` flamme (#ff6b2c), `--ai` or (#ffc857), `--pink` corail (#ff4d8d), texte crème. Dégradés `--grad` et `--grad-hot` dans `src/styles/base.css`.
