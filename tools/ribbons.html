@@ -25,7 +25,7 @@
         points: [V(-13, 3.8, -1), V(-7, 5.2, 0), V(-2, 2.6, 1.5), V(1.6, -1.6, 0.5), V(5, -3.8, -1), V(9.5, -2.2, 0.2), V(13, 1.2, 1)],
       },
       s: {
-        w: 1200, h: 1200, fov: 28, cam: [0, 0, 24], radius: 0.95, tilt: [0.22, -0.35, 0.08],
+        w: 1200, h: 1200, fov: 28, cam: [0, 0, 24], radius: 0.95, wide: 1.25, twist: 0.5, tilt: [0.22, -0.35, 0.08],
         points: [V(3.3, 3.9, -0.6), V(1.6, 4.6, 0.2), V(-1.2, 4.5, 0.6), V(-3.2, 3.0, 0.3), V(-3.0, 0.9, -0.3), V(-1.0, -0.1, 0), V(1.4, -0.4, 0.3), V(3.2, -1.8, 0.4), V(3.1, -3.9, -0.2), V(0.6, -4.8, -0.4), V(-2.3, -4.4, 0), V(-3.8, -3.3, 0.5)],
         caps: true,
       },
@@ -34,7 +34,7 @@
         points: [V(-16, 0.6, 0), V(-11, -2.4, 1), V(-6, 1.8, -1), V(-1, -1.9, 1), V(4, 2.0, -1), V(9, -1.6, 1), V(16, 1.2, 0)],
       },
       loop: {
-        w: 1200, h: 1200, fov: 28, cam: [0, 0, 21], radius: 0.78, tilt: [0.35, 0.25, 0.1],
+        w: 1200, h: 1200, fov: 28, cam: [0, 0, 21], radius: 0.78, wide: 1.3, twist: 2, tilt: [0.35, 0.25, 0.1],
         // Nœud de trèfle gonflable (symbole du « cœur IA »)
         points: Array.from({ length: 240 }, (_, i) => {
           const t = (i / 240) * Math.PI * 2;
@@ -69,51 +69,104 @@
       renderer.setClearColor(0x000000, 0);
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       renderer.toneMapping = THREE.NeutralToneMapping;
-      renderer.toneMappingExposure = 0.92;
+      renderer.toneMappingExposure = 0.95;
       document.body.appendChild(renderer.domElement);
 
       const scene = new THREE.Scene();
       const pmrem = new THREE.PMREMGenerator(renderer);
-      scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-      scene.environmentIntensity = 0.38;
+      scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.02).texture;
+      scene.environmentIntensity = 0.35;
 
       const camera = new THREE.PerspectiveCamera(v.fov, v.w / v.h, 0.1, 200);
       camera.position.set(...v.cam);
       camera.lookAt(0, 0, 0);
 
-      const key = new THREE.DirectionalLight(0xffffff, 2.7);
-      key.position.set(-7, 10, 9);
+      // Éclairage studio : clé haute à gauche, contre-jour blanc pour le liseré, sol bleu profond
+      const key = new THREE.DirectionalLight(0xffffff, 3.2);
+      key.position.set(-6, 11, 10);
       scene.add(key);
-      const rim = new THREE.DirectionalLight(0xcfe6ff, 1.1);
-      rim.position.set(9, -3, 4);
+      const fill = new THREE.DirectionalLight(0xdcecff, 0.9);
+      fill.position.set(8, 2, 10);
+      scene.add(fill);
+      const rim = new THREE.DirectionalLight(0xffffff, 2.4);
+      rim.position.set(6, 6, -8);
       scene.add(rim);
-      scene.add(new THREE.HemisphereLight(0xeaf4ff, 0x0f3f8c, 0.7));
+      scene.add(new THREE.HemisphereLight(0xe6f1ff, 0x061d52, 0.75));
 
       const grain = noiseTexture();
-      grain.repeat.set(90, 5);
+      grain.repeat.set(60, 4);
+      // Plastique gonflable brillant, grain très léger
       const mat = new THREE.MeshPhysicalMaterial({
-        color: 0x3f98ff, roughness: 0.5, metalness: 0,
-        clearcoat: 0.55, clearcoatRoughness: 0.28,
-        sheen: 0.25, sheenRoughness: 0.7, sheenColor: new THREE.Color(0xbfe0ff),
-        bumpMap: grain, bumpScale: 0.3, roughnessMap: grain,
+        color: 0x1f72ff, roughness: 0.3, metalness: 0,
+        clearcoat: 1, clearcoatRoughness: 0.14,
+        bumpMap: grain, bumpScale: 0.06, side: THREE.DoubleSide,
       });
 
+      // Ruban plat et bombé (section en « coussin ») qui se vrille le long du tracé
       const curve = new THREE.CatmullRomCurve3(v.points, !!v.closed, 'catmullrom', 0.5);
-      const TUB = 900, RAD = 64;
-      const geo = new THREE.TubeGeometry(curve, TUB, v.radius, RAD, !!v.closed);
+      const N = 1100, M = 72;
+      const W = v.radius * (v.wide ?? 1.85), H = v.radius * 0.62;
+      const twists = v.twist ?? 1.25;
+      // Repère à transport parallèle (sans retournement brusque, contrairement au repère de Frenet)
+      const tangents = Array.from({ length: N + 1 }, (_, i) => curve.getTangentAt(i / N).normalize());
+      const normals = [], binormals = [];
+      let n0 = new THREE.Vector3(0, 0, 1).cross(tangents[0]);
+      if (n0.lengthSq() < 1e-6) n0 = new THREE.Vector3(0, 1, 0).cross(tangents[0]);
+      n0.normalize();
+      for (let i = 0; i <= N; i++) {
+        if (i > 0) {
+          const q = new THREE.Quaternion().setFromUnitVectors(tangents[i - 1], tangents[i]);
+          n0 = n0.clone().applyQuaternion(q).normalize();
+        }
+        normals.push(n0);
+        binormals.push(tangents[i].clone().cross(n0).normalize());
+      }
+      // Courbe fermée : on répartit l'écart de rotation accumulé pour que la fin coïncide avec le début
+      if (v.closed) {
+        const t0 = tangents[0], nEnd = normals[N].clone(), n0s = normals[0];
+        let err = Math.acos(Math.max(-1, Math.min(1, nEnd.dot(n0s))));
+        if (new THREE.Vector3().crossVectors(nEnd, n0s).dot(t0) < 0) err = -err;
+        for (let i = 0; i <= N; i++) {
+          const q = new THREE.Quaternion().setFromAxisAngle(tangents[i], err * (i / N));
+          normals[i] = normals[i].clone().applyQuaternion(q).normalize();
+          binormals[i] = tangents[i].clone().cross(normals[i]).normalize();
+        }
+      }
+      const frames = { normals, binormals };
+      const pos = [], idx = [];
+      const P = new THREE.Vector3(), X = new THREE.Vector3(), Y = new THREE.Vector3();
+      for (let i = 0; i <= N; i++) {
+        const t = i / N;
+        curve.getPointAt(t, P);
+        const ang = t * twists * Math.PI * 2;
+        const nrm = frames.normals[Math.min(i, N)], bin = frames.binormals[Math.min(i, N)];
+        X.copy(nrm).multiplyScalar(Math.cos(ang)).addScaledVector(bin, Math.sin(ang));
+        Y.copy(nrm).multiplyScalar(-Math.sin(ang)).addScaledVector(bin, Math.cos(ang));
+        // extrémités arrondies (ruban ouvert)
+        const u = v.closed || !v.caps ? 1 : Math.min(1, Math.min(t, 1 - t) / 0.03);
+        const sc = Math.sqrt(Math.max(0.0001, 1 - (1 - u) * (1 - u)));
+        for (let j = 0; j < M; j++) {
+          const th = (j / M) * Math.PI * 2;
+          const c = Math.cos(th), sn = Math.sin(th);
+          const px = Math.sign(c) * Math.pow(Math.abs(c), 0.7) * W * sc;
+          const py = Math.sign(sn) * Math.pow(Math.abs(sn), 0.9) * H * sc;
+          pos.push(P.x + X.x * px + Y.x * py, P.y + X.y * px + Y.y * py, P.z + X.z * px + Y.z * py);
+        }
+      }
+      for (let i = 0; i < N; i++) for (let j = 0; j < M; j++) {
+        const a = i * M + j, b = i * M + ((j + 1) % M), c = (i + 1) * M + j, d = (i + 1) * M + ((j + 1) % M);
+        idx.push(a, c, b, b, c, d);
+      }
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+      geo.setIndex(idx);
+      geo.computeVertexNormals();
       if (part === 'front' && v.front) {
-        const [a, b] = v.front;
-        geo.setDrawRange(Math.floor(a * TUB) * RAD * 6, Math.floor((b - a) * TUB) * RAD * 6);
+        const [fa, fb] = v.front;
+        geo.setDrawRange(Math.floor(fa * N) * M * 6, Math.floor((fb - fa) * N) * M * 6);
       }
       const group = new THREE.Group();
       group.add(new THREE.Mesh(geo, mat));
-      if (v.caps && part === 'full') {
-        for (const t of [0, 1]) {
-          const cap = new THREE.Mesh(new THREE.SphereGeometry(v.radius, 64, 32), mat);
-          cap.position.copy(curve.getPoint(t));
-          group.add(cap);
-        }
-      }
       if (v.tilt) group.rotation.set(...v.tilt);
       scene.add(group);
 
@@ -128,7 +181,7 @@
       const d = img.data;
       for (let i = 0; i < d.length; i += 4) {
         if (d[i + 3] === 0) continue;
-        const n = (Math.random() - 0.5) * 22;
+        const n = (Math.random() - 0.5) * 14;
         d[i] = Math.max(0, Math.min(255, d[i] + n));
         d[i + 1] = Math.max(0, Math.min(255, d[i + 1] + n));
         d[i + 2] = Math.max(0, Math.min(255, d[i + 2] + n));

@@ -72,8 +72,6 @@ html.is-locked { overflow: hidden; }
 .hero-title { position: relative; z-index: 1; font-size: clamp(60px, 18vw, 262px); line-height: .88; text-align: center; }
 .hero-title span { display: block; }
 .hero-ribbon { left: 50%; top: 50%; z-index: 0; width: max(1180px, 118vw); height: auto; translate: -50% -52%; }
-.hero-ribbon--front { z-index: 2; }
-@media (max-width: 760px) { .hero-ribbon--front { display: none; } }
 .st { position: absolute; z-index: 3; }
 .st--1 { left: 7%; top: 10%; }
 .st--2 { right: 8%; top: 4%; }
@@ -306,8 +304,10 @@ html.is-locked { overflow: hidden; }
 .billing button { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 20px; border: 0; border-radius: var(--r-pill); background: none; font: 700 13.5px/1 var(--f-sans); letter-spacing: .03em; cursor: pointer; transition: background-color var(--t), color var(--t); }
 .billing button[aria-checked="true"] { background: #000; color: #fff; }
 .billing .pill { height: 22px; font-size: 10.5px; color: #000; }
-.plans { display: grid; gap: 14px; max-width: 1180px; margin: 0 auto; }
-@media (min-width: 940px) { .plans { grid-template-columns: repeat(3, 1fr); align-items: start; } }
+.plans { display: grid; gap: 14px; max-width: 1360px; margin: 0 auto; }
+@media (min-width: 700px) { .plans { grid-template-columns: repeat(2, 1fr); align-items: start; } }
+@media (min-width: 1180px) { .plans { grid-template-columns: repeat(4, 1fr); } }
+@media (min-width: 1180px) and (max-width: 1360px) { .plan { padding: 26px 20px; } .plan-price b { font-size: 72px; } }
 .plan { position: relative; display: grid; gap: 14px; padding: 30px 28px; border-radius: var(--r-sheet); border: var(--bd); background: var(--paper); }
 .plan--rec { background: var(--lavender); }
 .plan-flag { position: absolute; top: -16px; right: 22px; padding: 9px 14px; border-radius: var(--r-pill); border: var(--bd); background: var(--ember); color: #000; font: 700 12px/1 var(--f-sans); letter-spacing: .032em; text-transform: uppercase; rotate: 4deg; }

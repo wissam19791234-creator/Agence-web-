@@ -31,6 +31,11 @@ export const CONFIG = {
     yearlyDiscount: 0.2,
     plans: [
       {
+        id: 'starter', name: 'Starter', price: 190, tagline: 'Pour démarrer seul',
+        cta: 'Choisir Starter',
+        limits: { ai: '300 questions IA / mois', dashboards: '3 dashboards', automations: '10 automatisations', reports: 'Rapport hebdomadaire', history: '6 mois', members: '2 membres', analytics: 'Analyses essentielles' },
+      },
+      {
         id: 'pro', name: 'Pro', price: 490, tagline: 'Pour piloter au quotidien', recommended: true,
         cta: 'Choisir Pro',
         limits: { ai: 'IA illimitée', dashboards: 'Dashboards illimités', automations: '50 automatisations', reports: 'Tous les rapports + planification', history: '24 mois', members: '10 membres', analytics: 'Analyses avancées + prévisions' },

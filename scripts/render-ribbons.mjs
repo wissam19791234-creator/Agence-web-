@@ -12,7 +12,7 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = resolve(root, 'public/media');
 mkdirSync(OUT, { recursive: true });
 
-const JOBS = [['hero', 'full'], ['hero', 'front'], ['arc', 'full'], ['s', 'full'], ['wave', 'full'], ['loop', 'full']];
+const JOBS = [['hero', 'full'], ['arc', 'full'], ['s', 'full'], ['wave', 'full'], ['loop', 'full']];
 // --front=a,b : portion du ruban du hero rendue « devant » le titre (fractions du tracé)
 const frontArg = process.argv.find((a) => a.startsWith('--front='));
 const FRONT = frontArg ? frontArg.slice(8).split(',').map(Number) : null;
