@@ -4,7 +4,8 @@
 import * as D from './demo-data.js';
 import { answer } from './copilot.js';
 
-const LATENCY = { fast: 250, normal: 550, slow: 1400 };
+// Latence simulée des données de démo : courte, pour une application réactive (le Copilot garde un temps de réflexion)
+const LATENCY = { fast: 40, normal: 90, slow: 900 };
 const delay = (ms) => new Promise((r) => setTimeout(r, ms));
 const clone = (v) => JSON.parse(JSON.stringify(v));
 

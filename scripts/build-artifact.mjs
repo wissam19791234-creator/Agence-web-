@@ -35,6 +35,10 @@ for (const page of PAGES) {
   html = html.replace('</body>', `<script type="module">\n${js.replace(/<\/script/gi, '<\\/script')}\n</script>\n</body>`);
   // Médias : chemins relatifs dès le HTML (évite des requêtes vers /media/… avant la réécriture en JS)
   html = html.replace(/(src|href|poster)="\/media\//g, '$1="media/');
+  // Polices intégrées en data URI : l'aperçu tourne dans un cadre à origine opaque,
+  // où des fichiers de police séparés seraient refusés (CORS). Les préchargements deviennent inutiles.
+  html = html.replace(/<link rel="preload" href="[^"]*fonts\/[^"]*"[^>]*>\s*/g, '')
+    .replace(/url\((?:\.{0,2}\/)*fonts\/([a-z0-9-]+\.woff2)\)/g, (_, f) => `url(data:font/woff2;base64,${readFileSync(resolve(root, 'public/fonts', f)).toString('base64')})`);
   // La page principale est enveloppée par l'hébergeur : on ne garde que le contenu de <head> et <body>
   if (page === 'index') {
     const head = html.slice(html.indexOf('<head>') + 6, html.indexOf('</head>'))
