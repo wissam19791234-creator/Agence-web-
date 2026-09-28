@@ -88,7 +88,7 @@ function initFaq() {
   });
 }
 
-/** Tarifs Pro / Business / Sur mesure avec bascule mensuel / annuel. */
+/** Tarifs Pro / Business / Entreprise avec bascule mensuel / annuel. */
 export function renderPricing(root) {
   if (!root) return;
   const { plans, rows, yearlyDiscount, currency } = CONFIG.pricing;
@@ -103,21 +103,18 @@ export function renderPricing(root) {
           ${p.recommended ? '<span class="plan-flag">Recommandé</span>' : ''}
           <h3>${esc(p.name)}</h3>
           <p class="plan-tag">${esc(p.tagline)}</p>
-          ${p.price == null
-            ? '<div class="plan-price"><b>Sur devis</b></div><p class="plan-note">Tarif selon vos besoins</p>'
-            : `<div class="plan-price"><b class="num" data-price="${p.price}">${fmt.int(p.price)}</b><span>${currency} HT<br />/ mois</span></div><p class="plan-note" data-note>Facturé mensuellement</p>`}
-          <a class="btn ${p.recommended ? 'btn--primary' : 'btn--secondary'} btn--lg plan-cta" href="${p.price == null ? `mailto:${CONFIG.company.email}?subject=Scalify%20%E2%80%94%20offre%20sur%20mesure` : href(`/signup/?plan=${p.id}`)}">${esc(p.cta)}</a>
+          <div class="plan-price"><b class="num" data-price="${p.price}">${fmt.int(p.price)}</b><span>${currency} HT<br />/ mois</span></div>
+          <p class="plan-note" data-note>Facturé mensuellement</p>
+          <a class="btn ${p.recommended ? 'btn--primary' : 'btn--secondary'} btn--lg plan-cta" href="${href(`/signup/?plan=${p.id}`)}">${esc(p.cta)}</a>
           <ul class="plan-list">${rows.map(([k, l]) => `<li><span class="plan-k">${esc(l)}</span><span class="plan-v">${esc(p.limits[k])}</span></li>`).join('')}</ul>
         </article>`).join('')}
-    </div>
-    <p class="plans-foot">Une question sur les offres ? Écrivez à <b>${CONFIG.company.email}</b>.</p>`;
+    </div>`;
   const btns = root.querySelectorAll('[data-period]');
   const apply = (period) => {
     btns.forEach((b) => { b.setAttribute('aria-checked', String(b.dataset.period === period)); });
     root.querySelector('.billing').classList.toggle('is-yearly', period === 'yearly');
     root.querySelectorAll('.plan').forEach((card) => {
       const b = card.querySelector('[data-price]');
-      if (!b) return;
       const base = +b.dataset.price;
       if (!base) return;
       const v = period === 'yearly' ? Math.round(base * (1 - yearlyDiscount)) : base;
@@ -155,12 +152,12 @@ export function renderProof(root) {
     <div class="early-copy">
       <p class="eyebrow">Accès anticipé</p>
       <h2 class="display">${displayLines('Rejoignez<br />les premières<br />équipes.')}</h2>
-      <p class="sec-sub">${CONFIG.brand} se construit avec ses premiers utilisateurs : nouveautés en avant-première et ligne directe avec l’équipe produit.</p>
+      <p class="sec-sub">${CONFIG.brand} se construit avec ses premiers utilisateurs : nouveautés en avant-première et tarif fondateur.</p>
       <a class="btn btn--primary btn--lg" href="${href('/signup/')}">Rejoindre l’accès anticipé</a>
     </div>
     <ul class="early-list">
       <li>${sticker('spark', { size: 44, rot: -8 })}<span><b>Influencez la roadmap</b>Vos demandes passent en priorité.</span></li>
-      <li>${sticker('chat', { size: 44, rot: 6 })}<span><b>Accompagnement direct</b>Un échange avec l’équipe pour configurer votre espace.</span></li>
+      <li>${sticker('bolt', { size: 44, rot: 6 })}<span><b>Nouveautés en avant-première</b>Les nouvelles fonctions arrivent d’abord chez vous.</span></li>
       <li>${sticker('coin', { size: 44, rot: -10 })}<span><b>Tarif fondateur</b>Conservé tant que vous restez abonné.</span></li>
     </ul>
   </div></div>`;

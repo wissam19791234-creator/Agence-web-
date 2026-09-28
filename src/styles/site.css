@@ -315,7 +315,6 @@ html.is-locked { overflow: hidden; }
 .plan-tag { font-size: 15px; font-weight: 600; color: var(--text-2); margin-top: -6px; }
 .plan-price { display: flex; align-items: flex-end; gap: 8px; }
 .plan-price b { font: 400 84px/.82 var(--f-display); }
-.plan-price b:not(.num) { font-size: 64px; text-transform: uppercase; }
 .plan-price span { font-size: 12.5px; font-weight: 700; line-height: 1.25; padding-bottom: 4px; }
 .plan-note { color: var(--text-3); font-size: 13px; font-weight: 600; min-height: 18px; }
 .plan-cta { width: 100%; }

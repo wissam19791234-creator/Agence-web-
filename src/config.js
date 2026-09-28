@@ -41,9 +41,9 @@ export const CONFIG = {
         limits: { ai: 'IA illimitée + contexte équipe', dashboards: 'Dashboards illimités', automations: 'Automatisations illimitées', reports: 'Rapports direction + marque blanche', history: 'Illimité', members: '50 membres', analytics: 'Analyses avancées + anomalies' },
       },
       {
-        id: 'custom', name: 'Sur mesure', price: null, tagline: 'Pour les grandes équipes',
-        cta: 'Nous écrire',
-        limits: { ai: 'IA dédiée à votre activité', dashboards: 'Dashboards sur mesure', automations: 'Automatisations sur mesure', reports: 'Rapports à votre image', history: 'Illimité', members: 'Membres illimités', analytics: 'Accompagnement dédié' },
+        id: 'enterprise', name: 'Entreprise', price: 1990, tagline: 'Pour les grandes équipes',
+        cta: 'Choisir Entreprise',
+        limits: { ai: 'IA illimitée + modèles dédiés', dashboards: 'Dashboards illimités', automations: 'Automatisations illimitées', reports: 'Rapports à votre image', history: 'Illimité', members: 'Membres illimités', analytics: 'Anomalies + prévisions avancées' },
       },
     ],
     rows: [

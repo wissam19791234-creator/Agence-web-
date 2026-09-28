@@ -60,7 +60,7 @@ function welcome() {
   show(`
     <span class="ob-k mono">Étape 1 sur 4</span>
     <h1>Bienvenue sur ${CONFIG.brand}.</h1>
-    <p class="ob-sub">Votre centre de commande est prêt en 2 minutes.${plan && ['pro', 'business'].includes(plan) ? ` <span class="pill pill--accent">Offre ${esc(plan[0].toUpperCase() + plan.slice(1))}</span>` : ''}</p>
+    <p class="ob-sub">Votre centre de commande est prêt en 2 minutes.${plan && ['pro', 'business', 'enterprise'].includes(plan) ? ` <span class="pill pill--accent">Offre ${esc({ pro: 'Pro', business: 'Business', enterprise: 'Entreprise' }[plan])}</span>` : ''}</p>
     <form class="ob-form" data-f novalidate>
       <div class="field"><label for="o-name">Prénom</label><input id="o-name" class="input" name="name" autocomplete="given-name" value="${esc(state.name)}" autofocus /></div>
       <div class="field"><label for="o-email">Email professionnel</label><input id="o-email" class="input" type="email" name="email" autocomplete="email" required value="${esc(state.email)}" /></div>
