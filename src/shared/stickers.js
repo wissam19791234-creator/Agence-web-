@@ -23,7 +23,6 @@ const ART = {
   lock: `<rect x="18" y="42" width="64" height="48" rx="14" fill="${C.sun}" ${S}/><path d="M32 42V32a18 18 0 0 1 36 0v10" fill="none" ${S} stroke-width="6"/><circle cx="50" cy="64" r="6" fill="${C.ink}"/>`,
   trend: `<circle cx="50" cy="50" r="40" fill="${C.mint}" ${S}/><path d="M26 64l16-16 10 10 22-22" fill="none" stroke="${C.ink}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><path d="M60 36h14v14" fill="none" stroke="${C.ink}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>`,
   heart: `<path d="M50 84S12 62 12 36a18 18 0 0 1 38-8 18 18 0 0 1 38 8c0 26-38 48-38 48z" fill="${C.ember}" ${S}/>`,
-  free: `<path d="${burst(50, 50, 46, 36, 14)}" fill="${C.sun}" ${S}/><text x="50" y="58" text-anchor="middle" font-family="Anton, Impact, sans-serif" font-size="22" fill="${C.ink}">GRATUIT</text>`,
   new: `<path d="${burst(50, 50, 46, 38, 16)}" fill="${C.mint}" ${S}/><text x="50" y="58" text-anchor="middle" font-family="Anton, Impact, sans-serif" font-size="22" fill="${C.ink}">NOUVEAU</text>`,
   star: `<path d="${burst(50, 50, 44, 20, 5)}" fill="${C.sun}" ${S}/>`,
 };

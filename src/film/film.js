@@ -149,10 +149,10 @@ function markup() {
         <span data-stk="rocket" data-rot="-14" data-size="170" class="fm-st1"></span>
         <span data-stk="coin" data-rot="10" data-size="140" class="fm-st2"></span>
         <span data-stk="check" data-rot="-8" data-size="130" class="fm-st3"></span>
-        <span data-stk="free" data-rot="8" data-size="190" class="fm-st4"></span>
+        <span data-stk="star" data-rot="8" data-size="150" class="fm-st4"></span>
         <span class="fm-mark">${logoMark(56)}</span>
         <b class="fm-end-t">Vos données. <span class="serif">Au travail.</span></b>
-        <a class="btn btn--primary fm-cta" href="#" tabindex="-1">Commencer gratuitement ${icon('arrow', 16)}</a>
+        <a class="btn btn--primary fm-cta" href="#" tabindex="-1">Créer mon espace ${icon('arrow', 16)}</a>
         <small class="fm-price mono" data-film-price></small>
       </div>
 
@@ -173,7 +173,7 @@ export function buildFilm(root) {
   const $$ = (s) => [...root.querySelectorAll(s)];
   root.querySelectorAll('[data-film-dash]').forEach((f) => mountDemo(f, { lazy: false, notify: false }));
   hydrateStickers(root);
-  $('[data-film-price]').textContent = 'Gratuit pour commencer · sans carte bancaire';
+  $('[data-film-price]').textContent = 'Prêt en 2 minutes · Sans engagement';
 
   const cam = $('[data-cam]');
   const L = (n) => $(`[data-l="${n}"]`);

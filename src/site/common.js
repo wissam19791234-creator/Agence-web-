@@ -1,5 +1,5 @@
 // Éléments communs aux pages marketing : navigation, CTA collant, apparitions au scroll,
-// FAQ animée, tarifs, intégrations, preuves sociales.
+// FAQ animée, tarifs, preuves sociales.
 import { CONFIG } from '../config.js';
 import { hydrateStickers, sticker } from '../shared/stickers.js';
 import { displayLines, fitDisplayTitles } from '../shared/display.js';
@@ -88,7 +88,7 @@ function initFaq() {
   });
 }
 
-/** Tarifs Free / Pro / Business avec bascule mensuel / annuel. */
+/** Tarifs Pro / Business / Sur mesure avec bascule mensuel / annuel. */
 export function renderPricing(root) {
   if (!root) return;
   const { plans, rows, yearlyDiscount, currency } = CONFIG.pricing;
@@ -103,19 +103,21 @@ export function renderPricing(root) {
           ${p.recommended ? '<span class="plan-flag">Recommandé</span>' : ''}
           <h3>${esc(p.name)}</h3>
           <p class="plan-tag">${esc(p.tagline)}</p>
-          <div class="plan-price"><b class="num" data-price="${p.price}">${p.price === 0 ? '0' : fmt.int(p.price)}</b><span>${currency} HT<br />/ mois</span></div>
-          <p class="plan-note" data-note>${p.price === 0 ? 'Gratuit pour toujours' : 'Facturé mensuellement'}</p>
-          <a class="btn ${p.recommended ? 'btn--primary' : 'btn--secondary'} btn--lg plan-cta" href="${href(`/signup/?plan=${p.id}`)}">${esc(p.cta)}</a>
+          ${p.price == null
+            ? '<div class="plan-price"><b>Sur devis</b></div><p class="plan-note">Tarif selon vos besoins</p>'
+            : `<div class="plan-price"><b class="num" data-price="${p.price}">${fmt.int(p.price)}</b><span>${currency} HT<br />/ mois</span></div><p class="plan-note" data-note>Facturé mensuellement</p>`}
+          <a class="btn ${p.recommended ? 'btn--primary' : 'btn--secondary'} btn--lg plan-cta" href="${p.price == null ? `mailto:${CONFIG.company.email}?subject=Scalify%20%E2%80%94%20offre%20sur%20mesure` : href(`/signup/?plan=${p.id}`)}">${esc(p.cta)}</a>
           <ul class="plan-list">${rows.map(([k, l]) => `<li><span class="plan-k">${esc(l)}</span><span class="plan-v">${esc(p.limits[k])}</span></li>`).join('')}</ul>
         </article>`).join('')}
     </div>
-    <p class="plans-foot">Besoin de plus de 50 membres ou d’un hébergement dédié ? <a class="link" href="mailto:${CONFIG.company.email}?subject=Scalify%20%E2%80%94%20offre%20sur%20mesure">Parlons-en</a>.</p>`;
+    <p class="plans-foot">Une question sur les offres ? Écrivez à <b>${CONFIG.company.email}</b>.</p>`;
   const btns = root.querySelectorAll('[data-period]');
   const apply = (period) => {
     btns.forEach((b) => { b.setAttribute('aria-checked', String(b.dataset.period === period)); });
     root.querySelector('.billing').classList.toggle('is-yearly', period === 'yearly');
     root.querySelectorAll('.plan').forEach((card) => {
       const b = card.querySelector('[data-price]');
+      if (!b) return;
       const base = +b.dataset.price;
       if (!base) return;
       const v = period === 'yearly' ? Math.round(base * (1 - yearlyDiscount)) : base;
@@ -138,16 +140,6 @@ export function renderPricing(root) {
   });
 }
 
-export function renderIntegrations(root) {
-  if (!root) return;
-  const label = { available: 'Connecté', soon: 'Bientôt' };
-  root.innerHTML = CONFIG.integrations.map((i) => `
-    <li class="integ-item ${i.status === 'available' ? 'is-on' : ''}">
-      <span class="integ-logo" aria-hidden="true">${esc(i.name.split(/\s/).map((w) => w[0]).join('').slice(0, 2))}</span>
-      <b>${esc(i.name)}</b>
-      <span class="pill ${i.status === 'available' ? 'pill--good' : ''}">${label[i.status] || 'Bientôt'}</span>
-    </li>`).join('');
-}
 
 /** Preuves sociales : vrais avis s'ils existent, sinon programme « premières équipes ». */
 export function renderProof(root) {

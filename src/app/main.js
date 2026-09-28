@@ -228,7 +228,6 @@ function paletteItems(q) {
     { label: 'Créer un objectif', kind: 'Action', ic: 'target', run: () => go('goals').then(() => active?.create?.()) },
     { label: 'Personnaliser le dashboard', kind: 'Action', ic: 'layout', run: () => go('overview').then(() => active?.customize?.()) },
     { label: 'Briefing du jour', kind: 'Action', ic: 'sun', run: openBriefing },
-    { label: 'Connecter une source de données', kind: 'Action', ic: 'database', run: () => go('settings', { anchor: 'sources' }) },
     { label: 'Raccourcis clavier', kind: 'Aide', ic: 'layout', run: openShortcuts },
   ];
   const s = q.trim().toLowerCase();

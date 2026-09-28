@@ -136,7 +136,7 @@ export const AUTOMATIONS = [
 ];
 
 export const AUTOMATION_TEMPLATES = [
-  { name: 'Anomalie de trafic', when: 'Le trafic varie de plus de 20 %', then: 'Identifier la source', and: 'Me notifier sur Slack' },
+  { name: 'Anomalie de trafic', when: 'Le trafic varie de plus de 20 %', then: 'Identifier la source', and: 'Me notifier sur mobile' },
   { name: 'Rapport hebdo direction', when: 'Chaque lundi à 8 h', then: 'Générer le rapport direction', and: 'Envoyer à l’équipe' },
   { name: 'Objectif en danger', when: 'Un objectif est en retard de 10 %', then: 'Proposer un plan d’action', and: 'Me notifier' },
   { name: 'Gros panier', when: 'Une commande dépasse 500 €', then: 'Marquer le client VIP', and: 'Prévenir l’équipe ventes' },
@@ -144,7 +144,7 @@ export const AUTOMATION_TEMPLATES = [
 
 export const TRIGGERS = ['Le chiffre d’affaires baisse de 10 %', 'Le trafic varie de plus de 20 %', 'Un objectif est en retard', 'Chaque jour à 8 h', 'Une commande dépasse 500 €'];
 export const ACTIONS = ['Analyser la cause', 'Résumer les changements', 'Proposer un plan d’action', 'Générer un rapport', 'Identifier la source'];
-export const NOTIFY = ['Me notifier', 'Envoyer par email', 'Me notifier sur Slack', 'Envoyer à l’équipe'];
+export const NOTIFY = ['Me notifier', 'Envoyer par email', 'Me notifier sur mobile', 'Envoyer à l’équipe'];
 
 export const REPORTS = [
   { id: 'daily', name: 'Rapport quotidien', desc: 'Les chiffres d’hier et ce qui a changé.', schedule: 'Chaque jour · 8 h' },

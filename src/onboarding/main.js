@@ -1,4 +1,4 @@
-// Onboarding en 5 étapes, sans formulaire interminable, avec « aha moment » :
+// Onboarding en 4 étapes, sans formulaire interminable, avec « aha moment » :
 // l'IA analyse le workspace et livre 3 premiers insights avant toute configuration.
 import '../styles/tokens.css';
 import '../styles/auth.css';
@@ -16,7 +16,7 @@ const root = document.querySelector('[data-ob]');
 const bar = document.querySelector('[data-bar]');
 const pct = document.querySelector('[data-pct]');
 const plan = new URLSearchParams(location.search).get('plan');
-const state = { step: 0, name: '', email: '', goals: [], sources: [] };
+const state = { step: 0, name: '', email: '', goals: [] };
 
 const GOALS = [
   ['revenue', 'Augmenter mon chiffre d’affaires', 'trend'],
@@ -36,7 +36,7 @@ const FIRST_INSIGHTS = {
 };
 const FALLBACK = ['understand', 'revenue', 'automate'];
 
-const steps = [welcome, goals, connect, analyze, ready];
+const steps = [welcome, goals, analyze, ready];
 
 function progress() {
   const p = Math.round(((state.step + 1) / steps.length) * 100);
@@ -58,15 +58,15 @@ root.addEventListener('click', (e) => { if (e.target.closest('[data-back]')) bac
 // 1 · Bienvenue
 function welcome() {
   show(`
-    <span class="ob-k mono">Étape 1 sur 5</span>
+    <span class="ob-k mono">Étape 1 sur 4</span>
     <h1>Bienvenue sur ${CONFIG.brand}.</h1>
-    <p class="ob-sub">Votre centre de commande est prêt en 2 minutes.${plan && plan !== 'free' ? ` <span class="pill pill--accent">Essai ${esc(plan[0].toUpperCase() + plan.slice(1))} · 14 jours</span>` : ''}</p>
+    <p class="ob-sub">Votre centre de commande est prêt en 2 minutes.${plan && ['pro', 'business'].includes(plan) ? ` <span class="pill pill--accent">Offre ${esc(plan[0].toUpperCase() + plan.slice(1))}</span>` : ''}</p>
     <form class="ob-form" data-f novalidate>
       <div class="field"><label for="o-name">Prénom</label><input id="o-name" class="input" name="name" autocomplete="given-name" value="${esc(state.name)}" autofocus /></div>
       <div class="field"><label for="o-email">Email professionnel</label><input id="o-email" class="input" type="email" name="email" autocomplete="email" required value="${esc(state.email)}" /></div>
       <p class="field-err" data-err role="alert" hidden></p>
       <button class="btn btn--primary btn--lg" type="submit">Continuer ${icon('arrow', 16)}</button>
-      <p class="ob-note">Gratuit · sans carte bancaire · en continuant, vous acceptez les <a href="/conditions.html">conditions</a> et la <a href="/confidentialite.html">politique de confidentialité</a>.</p>
+      <p class="ob-note">Sans engagement · en continuant, vous acceptez les <a href="/conditions.html">conditions</a> et la <a href="/confidentialite.html">politique de confidentialité</a>.</p>
     </form>`);
   const f = root.querySelector('[data-f]');
   f.addEventListener('submit', async (e) => {
@@ -84,7 +84,7 @@ function welcome() {
     state.email = email.value.trim();
     const b = f.querySelector('[type="submit"]');
     b.classList.add('is-loading');
-    sendForm(CONFIG.formEndpoint, 'Nouvelle inscription', { name: state.name, email: state.email, plan: plan || 'free' }, IS_ARTIFACT).catch(() => {});
+    sendForm(CONFIG.formEndpoint, 'Nouvelle inscription', { name: state.name, email: state.email, plan: plan || 'non choisie' }, IS_ARTIFACT).catch(() => {});
     await wait(500);
     next();
   });
@@ -94,7 +94,7 @@ function welcome() {
 // 2 · Objectifs
 function goals() {
   show(`
-    <span class="ob-k mono">Étape 2 sur 5</span>
+    <span class="ob-k mono">Étape 2 sur 4</span>
     <h1>Que voulez-vous accomplir${state.name ? `, ${esc(state.name)}` : ''} ?</h1>
     <p class="ob-sub">Choisissez-en un ou plusieurs. L’IA priorise ses analyses en fonction.</p>
     <div class="ob-opts" role="group" aria-label="Objectifs">${GOALS.map(([id, l, ic]) => `
@@ -112,44 +112,18 @@ function goals() {
   nextBtn.addEventListener('click', next);
 }
 
-// 3 · Connexion des données
-function connect() {
-  show(`
-    <span class="ob-k mono">Étape 3 sur 5</span>
-    <h1>Connectez vos données.</h1>
-    <p class="ob-sub">Commencez avec des données de démonstration : vous brancherez les vôtres quand vous voulez.</p>
-    <button type="button" class="ob-demo" data-demo>
-      <span class="ob-opt-ic">${icon('spark', 18)}</span>
-      <span><b>Explorer avec des données de démonstration</b><small>Recommandé · aucun accès demandé</small></span>
-      ${icon('arrow', 18)}
-    </button>
-    <p class="ob-or"><span>ou préparez vos connecteurs</span></p>
-    <ul class="ob-conns">${CONFIG.integrations.slice(0, 8).map((i) => `<li><button type="button" class="ob-conn" data-c="${esc(i.name)}" aria-pressed="false"><span class="integ-logo">${esc(i.name.split(/\s/).map((w) => w[0]).join('').slice(0, 2))}</span><b>${esc(i.name)}</b><small>${i.status === 'available' ? 'Disponible' : 'Bientôt'}</small></button></li>`).join('')}</ul>
-    <p class="ob-note" data-conn-note>Les connecteurs « Bientôt » : nous vous prévenons dès leur ouverture.</p>
-    <div class="ob-a">${backBtn()}<button type="button" class="btn btn--secondary btn--lg" data-next>Continuer ${icon('arrow', 16)}</button></div>`);
-  root.querySelector('[data-demo]').addEventListener('click', next);
-  root.querySelector('[data-next]').addEventListener('click', next);
-  root.querySelector('.ob-conns').addEventListener('click', (e) => {
-    const c = e.target.closest('[data-c]');
-    if (!c) return;
-    const on = c.getAttribute('aria-pressed') !== 'true';
-    c.setAttribute('aria-pressed', String(on));
-    state.sources = on ? [...state.sources, c.dataset.c] : state.sources.filter((s) => s !== c.dataset.c);
-    root.querySelector('[data-conn-note]').textContent = state.sources.length ? `${state.sources.length} connecteur${state.sources.length > 1 ? 's' : ''} demandé${state.sources.length > 1 ? 's' : ''}. En attendant, l’IA travaille sur les données de démonstration.` : 'Les connecteurs « Bientôt » : nous vous prévenons dès leur ouverture.';
-  });
-}
 
-// 4 · Analyse par l'IA
+// 3 · Analyse par l'IA
 async function analyze() {
   const tasks = ['Lecture de 90 jours d’activité', 'Détection des tendances', 'Recherche d’activités inhabituelles', 'Calcul du score de santé', 'Préparation de vos premiers insights'];
   show(`
-    <span class="ob-k mono">Étape 4 sur 5</span>
+    <span class="ob-k mono">Étape 3 sur 4</span>
     <div class="ob-scan" aria-hidden="true"><i></i><i></i><i></i><span>${icon('spark', 22)}</span></div>
     <h1>Analyse de votre workspace…</h1>
     <p class="ob-sub">L’IA parcourt vos données. Quelques secondes.</p>
     <ul class="ob-tasks">${tasks.map((t) => `<li><span class="ob-tick"></span>${t}</li>`).join('')}</ul>
     <div class="ob-meter"><span class="mono" data-meter>░░░░░░░░░░</span><span class="mono" data-meter-p>0 %</span></div>`);
-  await api.saveOnboarding({ name: state.name, email: state.email, goals: state.goals, sources: state.sources });
+  await api.saveOnboarding({ name: state.name, email: state.email, goals: state.goals });
   const lis = [...root.querySelectorAll('.ob-tasks li')];
   const meter = root.querySelector('[data-meter]');
   const mp = root.querySelector('[data-meter-p]');
@@ -168,13 +142,13 @@ async function analyze() {
   next();
 }
 
-// 5 · Prêt (aha moment)
+// 4 · Prêt (aha moment)
 function ready() {
   const keys = [...new Set([...state.goals, ...FALLBACK])].slice(0, 3);
   show(`
-    <span class="ob-k mono">Étape 5 sur 5</span>
+    <span class="ob-k mono">Étape 4 sur 4</span>
     <h1>Vos premiers insights sont prêts.</h1>
-    <p class="ob-sub">Voici ce que l’IA a trouvé dans les données de démonstration${state.sources.length ? ' (vos connecteurs seront branchés dès leur ouverture)' : ''}.</p>
+    <p class="ob-sub">Voici ce que l’IA a trouvé dans les données de démonstration.</p>
     <ul class="ob-ins">${keys.map((k, i) => {
       const x = FIRST_INSIGHTS[k];
       return `<li style="--d:${i * 0.12}s"><span class="ob-opt-ic">${icon(x.ic, 18)}</span><div><small>${x.k}</small><b>${x.t}</b><p>${x.d}</p></div></li>`;

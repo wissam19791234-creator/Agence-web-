@@ -1,16 +1,15 @@
-// Paramètres : profil, workspace, sources de données (état vide), notifications, équipe,
+// Paramètres : profil, workspace, notifications, équipe,
 // abonnement, zone sensible.
 import { api } from '../../shared/api.js';
-import { CONFIG } from '../../config.js';
 import { icon } from '../../shared/icons.js';
 import { href } from '../../shared/paths.js';
 import { esc, wait } from '../../shared/ui.js';
-import { pageHead, empty } from '../widgets.js';
+import { pageHead } from '../widgets.js';
 
-const TABS = [['profile', 'Profil', 'users'], ['sources', 'Sources de données', 'database'], ['notifications', 'Notifications', 'bell'], ['team', 'Équipe', 'users'], ['billing', 'Abonnement', 'doc'], ['danger', 'Zone sensible', 'alert']];
+const TABS = [['profile', 'Profil', 'users'], ['notifications', 'Notifications', 'bell'], ['team', 'Équipe', 'users'], ['billing', 'Abonnement', 'doc'], ['danger', 'Zone sensible', 'alert']];
 
 export async function render(el, app) {
-  const [s, sources] = await Promise.all([api.session(), api.sources()]);
+  const s = await api.session();
   el.innerHTML = `
     ${pageHead({ title: 'Paramètres', sub: 'Workspace « Maison Demo »' })}
     <div class="settings">
@@ -25,16 +24,6 @@ export async function render(el, app) {
           </form>
         </section>
 
-        <section class="card spane" id="sources">
-          <h2>Sources de données</h2>
-          ${sources.some((x) => x.id !== 'demo')
-            ? `<ul class="srcs">${sources.map((x) => `<li>${icon('database', 15)}<b>${esc(x.name)}</b><span class="pill ${x.status === 'connected' ? 'pill--good' : 'pill--warn'}">${x.status === 'connected' ? 'Connectée' : 'En attente'}</span></li>`).join('')}</ul>`
-            : empty({ ic: 'database', title: 'Aucune source réelle connectée.', text: 'Connectez votre première source pour débloquer les insights IA sur vos propres données. En attendant, ce workspace utilise des données de démonstration.', action: '<button type="button" class="btn btn--primary" data-connect>Connecter des données</button>' })}
-          <div class="connectors" data-connectors hidden>
-            <p class="w-sub">Choisissez une source. Les connecteurs marqués « Bientôt » arrivent : nous vous prévenons dès leur ouverture.</p>
-            <ul>${CONFIG.integrations.map((i) => `<li><button type="button" class="conn" data-conn="${esc(i.name)}"><span class="integ-logo">${esc(i.name.split(/\s/).map((w) => w[0]).join('').slice(0, 2))}</span><b>${esc(i.name)}</b><span class="pill">${i.status === 'available' ? 'Disponible' : 'Bientôt'}</span></button></li>`).join('')}</ul>
-          </div>
-        </section>
 
         <section class="card spane" id="notifications">
           <h2>Notifications</h2>
@@ -58,7 +47,7 @@ export async function render(el, app) {
 
         <section class="card spane" id="billing">
           <h2>Abonnement</h2>
-          <div class="plan-now"><div><small>Offre actuelle</small><b>Free · workspace de démonstration</b></div><a class="btn btn--primary btn--sm" href="${href('/pricing/')}">Voir les offres</a></div>
+          <div class="plan-now"><div><small>Offre actuelle</small><b>Pro · workspace de démonstration</b></div><a class="btn btn--primary btn--sm" href="${href('/pricing/')}">Voir les offres</a></div>
         </section>
 
         <section class="card spane spane--danger" id="danger">
@@ -84,10 +73,7 @@ export async function render(el, app) {
     b.classList.remove('is-loading');
     app.toast('Profil enregistré.', { tone: 'success' });
   });
-  el.querySelector('[data-connect]')?.addEventListener('click', (e) => { e.currentTarget.closest('.empty').hidden = true; el.querySelector('[data-connectors]').hidden = false; });
   el.addEventListener('click', async (e) => {
-    const c = e.target.closest('[data-conn]');
-    if (c) { app.toast(`${c.dataset.conn} : nous vous prévenons dès l’ouverture du connecteur.`, { tone: 'success' }); c.querySelector('.pill').textContent = 'Demandé'; }
     const p = e.target.closest('[data-pref]');
     if (p) { const on = p.getAttribute('aria-checked') !== 'true'; p.setAttribute('aria-checked', String(on)); app.toast(on ? 'Notification activée.' : 'Notification désactivée.'); }
     if (e.target.closest('[data-reset]')) {

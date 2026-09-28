@@ -3,7 +3,7 @@ import '../styles/site.css';
 import '../styles/product.css';
 
 import { CONFIG } from '../config.js';
-import { initChrome, renderPricing, renderIntegrations, renderProof } from '../site/common.js';
+import { initChrome, renderPricing, renderProof } from '../site/common.js';
 import { mountDemo } from './demo.js';
 import { renderInsights, renderBento, renderCases } from './sections.js';
 import { mountCopilot } from '../shared/copilot-ui.js';
@@ -16,7 +16,6 @@ safe('demo', () => mountDemo(document.querySelector('[data-demo]')));
 safe('insights', () => renderInsights(document.querySelector('[data-insights]')));
 safe('bento', () => renderBento(document.querySelector('[data-bento]')));
 safe('cases', () => renderCases(document.querySelector('[data-cases]')));
-safe('integrations', () => renderIntegrations(document.querySelector('[data-integrations]')));
 safe('proof', () => renderProof(document.querySelector('[data-proof]')));
 safe('pricing', () => renderPricing(document.querySelector('[data-pricing]')));
 
