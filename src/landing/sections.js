@@ -3,7 +3,7 @@ import { INSIGHTS, INSIGHT_TYPES, HEALTH, BRIEFING, GOALS, REPORTS, AUTOMATION_T
 import { ring } from '../shared/charts.js';
 import { icon } from '../shared/icons.js';
 import { href } from '../shared/paths.js';
-import { esc, toast, wait, skeleton } from '../shared/ui.js';
+import { esc, fmt, reduced, toast, wait, skeleton } from '../shared/ui.js';
 
 const DETAILS = {
   i1: 'Source principale : trafic organique mobile, −18 % depuis la mise à jour de mardi.',
@@ -246,6 +246,71 @@ const CASES = [
   { k: 'Agence B2B', title: 'Un reporting qui mange le lundi', problem: 'Six heures de tableurs chaque semaine pour le comité.', solution: 'Rapport direction généré et envoyé chaque lundi à 8 h.', label: 'Reporting par semaine', b: '6 h', a: '10 min', bw: 100, aw: 8 },
   { k: 'Abonnements', title: 'Des clients qui partent en silence', problem: 'Les résiliations sont découvertes après coup.', solution: 'Score de risque et relance automatique avant le départ.', label: 'Clients à risque repérés à temps', b: '0 %', a: '7 sur 10', bw: 4, aw: 70 },
 ];
+
+/**
+ * Simulateur : l'utilisateur règle SES chiffres (visiteurs, conversion, panier) et voit
+ * l'effet de leviers simples. Estimation indicative, hypothèses affichées.
+ */
+export function renderSimulator(root) {
+  if (!root) return;
+  const LEVERS = [
+    { id: 'conv', label: '+0,4 pt de conversion', on: true },
+    { id: 'reactiv', label: '+5 % de clients relancés', on: true },
+    { id: 'basket', label: '+3 % de panier moyen', on: false },
+  ];
+  const SLIDERS = [
+    { id: 'visits', label: 'Visiteurs par mois', min: 1000, max: 100000, step: 1000, value: 20000, show: (v) => fmt.int(v) },
+    { id: 'conv', label: 'Taux de conversion', min: 0.5, max: 6, step: 0.1, value: 2, show: (v) => `${v.toFixed(1).replace('.', ',')} %` },
+    { id: 'basket', label: 'Panier moyen', min: 10, max: 300, step: 5, value: 60, show: (v) => `${fmt.int(v)} €` },
+  ];
+  root.innerHTML = `
+    <div class="sim-in">
+      <p class="sim-k">Vos chiffres</p>
+      ${SLIDERS.map((x) => `<label class="sim-row" for="sim-${x.id}"><span>${x.label}</span><b class="sim-v" data-v="${x.id}">${x.show(x.value)}</b>
+        <input type="range" id="sim-${x.id}" data-s="${x.id}" min="${x.min}" max="${x.max}" step="${x.step}" value="${x.value}" /></label>`).join('')}
+      <p class="sim-k">Leviers activés</p>
+      <div class="sim-levers">${LEVERS.map((l) => `<button type="button" class="sim-lever" data-l="${l.id}" aria-pressed="${l.on}">${l.label}</button>`).join('')}</div>
+    </div>
+    <div class="sim-out">
+      <div class="sim-now"><span>Aujourd’hui</span><b class="num" data-o="now">0 €</b><small>par mois</small></div>
+      <div class="sim-gain"><span>Avec les leviers</span><b class="num" data-o="gain">+0 €</b><small>par mois · <b class="num" data-o="year">+0 €</b> par an</small></div>
+      <div class="sim-bars" aria-hidden="true"><i data-b="now"></i><i data-b="after"></i></div>
+      <p class="sim-note">Estimation indicative calculée à partir de vos valeurs et des leviers cochés.</p>
+    </div>`;
+  const st = Object.fromEntries(SLIDERS.map((x) => [x.id, x.value]));
+  const lv = Object.fromEntries(LEVERS.map((l) => [l.id, l.on]));
+  const $ = (q) => root.querySelector(q);
+  const shown = { now: 0, gain: 0, year: 0 };
+  const tween = (key, to, prefix = '') => {
+    const el = $(`[data-o="${key}"]`); const from = shown[key]; shown[key] = to;
+    if (reduced()) { el.textContent = `${prefix}${fmt.int(to)} €`; return; }
+    const t0 = performance.now();
+    const step = (now) => { const k = Math.min(1, (now - t0) / 380); el.textContent = `${prefix}${fmt.int(from + (to - from) * (1 - Math.pow(1 - k, 3)))} €`; if (k < 1) requestAnimationFrame(step); };
+    requestAnimationFrame(step);
+  };
+  const calc = () => {
+    const now = st.visits * (st.conv / 100) * st.basket;
+    const after = st.visits * ((st.conv + (lv.conv ? 0.4 : 0)) / 100) * st.basket * (lv.reactiv ? 1.05 : 1) * (lv.basket ? 1.03 : 1);
+    const gain = after - now;
+    tween('now', now); tween('gain', gain, '+'); tween('year', gain * 12, '+');
+    const max = Math.max(after, 1);
+    $('[data-b="now"]').style.setProperty('--w', `${(now / max) * 100}%`);
+    $('[data-b="after"]').style.setProperty('--w', '100%');
+  };
+  root.addEventListener('input', (e) => {
+    const x = SLIDERS.find((y) => y.id === e.target.dataset.s); if (!x) return;
+    st[x.id] = +e.target.value; $(`[data-v="${x.id}"]`).textContent = x.show(st[x.id]);
+    e.target.style.setProperty('--p', `${((st[x.id] - x.min) / (x.max - x.min)) * 100}%`);
+    calc();
+  });
+  root.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-l]'); if (!b) return;
+    lv[b.dataset.l] = !lv[b.dataset.l]; b.setAttribute('aria-pressed', String(lv[b.dataset.l])); calc();
+  });
+  root.querySelectorAll('input[type=range]').forEach((r) => { const x = SLIDERS.find((y) => y.id === r.dataset.s); r.style.setProperty('--p', `${((x.value - x.min) / (x.max - x.min)) * 100}%`); });
+  const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { io.disconnect(); calc(); } }, { threshold: 0.3 });
+  io.observe(root);
+}
 
 export function renderCases(root) {
   if (!root) return;

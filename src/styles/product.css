@@ -136,5 +136,20 @@
 .ai-recos { display: grid; gap: 7px; }
 .ai-recos li { display: flex; gap: 9px; align-items: flex-start; font-weight: 500; }
 .ai-recos .ic { margin-top: 1px; flex: none; width: 18px; height: 18px; padding: 2px; border-radius: 50%; border: var(--bd); background: var(--mint); }
-.ai-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; padding-top: 12px; border-top: 1px dashed rgba(0, 0, 0, .25); }
+.ai-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.ai-follow { display: flex; flex-wrap: wrap; gap: 6px; padding-top: 10px; border-top: 1px dashed rgba(0, 0, 0, .25); }
+.ai-follow .cp-chip { height: 32px; font-size: 12.5px; }
+.ai-viz { padding: 12px 14px; border-radius: 16px; border: var(--bd); background: var(--sky); }
+.ai-big { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; }
+.ai-big b { font: 400 44px/1 var(--f-display); }
+.ai-big .trend { flex: none; }
+.ai-big span { font-size: 12px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; flex-basis: 100%; order: 3; }
+.ai-spark .spark { height: 56px; }
+.ai-progress { display: grid; gap: 8px; font-size: 13px; font-weight: 700; }
+.ai-bars { display: grid; gap: 8px; background: var(--paper); }
+.ai-bar { display: grid; grid-template-columns: minmax(92px, 34%) 1fr 54px; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; }
+.ai-bar i { height: 12px; border-radius: 99px; border: var(--bd); overflow: hidden; background: var(--paper); }
+.ai-bar em { display: block; height: 100%; width: var(--w); background: var(--violet); transform-origin: left; animation: grow .8s var(--ease) both; }
+.ai-bar em.is-bad { background: var(--ember); } .ai-bar em.is-now { background: #000; }
+.ai-bar b { text-align: right; font-weight: 800; }
 @keyframes rise { from { opacity: 0; transform: translateY(8px); } }

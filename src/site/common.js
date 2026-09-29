@@ -89,7 +89,7 @@ function initFaq() {
 }
 
 /** Tarifs Pro / Business / Entreprise avec bascule mensuel / annuel. */
-export function renderPricing(root) {
+export function renderPricing(root, { compact = false } = {}) {
   if (!root) return;
   const { plans, rows, yearlyDiscount, currency } = CONFIG.pricing;
   root.innerHTML = `
@@ -106,9 +106,9 @@ export function renderPricing(root) {
           <div class="plan-price"><b class="num" data-price="${p.price}">${fmt.int(p.price)}</b><span>${currency} HT<br />/ mois</span></div>
           <p class="plan-note" data-note>Facturé mensuellement</p>
           <a class="btn ${p.recommended ? 'btn--primary' : 'btn--secondary'} btn--lg plan-cta" href="${href(`/signup/?plan=${p.id}`)}">${esc(p.cta)}</a>
-          <ul class="plan-list">${rows.map(([k, l]) => `<li><span class="plan-k">${esc(l)}</span><span class="plan-v">${esc(p.limits[k])}</span></li>`).join('')}</ul>
+          <ul class="plan-list">${(compact ? rows.slice(0, 3) : rows).map(([k, l]) => `<li><span class="plan-k">${esc(l)}</span><span class="plan-v">${esc(p.limits[k])}</span></li>`).join('')}</ul>
         </article>`).join('')}
-    </div>`;
+    </div>${compact ? `<p class="plans-more"><a class="btn btn--secondary" href="${href('/pricing/')}">Comparer toutes les offres</a></p>` : ''}`;
   const btns = root.querySelectorAll('[data-period]');
   const apply = (period) => {
     btns.forEach((b) => { b.setAttribute('aria-checked', String(b.dataset.period === period)); });

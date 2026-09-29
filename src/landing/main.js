@@ -5,7 +5,7 @@ import '../styles/product.css';
 import { CONFIG } from '../config.js';
 import { initChrome, renderPricing, renderProof } from '../site/common.js';
 import { mountDemo } from './demo.js';
-import { renderInsights, renderBento, renderCases } from './sections.js';
+import { renderInsights, renderBento, renderSimulator } from './sections.js';
 import { mountCopilot } from '../shared/copilot-ui.js';
 import { IS_ARTIFACT } from '../shared/paths.js';
 
@@ -15,9 +15,9 @@ safe('chrome', initChrome);
 safe('demo', () => mountDemo(document.querySelector('[data-demo]')));
 safe('insights', () => renderInsights(document.querySelector('[data-insights]')));
 safe('bento', () => renderBento(document.querySelector('[data-bento]')));
-safe('cases', () => renderCases(document.querySelector('[data-cases]')));
+safe('simulator', () => renderSimulator(document.querySelector('[data-sim]')));
 safe('proof', () => renderProof(document.querySelector('[data-proof]')));
-safe('pricing', () => renderPricing(document.querySelector('[data-pricing]')));
+safe('pricing', () => renderPricing(document.querySelector('[data-pricing]'), { compact: true }));
 
 // Copilot : monté quand la section approche
 safe('copilot', () => {

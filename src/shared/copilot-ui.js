@@ -3,28 +3,44 @@
 import { api } from './api.js';
 import { SUGGESTIONS } from './copilot.js';
 import { icon } from './icons.js';
-import { esc, reduced, toast } from './ui.js';
+import { esc, reduced, toast, trendBadge } from './ui.js';
+import { sparkline } from './charts.js';
 
-const FOLLOW = ['Montre-moi la tendance sur 90 jours.', 'Crée un rapport à partir de cette analyse.', 'Quel impact sur mon objectif du mois ?'];
+const fmtV = (v, f) => (f === 'money' ? `${Math.round(v).toLocaleString('fr-FR')} €` : Math.round(v).toLocaleString('fr-FR'));
+const sign = (d) => `${d > 0 ? '+' : d < 0 ? '−' : ''}${Math.abs(d * 100).toFixed(0)} %`;
+
+/** Visuel de la réponse : grand chiffre, courbe, barres, comparaison ou progression. */
+function viz(v) {
+  if (!v) return '';
+  if (v.type === 'big') return `<div class="ai-viz ai-big"><b class="num">${esc(v.value)}</b><span>${esc(v.label)}</span>${v.delta != null ? trendBadge(v.delta) : ''}</div>`;
+  if (v.type === 'spark') return `<div class="ai-viz ai-spark">${sparkline(v.points, { cls: v.bad ? 'is-bad' : '', h: 56 })}</div>`;
+  if (v.type === 'progress') return `<div class="ai-viz ai-progress"><div class="bar bar--lg"><i style="--p:${(v.value * 100).toFixed(1)}%"></i></div><span>${esc(v.label)}</span></div>`;
+  if (v.type === 'compare') {
+    const max = Math.max(v.a[1], v.b[1]);
+    return `<div class="ai-viz ai-bars">${[v.a, v.b].map(([l, n], i) => `<div class="ai-bar"><span>${esc(l)}</span><i><em style="--w:${((n / max) * 100).toFixed(1)}%" class="${i ? 'is-now' : ''}"></em></i><b class="num">${fmtV(n, v.fmt)}</b></div>`).join('')}</div>`;
+  }
+  if (v.type === 'bars') {
+    const max = Math.max(...v.items.map(([, n]) => Math.abs(n))) || 1;
+    return `<div class="ai-viz ai-bars">${v.items.map(([l, n]) => `<div class="ai-bar"><span>${esc(l)}</span><i><em style="--w:${((Math.abs(n) / (v.share || v.score ? 1 : max)) * 100).toFixed(1)}%" class="${!v.share && !v.score && n < 0 ? 'is-bad' : ''}"></em></i><b class="num">${v.score ? Math.round(n * 100) : v.share ? `${Math.round(n * 100)} %` : sign(n)}</b></div>`).join('')}</div>`;
+  }
+  return '';
+}
 
 function answerCard(a) {
+  const act = a.actions?.[0];
   return `
     <div class="ai-answer">
       <p class="ai-title">${esc(a.title)}</p>
-      <p class="ai-analysis">${esc(a.analysis)}</p>
-      <div class="ai-detail" hidden>
-        <p class="ai-h">Explication</p>
-        <p>${esc(a.explanation)}</p>
-      </div>
-      <p class="ai-h">Données utilisées</p>
-      <dl class="ai-data">${a.data.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd class="num">${esc(v)}</dd></div>`).join('')}</dl>
-      <p class="ai-h">Recommandations</p>
-      <ul class="ai-recos">${a.recos.map((r) => `<li>${icon('check', 14)}<span>${esc(r)}</span></li>`).join('')}</ul>
-      <div class="ai-actions">
-        <button type="button" class="btn btn--primary btn--sm" data-ai-apply="${esc(a.actions[0] || 'Appliquer')}">${icon('check', 14)}Appliquer</button>
-        <button type="button" class="btn btn--secondary btn--sm" data-ai-detail>Voir le détail</button>
-        <button type="button" class="btn btn--ghost btn--sm" data-ai-follow>${icon('spark', 14)}Question de suivi</button>
-      </div>
+      ${a.analysis ? `<p class="ai-analysis">${esc(a.analysis)}</p>` : ''}
+      ${viz(a.viz)}
+      ${a.data?.length ? `<dl class="ai-data">${a.data.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd class="num">${esc(v)}</dd></div>`).join('')}</dl>` : ''}
+      ${a.recos?.length ? `<ul class="ai-recos">${a.recos.slice(0, 2).map((r) => `<li>${icon('check', 14)}<span>${esc(r)}</span></li>`).join('')}</ul>` : ''}
+      ${a.explanation ? `<div class="ai-detail" hidden><p>${esc(a.explanation)}</p></div>` : ''}
+      ${act || a.explanation ? `<div class="ai-actions">
+        ${act ? `<button type="button" class="btn btn--primary btn--sm" data-ai-apply="${esc(act)}">${icon('check', 14)}${esc(act)}</button>` : ''}
+        ${a.explanation ? '<button type="button" class="btn btn--secondary btn--sm" data-ai-detail>Pourquoi ?</button>' : ''}
+      </div>` : ''}
+      ${a.follow?.length ? `<div class="ai-follow">${a.follow.map((f) => `<button type="button" class="cp-chip" data-ai-ask>${esc(f)}</button>`).join('')}</div>` : ''}
     </div>`;
 }
 
@@ -94,23 +110,23 @@ export function mountCopilot(el, opts = {}) {
     const card = e.target.closest('.ai-answer');
     if (!card) return;
     const apply = e.target.closest('[data-ai-apply]');
-    if (apply) {
+    if (apply && !apply.disabled) {
+      const label = apply.dataset.aiApply;
       apply.classList.add('is-loading');
-      await new Promise((r) => setTimeout(r, 900));
+      await new Promise((r) => setTimeout(r, 700));
       apply.classList.remove('is-loading');
       apply.disabled = true;
-      apply.innerHTML = `${icon('check', 14)}Appliqué`;
-      toast(`${apply.dataset.aiApply} : c’est fait.`, { tone: 'success', action: { label: 'Annuler', run: () => { apply.disabled = false; apply.innerHTML = `${icon('check', 14)}Appliquer`; toast('Action annulée.'); } } });
+      apply.innerHTML = `${icon('check', 14)}Fait`;
+      toast(`${label} : c’est fait.`, { tone: 'success', action: { label: 'Annuler', run: () => { apply.disabled = false; apply.innerHTML = `${icon('check', 14)}${esc(label)}`; toast('Action annulée.'); } } });
     }
-    if (e.target.closest('[data-ai-detail]')) {
+    const det = e.target.closest('[data-ai-detail]');
+    if (det) {
       const d = card.querySelector('.ai-detail');
       d.hidden = !d.hidden;
-      e.target.closest('[data-ai-detail]').textContent = d.hidden ? 'Voir le détail' : 'Masquer le détail';
+      det.textContent = d.hidden ? 'Pourquoi ?' : 'Masquer';
     }
-    if (e.target.closest('[data-ai-follow]')) {
-      input.value = FOLLOW[Math.floor(Math.random() * FOLLOW.length)];
-      input.focus();
-    }
+    const f = e.target.closest('[data-ai-ask]');
+    if (f) ask(f.textContent);
   });
 
   if (opts.autoAsk) ask(opts.autoAsk);
