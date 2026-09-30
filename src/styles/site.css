@@ -292,12 +292,43 @@ html.is-locked { overflow: hidden; }
 .early-list span { font-size: 14px; color: var(--text-2); }
 .logos { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 40px; }
 .logos li { padding: 10px 18px; border-radius: var(--r-pill); border: var(--bd); font: 400 22px/1 var(--f-display); text-transform: uppercase; }
-.quotes { display: grid; gap: 14px; }
-@media (min-width: 900px) { .quotes { grid-template-columns: repeat(3, 1fr); } }
-.quote { padding: 26px; display: grid; gap: 16px; margin: 0; border-radius: var(--r-sheet); }
-.quote blockquote { margin: 0; font-size: 18px; font-weight: 600; line-height: 1.4; }
-.quote figcaption { display: grid; font-size: 13px; color: var(--text-3); }
-.quote figcaption b { color: var(--text); }
+/* Avis testeurs : 5 cartes « stickers » (carrousel sur mobile, mosaïque dès 900px) */
+.av { display: inline-block; width: var(--av); height: var(--av); flex: none; border-radius: 50%; }
+.av svg { display: block; }
+.quotes { display: grid; grid-auto-flow: column; grid-auto-columns: min(82%, 340px); gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 6px 2px 14px; margin: 0 calc(-1 * var(--gutter)); padding-inline: var(--gutter); scrollbar-width: none; }
+.quotes::-webkit-scrollbar { display: none; }
+@media (min-width: 900px) {
+  .quotes { grid-auto-flow: row; grid-template-columns: repeat(6, 1fr); overflow: visible; margin: 0; padding: 0; }
+  .quote:nth-child(-n+2) { grid-column: span 3; } .quote:nth-child(n+3) { grid-column: span 2; }
+  .quote:nth-child(-n+2) blockquote { font-size: 26px; }
+}
+.quote { position: relative; display: grid; align-content: space-between; gap: 22px; margin: 0; padding: 26px; min-height: 250px; border-radius: var(--r-sheet); border: var(--bd); background: var(--paper); scroll-snap-align: start; transition: transform var(--t); }
+.quote--0 { background: var(--violet); color: #fff; } .quote--1 { background: var(--sky); } .quote--2 { background: var(--lavender); } .quote--3 { background: var(--paper); } .quote--4 { background: var(--mint); }
+.quote:hover { transform: translateY(-4px) rotate(-.6deg); }
+.quote:nth-child(even):hover { transform: translateY(-4px) rotate(.6deg); }
+.quote blockquote { margin: 0; font-size: 20px; font-weight: 700; line-height: 1.28; letter-spacing: -.015em; text-wrap: pretty; }
+.quote-type { justify-self: start; display: inline-flex; align-items: center; height: 28px; padding: 0 12px; border-radius: var(--r-pill); border: var(--bd); background: var(--paper); color: #000; font: 700 11.5px/1 var(--f-sans); letter-spacing: .04em; text-transform: uppercase; }
+.quote-sample { position: absolute; top: 18px; right: 18px; padding: 5px 9px; border-radius: var(--r-pill); border: 1px dashed currentColor; font: 700 10.5px/1 var(--f-sans); letter-spacing: .04em; text-transform: uppercase; opacity: .75; }
+.quote figcaption { display: flex; align-items: center; gap: 12px; }
+.quote figcaption > span { display: grid; gap: 2px; }
+.quote figcaption b { font-size: 15.5px; font-weight: 800; }
+.quote figcaption small { font-size: 13px; font-weight: 600; opacity: .8; }
+.quote .av { transition: transform var(--t); }
+.quote:hover .av { transform: rotate(-8deg) scale(1.06); }
+.quotes-note { margin-top: 18px; text-align: center; color: var(--text-3); font-size: 13px; font-weight: 600; }
+/* Équipe */
+.team { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+@media (min-width: 900px) { .team { grid-template-columns: repeat(4, 1fr); } }
+.mate { position: relative; display: grid; justify-items: center; gap: 4px; padding: 28px 16px 24px; border-radius: var(--r-sheet); border: var(--bd); background: var(--paper); text-align: center; transition: transform var(--t); }
+.mate:hover { transform: translateY(-4px) rotate(-.8deg); }
+.mate .av { --av: clamp(92px, 12vw, 132px) !important; margin-bottom: 10px; transform: rotate(-4deg); transition: transform .35s var(--ease); }
+.mate:nth-child(even) .av { transform: rotate(4deg); }
+.mate:hover .av { transform: rotate(0) scale(1.07); }
+.mate b { font: 400 clamp(26px, 2.4vw, 34px)/1 var(--f-display); text-transform: uppercase; }
+.mate-role { margin-top: 4px; padding: 5px 12px; border-radius: var(--r-pill); border: var(--bd); font: 700 12px/1 var(--f-sans); letter-spacing: .03em; text-transform: uppercase; }
+.mate--0 .mate-role { background: var(--sun); } .mate--1 .mate-role { background: var(--mint); } .mate--2 .mate-role { background: var(--lavender); } .mate--3 .mate-role { background: var(--sky); }
+.mate small { margin-top: 6px; color: var(--text-3); font-size: 13.5px; font-weight: 600; }
+.mate .quote-sample { top: 14px; right: 14px; }
 
 /* ───────── Tarifs ───────── */
 .billing { position: relative; display: flex; width: max-content; margin: 0 auto 36px; padding: 4px; border-radius: var(--r-pill); border: var(--bd); background: var(--paper); }

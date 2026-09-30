@@ -6,6 +6,7 @@ import { displayLines, fitDisplayTitles } from '../shared/display.js';
 import { icon } from '../shared/icons.js';
 import { rewriteLinks, href } from '../shared/paths.js';
 import { esc, fmt, reduced } from '../shared/ui.js';
+import { avatar } from '../shared/avatars.js';
 
 export function initChrome() {
   rewriteLinks();
@@ -143,9 +144,16 @@ export function renderProof(root) {
   if (!root) return;
   const t = CONFIG.testimonials;
   if (t.length) {
-    root.innerHTML = `<div class="wrap"><header class="sec-head"><p class="eyebrow">Ils utilisent ${CONFIG.brand}</p><h2>Ce qu’en disent les équipes.</h2></header>
+    const sample = t.some((q) => q.sample);
+    root.innerHTML = `<div class="wrap"><header class="sec-head"><p class="eyebrow">Avis testeurs</p>
+      <h2 class="display sec-title">${displayLines('Ils ont<br />testé.')}</h2>
+      ${sticker('heart', { size: 76, rot: -12, cls: 'sec-stk sec-stk--l' })}${sticker('star', { size: 88, rot: 10, cls: 'sec-stk sec-stk--r' })}</header>
       ${CONFIG.logos.length ? `<ul class="logos">${CONFIG.logos.map((l) => `<li>${esc(l)}</li>`).join('')}</ul>` : ''}
-      <div class="quotes">${t.map((q) => `<figure class="card quote"><blockquote>« ${esc(q.quote)} »</blockquote><figcaption><b>${esc(q.name)}</b><span>${esc(q.role)} · ${esc(q.company)}</span></figcaption></figure>`).join('')}</div></div>`;
+      <div class="quotes">${t.map((q, i) => `<figure class="quote quote--${i % 5}">
+        <span class="quote-type">${esc(q.type || '')}</span>${q.sample ? '<span class="quote-sample">Exemple</span>' : ''}
+        <blockquote>« ${esc(q.quote)} »</blockquote>
+        <figcaption>${avatar(q.look, { size: 52 })}<span><b>${esc(q.name)}</b><small>${esc(q.role)}${q.company ? ` · ${esc(q.company)}` : ''}</small></span></figcaption></figure>`).join('')}</div>
+      ${sample ? '<p class="quotes-note">Profils d’exemple : les retours de nos testeurs arrivent bientôt.</p>' : ''}</div>`;
     return;
   }
   root.innerHTML = `<div class="wrap"><div class="early">
@@ -161,4 +169,15 @@ export function renderProof(root) {
       <li>${sticker('coin', { size: 44, rot: -10 })}<span><b>Tarif fondateur</b>Conservé tant que vous restez abonné.</span></li>
     </ul>
   </div></div>`;
+}
+
+/** Équipe : cartes avatar illustré, nom, rôle. */
+export function renderTeam(root) {
+  const team = CONFIG.team || [];
+  if (!root || !team.length) { root?.remove(); return; }
+  root.innerHTML = `<div class="wrap"><header class="sec-head"><p class="eyebrow">L’équipe</p>
+    <h2 class="display sec-title">${displayLines('Les humains<br />derrière l’IA.')}</h2>
+    ${sticker('spark', { size: 80, rot: -10, cls: 'sec-stk sec-stk--l' })}</header>
+    <ul class="team">${team.map((m, i) => `<li class="mate mate--${i % 4}">${avatar(m.look, { size: 132, label: m.name })}
+      <b>${esc(m.name)}</b><span class="mate-role">${esc(m.role)}</span><small>${esc(m.line || '')}</small>${m.sample ? '<span class="quote-sample">Exemple</span>' : ''}</li>`).join('')}</ul></div>`;
 }

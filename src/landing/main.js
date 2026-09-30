@@ -3,7 +3,7 @@ import '../styles/site.css';
 import '../styles/product.css';
 
 import { CONFIG } from '../config.js';
-import { initChrome, renderPricing, renderProof } from '../site/common.js';
+import { initChrome, renderPricing, renderProof, renderTeam } from '../site/common.js';
 import { mountDemo } from './demo.js';
 import { renderInsights, renderBento, renderSimulator } from './sections.js';
 import { mountCopilot } from '../shared/copilot-ui.js';
@@ -17,6 +17,7 @@ safe('insights', () => renderInsights(document.querySelector('[data-insights]'))
 safe('bento', () => renderBento(document.querySelector('[data-bento]')));
 safe('simulator', () => renderSimulator(document.querySelector('[data-sim]')));
 safe('proof', () => renderProof(document.querySelector('[data-proof]')));
+safe('team', () => renderTeam(document.querySelector('[data-team]')));
 safe('pricing', () => renderPricing(document.querySelector('[data-pricing]'), { compact: true }));
 
 // Copilot : monté quand la section approche

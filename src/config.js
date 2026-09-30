@@ -61,7 +61,22 @@ export const CONFIG = {
   // ───────── Preuves sociales ─────────
   // Laissez vide tant que vous n'avez pas de retours réels et autorisés :
   // la page affiche alors le programme « Premières équipes » au lieu de faux avis.
-  // Format : { quote, name, role, company }
-  testimonials: [],
+  // Format : { quote, name, role, type, look, sample }
+  // `sample: true` affiche un badge « Exemple » : retirez-le uniquement pour un retour réel et autorisé.
+  // `look` décrit l'avatar illustré (voir src/shared/avatars.js).
+  testimonials: [
+    { type: 'E-commerce', name: 'Camille R.', role: 'Fondatrice, boutique en ligne', quote: 'Le briefing du matin remplace mes trois tableaux. Je sais quoi faire avant mon café.', look: { bg: 'lav', shirt: 'ember', skin: 0, hair: 2, style: 'long' }, sample: true },
+    { type: 'Indépendant', name: 'Karim B.', role: 'Consultant', quote: 'Je vois en un coup d’œil quels clients relancer.', look: { bg: 'sun', shirt: 'blue', skin: 2, hair: 0, style: 'short', beard: true }, sample: true },
+    { type: 'Agence', name: 'Léa M.', role: 'Directrice d’agence', quote: 'Les rapports clients sont prêts en quelques clics.', look: { bg: 'mint', shirt: 'violet', skin: 1, hair: 1, style: 'bun', glasses: true }, sample: true },
+    { type: 'Commerce', name: 'Thomas D.', role: 'Gérant de magasin', quote: 'Une alerte quand une journée décroche. Je réagis le jour même.', look: { bg: 'sky', shirt: 'mint', skin: 0, hair: 4, style: 'bald', glasses: true, beard: true }, sample: true },
+    { type: 'Startup', name: 'Aïcha N.', role: 'Responsable croissance', quote: 'Je pose ma question à l’IA, elle me répond avec mes chiffres.', look: { bg: 'ember', shirt: 'sun', skin: 4, hair: 0, style: 'curly' }, sample: true },
+  ],
+  // Équipe. Même principe : `sample: true` tant que ce ne sont pas les vraies personnes.
+  team: [
+    { name: 'Sami', role: 'Fondateur', line: 'Vision & produit', look: { bg: 'sun', shirt: 'violet', skin: 2, hair: 0, style: 'short' }, sample: true },
+    { name: 'Inès', role: 'Design', line: 'Chaque écran, chaque sticker', look: { bg: 'mint', shirt: 'ember', skin: 1, hair: 1, style: 'long' }, sample: true },
+    { name: 'Yanis', role: 'IA & données', line: 'Le cerveau du Copilote', look: { bg: 'lav', shirt: 'blue', skin: 3, hair: 0, style: 'curly', glasses: true }, sample: true },
+    { name: 'Julie', role: 'Ingénierie', line: 'Rapide et fiable', look: { bg: 'sky', shirt: 'mint', skin: 0, hair: 3, style: 'bun' }, sample: true },
+  ],
   logos: [], // ex. ['Nom client 1', 'Nom client 2']
 };
