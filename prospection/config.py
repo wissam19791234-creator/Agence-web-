@@ -1,7 +1,7 @@
 """Réglages de la prospection. Modifiez ce fichier, pas le code."""
 
 # ───────── Expéditeur (apparaît dans les emails) ─────────
-SENDER_NAME = "Sidi"
+SENDER_NAME = "Clément"
 SENDER_COMPANY = "Scalify"
 # Adresse de contact affichée dans le User-Agent : les sites et OpenStreetMap
 # demandent de pouvoir joindre l'auteur des requêtes.
@@ -9,7 +9,7 @@ CONTACT_EMAIL = "scalifyfr@gmail.com"
 
 # ───────── Offre de lancement (15 premiers clients) ─────────
 FOUNDER_SEATS = 15                       # nombre de places fondateurs
-FOUNDER_DISCOUNT = "-30 % pendant 12 mois"  # à adapter : c'est ce qui est promis dans les messages
+FOUNDER_DISCOUNT = "-30 % sur l’abonnement annuel"  # à adapter : c'est ce qui est promis dans les messages
 PRICE_LINE_FR = "à partir de 49 € par mois (hors frais de mise en place), sans engagement"
 PRICE_LINE_EN = "from €49 a month (plus a one-off setup fee), no commitment"
 DEMO_URL = "https://calendly.com/wissam19791234/demo-scalify-15-min"  # prise de rendez-vous démo (Calendly)

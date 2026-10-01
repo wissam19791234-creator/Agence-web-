@@ -143,9 +143,9 @@ def founder_line(lang):
     link = f" {config.FOUNDER_URL}" if config.FOUNDER_URL else ""
     if lang == "fr":
         return (f"\nP.S. Pour l’ouverture de {config.SENDER_COMPANY}, les {config.FOUNDER_SEATS} premiers commerces "
-                f"ont {config.FOUNDER_DISCOUNT}. Il reste {seats_left()} place(s).{link}\n")
+                f"ont {config.FOUNDER_DISCOUNT}. Il reste {seats_left()} place{'s' if seats_left() > 1 else ''}.{link}\n")
     return (f"\nP.S. For the launch of {config.SENDER_COMPANY}, the first {config.FOUNDER_SEATS} businesses get "
-            f"{config.FOUNDER_DISCOUNT}. {seats_left()} spot(s) left.{link}\n")
+            f"{config.FOUNDER_DISCOUNT}. {seats_left()} spot{'s' if seats_left() > 1 else ''} left.{link}\n")
 
 
 def followup(row, step):
@@ -167,9 +167,9 @@ def offer_short(lang):
     link = f" {config.FOUNDER_URL}" if config.FOUNDER_URL else ""
     if lang == "fr":
         return (f"\n🎁 Lancement : les {config.FOUNDER_SEATS} premiers commerces ont {config.FOUNDER_DISCOUNT}. "
-                f"Il reste {seats_left()} place(s).{link}\n")
+                f"Il reste {seats_left()} place{'s' if seats_left() > 1 else ''}.{link}\n")
     return (f"\n🎁 Launch offer: the first {config.FOUNDER_SEATS} businesses get {config.FOUNDER_DISCOUNT}. "
-            f"{seats_left()} spot(s) left.{link}\n")
+            f"{seats_left()} spot{'s' if seats_left() > 1 else ''} left.{link}\n")
 
 
 def _price(lang):
