@@ -38,8 +38,7 @@ Avec {company}, on s’en occupe pour vous :
 
 Vous, vous validez en un clic. Deux minutes par semaine.
 {offer}
-On vous montre votre futur espace en 15 minutes ? Répondez « OUI », ou choisissez directement un créneau :
-{demo}
+Envie d’en profiter ? Répondez simplement « OUI » et on prépare votre espace.
 
 {sender} · {company}
 {price_cap}
@@ -61,8 +60,7 @@ With {company}, we handle it for you:
 
 You just approve in one click. Two minutes a week.
 {offer}
-Want to see your future space in 15 minutes? Reply “YES”, or pick a time right away:
-{demo}
+Interested? Just reply “YES” and we’ll set up your space.
 
 {sender} · {company}
 {price_cap}
@@ -73,13 +71,13 @@ DM_FR = """Bonjour ! Je suis tombé sur {name} et {opening}
 
 On lance {company} : site, fiche Google, avis, posts et une IA qui répond à vos clients 24 h/24. Tout est géré pour vous, vous validez en un clic.
 {offer}
-Je vous montre votre espace en 15 minutes ? 🙂 Créneaux ici : {demo}"""
+Ça vous intéresse ? Répondez « OUI » et on prépare votre espace 🙂"""
 
 DM_EN = """Hi! I came across {name} and {opening}
 
 We’re launching {company}: website, Google listing, reviews, posts and an AI answering your customers 24/7. All handled for you, you approve in one click.
 {offer}
-Want a 15-minute look at your space? 🙂 Book here: {demo}"""
+Interested? Reply “YES” and we’ll set up your space 🙂"""
 
 FOLLOWUP_FR = [
     """Bonjour,
@@ -88,7 +86,7 @@ Je reviens vers vous au sujet de {company} pour {name}.
 
 En bref : site, fiche Google, avis, réseaux et un assistant IA qui répond à vos clients, tout est géré pour vous. C’est {price}.
 
-Une démo de 15 minutes pour voir votre espace ? Répondez « oui », ou réservez ici : {demo}
+Envie d’en profiter ? Répondez simplement « OUI » et on prépare votre espace.
 
 Bonne journée,
 {sender}
@@ -110,7 +108,7 @@ Following up about {company} for {name}.
 
 In short: website, Google listing, reviews, social media and an AI assistant answering your customers, all handled for you. It’s {price}.
 
-A 15-minute demo to see your space? Reply “yes”, or book here: {demo}
+Interested? Just reply “YES” and we’ll set up your space.
 
 Have a great day,
 {sender}
@@ -152,7 +150,7 @@ def followup(row, step):
     lang = "fr" if row.get("lang", "fr") == "fr" else "en"
     tpl = (FOLLOWUP_FR if lang == "fr" else FOLLOWUP_EN)[step]
     body = tpl.format(name=row["name"], sender=config.SENDER_NAME, founder=founder_line(lang),
-                      company=config.SENDER_COMPANY, price=_price(lang), demo=config.DEMO_URL)
+                      company=config.SENDER_COMPANY, price=_price(lang))
     subject = row["subject"] if row["subject"].lower().startswith("re:") else "Re: " + row["subject"]
     return subject, body
 
@@ -210,7 +208,7 @@ def build(b, lang, problem):
     subject = SUBJECT[lang].format(name=b["name"])
     fields = {"opening": opening, "sender": config.SENDER_NAME, "company": config.SENDER_COMPANY,
               "price": _price(lang), "name": b["name"], "city": b.get("city", ""), "offer": offer_short(lang),
-              "price_cap": _price(lang)[0].upper() + _price(lang)[1:] + ".", "demo": config.DEMO_URL}
+              "price_cap": _price(lang)[0].upper() + _price(lang)[1:] + "."}
     body = (EMAIL_FR if lang == "fr" else EMAIL_EN).format(**fields)
     dm = (DM_FR if lang == "fr" else DM_EN).format(**fields)
     wa = whatsapp_number(b)
