@@ -5,70 +5,84 @@ from urllib.parse import quote
 import config
 
 OPEN_FR = {
-    "none": "je n’ai pas trouvé de site web clair associé à votre fiche.",
-    "maps_only": "je n’ai trouvé que votre fiche Google, sans site web clair associé.",
-    "social_only": "je n’ai trouvé que votre page {social}, sans site web clair.",
+    "none": "je n’ai pas trouvé de site web associé à votre fiche.",
+    "maps_only": "je n’ai trouvé que votre fiche Google, sans site web.",
+    "social_only": "je n’ai trouvé que votre page {social}, sans site web.",
     "broken": "votre site ne s’affichait pas correctement quand j’ai essayé de l’ouvrir.",
     "outdated": "votre site semble un peu ancien ({reason}).",
-    "basic": "je n’ai pas trouvé de site web clair associé à votre fiche.",
+    "basic": "je me suis dit que votre présence en ligne pourrait vous prendre moins de temps.",
+    "modern": "je me suis dit que votre présence en ligne pourrait vous prendre moins de temps.",
 }
 OPEN_EN = {
-    "none": "I couldn’t find a clear website linked to your listing.",
-    "maps_only": "I only found your Google listing, with no clear website attached.",
-    "social_only": "I only found your {social} page, with no clear website.",
+    "none": "I couldn’t find a website linked to your listing.",
+    "maps_only": "I only found your Google listing, with no website.",
+    "social_only": "I only found your {social} page, with no website.",
     "broken": "your website didn’t load properly when I tried to open it.",
     "outdated": "your website looks a little dated ({reason}).",
-    "basic": "I couldn’t find a clear website linked to your listing.",
+    "basic": "I thought your online presence could take up less of your time.",
+    "modern": "I thought your online presence could take up less of your time.",
 }
 
 EMAIL_FR = """Bonjour,
 
-Je suis tombé sur votre établissement en cherchant des entreprises locales, et {opening}
+Je suis tombé sur {name} en cherchant des commerces à {city}, et {opening}
 
-Un site simple pourrait aider vos clients à trouver rapidement les informations importantes : vos services, vos horaires, vos photos, votre adresse, un bouton pour vous appeler, un itinéraire Google Maps et un formulaire de contact.
+Je lance {company}, un abonnement qui gère toute la présence en ligne des commerces :
+- un site professionnel, en ligne en 7 jours
+- votre fiche Google tenue à jour
+- une réponse à chaque avis
+- des posts réguliers sur vos réseaux
+- un assistant IA qui répond à vos clients 24 h/24
 
-L’objectif n’est pas de créer quelque chose de compliqué, mais une page professionnelle qui répond aux questions des clients avant même qu’ils vous appellent ou se déplacent.
+Vous validez en un clic, on s’occupe du reste. C’est {price}.
 
-Je peux vous préparer gratuitement une première maquette pour vous montrer à quoi cela pourrait ressembler pour votre activité.
+Je peux vous montrer à quoi ressemblerait votre espace en 10 minutes, par téléphone ou en visio. Ça vous dit ?
 
 Bonne journée,
-{sender}
+{sender} · {company}
 
 Si vous ne souhaitez pas être recontacté, répondez simplement STOP."""
 
 EMAIL_EN = """Hello,
 
-I came across your business while looking for local companies, and {opening}
+I came across {name} while looking at local businesses in {city}, and {opening}
 
-A simple website could help your customers quickly find the key information: your services, opening hours, photos, address, a call button, Google Maps directions and a contact form.
+I’m launching {company}, a subscription that runs a local business’s whole online presence:
+- a professional website, live in 7 days
+- your Google listing kept up to date
+- a reply to every review
+- regular posts on your social media
+- an AI assistant that answers your customers 24/7
 
-The goal isn’t to build something complicated, but a professional page that answers customers’ questions before they even call or visit.
+You approve in one click, we handle the rest. It’s {price}.
 
-I can prepare a first mock-up for free to show you what it could look like for your business.
+I can show you what your space would look like in 10 minutes, by phone or video call. Interested?
 
 Have a great day,
-{sender}
+{sender} · {company}
 
 If you’d rather not hear from me again, just reply STOP."""
 
-DM_FR = """Bonjour, je suis tombé sur votre activité et {opening}
+DM_FR = """Bonjour ! Je suis tombé sur {name} et {opening}
 
-Je crée des sites simples pour les commerces, avec les infos utiles pour les clients : services, horaires, photos, adresse, bouton d’appel et contact rapide.
+Je lance {company} : on gère votre site, votre fiche Google, vos avis et vos posts, et une IA répond à vos clients 24 h/24. Vous validez en un clic. C’est {price}.
 
-Ça donne une image plus professionnelle et ça évite aux clients de chercher les informations partout. Je peux vous envoyer une petite idée de maquette gratuite si ça vous intéresse."""
+Je peux vous montrer votre espace en 10 minutes si ça vous intéresse ?"""
 
-DM_EN = """Hi, I came across your business and {opening}
+DM_EN = """Hi! I came across {name} and {opening}
 
-I build simple websites for local businesses, with the info customers need: services, opening hours, photos, address, a call button and quick contact.
+I’m launching {company}: we run your website, Google listing, reviews and posts, and an AI answers your customers 24/7. You approve in one click. It’s {price}.
 
-It looks more professional and saves customers from searching everywhere. I can send you a quick free mock-up idea if you’re interested."""
+Happy to show you your space in 10 minutes if you’re interested?"""
 
 FOLLOWUP_FR = [
     """Bonjour,
 
-Je me permets de revenir vers vous au sujet de mon message pour {name}.
+Je reviens vers vous au sujet de {company} pour {name}.
 
-Je peux vous préparer une maquette de votre page (services, horaires, photos, bouton d’appel) pour que vous jugiez sur pièce. Il suffit de répondre « oui ».
+En bref : site, fiche Google, avis, réseaux et un assistant IA qui répond à vos clients, tout est géré pour vous. C’est {price}.
+
+Une démo de 10 minutes pour voir votre espace ? Répondez « oui » avec le moment qui vous arrange.
 
 Bonne journée,
 {sender}
@@ -76,7 +90,7 @@ Bonne journée,
 Si vous ne souhaitez pas être recontacté, répondez simplement STOP.""",
     """Bonjour,
 
-Dernier message de ma part. Si un site simple pour {name} vous intéresse un jour, répondez simplement à cet email et je vous envoie la maquette.
+Dernier message de ma part. Si un jour vous voulez qu’on gère votre présence en ligne pour {name}, répondez simplement à cet email.
 
 Bonne continuation,
 {sender}
@@ -86,9 +100,11 @@ Vous ne recevrez plus de relance. Répondez STOP pour être retiré de ma liste.
 FOLLOWUP_EN = [
     """Hello,
 
-Just following up on my message about {name}.
+Following up about {company} for {name}.
 
-I can prepare a mock-up of your page (services, opening hours, photos, call button) so you can see it for yourself. Just reply “yes”.
+In short: website, Google listing, reviews, social media and an AI assistant answering your customers, all handled for you. It’s {price}.
+
+A 10-minute demo to see your space? Just reply “yes” with a time that suits you.
 
 Have a great day,
 {sender}
@@ -96,7 +112,7 @@ Have a great day,
 If you’d rather not hear from me again, just reply STOP.""",
     """Hello,
 
-Last message from me. If a simple website for {name} ever interests you, just reply to this email and I’ll send the mock-up.
+Last message from me. If you ever want us to run your online presence for {name}, just reply to this email.
 
 All the best,
 {sender}
@@ -129,12 +145,17 @@ def founder_line(lang):
 def followup(row, step):
     lang = "fr" if row.get("lang", "fr") == "fr" else "en"
     tpl = (FOLLOWUP_FR if lang == "fr" else FOLLOWUP_EN)[step]
-    body = tpl.format(name=row["name"], sender=config.SENDER_NAME, founder=founder_line(lang))
+    body = tpl.format(name=row["name"], sender=config.SENDER_NAME, founder=founder_line(lang),
+                      company=config.SENDER_COMPANY, price=_price(lang))
     subject = row["subject"] if row["subject"].lower().startswith("re:") else "Re: " + row["subject"]
     return subject, body
 
 
-SUBJECT = {"fr": "Une page web pour {name} ?", "en": "A website for {name}?"}
+SUBJECT = {"fr": "{name} : votre présence en ligne, gérée pour vous", "en": "{name}: your online presence, handled for you"}
+
+
+def _price(lang):
+    return config.PRICE_LINE_FR if lang == "fr" else config.PRICE_LINE_EN
 MOBILE_PREFIX = {"33": ("6", "7"), "32": ("4",), "41": ("7",), "352": ("6",), "212": ("6", "7"), "61": ("4",),
                  "971": ("5",), "44": ("7",), "1": tuple("23456789")}
 
@@ -169,8 +190,10 @@ def build(b, lang, problem):
     lang = "fr" if lang == "fr" else "en"
     opening = _opening(b, lang, problem)
     subject = SUBJECT[lang].format(name=b["name"])
-    body = (EMAIL_FR if lang == "fr" else EMAIL_EN).format(opening=opening, sender=config.SENDER_NAME)
-    dm = (DM_FR if lang == "fr" else DM_EN).format(opening=opening)
+    fields = {"opening": opening, "sender": config.SENDER_NAME, "company": config.SENDER_COMPANY,
+              "price": _price(lang), "name": b["name"], "city": b.get("city", "")}
+    body = (EMAIL_FR if lang == "fr" else EMAIL_EN).format(**fields)
+    dm = (DM_FR if lang == "fr" else DM_EN).format(**fields)
     offer = founder_line(lang)
     if offer:
         stop = "\n\nSi vous ne souhaitez" if lang == "fr" else "\n\nIf you’d rather"
