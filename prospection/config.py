@@ -12,6 +12,7 @@ FOUNDER_SEATS = 15                       # nombre de places fondateurs
 FOUNDER_DISCOUNT = "-30 % pendant 12 mois"  # à adapter : c'est ce qui est promis dans les messages
 PRICE_LINE_FR = "à partir de 49 € par mois (hors frais de mise en place), sans engagement"
 PRICE_LINE_EN = "from €49 a month (plus a one-off setup fee), no commitment"
+DEMO_URL = "https://calendly.com/wissam19791234/demo-scalify-15-min"  # prise de rendez-vous démo (Calendly)
 FOUNDER_URL = ""                         # lien de réservation sur votre site (ajouté aux messages s'il est rempli)
 # Les places restantes sont calculées depuis results/crm.csv (python crm.py client <email>).
 # Quand il n'en reste plus, l'offre disparaît automatiquement des messages.
