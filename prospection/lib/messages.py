@@ -63,6 +63,77 @@ I build simple websites for local businesses, with the info customers need: serv
 
 It looks more professional and saves customers from searching everywhere. I can send you a quick free mock-up idea if you’re interested."""
 
+FOLLOWUP_FR = [
+    """Bonjour,
+
+Je me permets de revenir vers vous au sujet de mon message pour {name}.
+
+Je peux vous préparer une maquette de votre page (services, horaires, photos, bouton d’appel) pour que vous jugiez sur pièce. Il suffit de répondre « oui ».
+
+Bonne journée,
+{sender}
+{founder}
+Si vous ne souhaitez pas être recontacté, répondez simplement STOP.""",
+    """Bonjour,
+
+Dernier message de ma part. Si un site simple pour {name} vous intéresse un jour, répondez simplement à cet email et je vous envoie la maquette.
+
+Bonne continuation,
+{sender}
+{founder}
+Vous ne recevrez plus de relance. Répondez STOP pour être retiré de ma liste.""",
+]
+FOLLOWUP_EN = [
+    """Hello,
+
+Just following up on my message about {name}.
+
+I can prepare a mock-up of your page (services, opening hours, photos, call button) so you can see it for yourself. Just reply “yes”.
+
+Have a great day,
+{sender}
+{founder}
+If you’d rather not hear from me again, just reply STOP.""",
+    """Hello,
+
+Last message from me. If a simple website for {name} ever interests you, just reply to this email and I’ll send the mock-up.
+
+All the best,
+{sender}
+{founder}
+You won’t get any more follow-ups. Reply STOP to be removed from my list.""",
+]
+
+_SEATS = {}
+
+
+def seats_left():
+    if "n" not in _SEATS:
+        from lib.crm import CRM
+        _SEATS["n"] = CRM().seats_left()
+    return _SEATS["n"]
+
+
+def founder_line(lang):
+    """Offre de lancement, tant qu'il reste des places (sinon chaîne vide)."""
+    if seats_left() <= 0:
+        return ""
+    link = f" {config.FOUNDER_URL}" if config.FOUNDER_URL else ""
+    if lang == "fr":
+        return (f"\nP.S. Pour l’ouverture de {config.SENDER_COMPANY}, les {config.FOUNDER_SEATS} premiers commerces "
+                f"ont {config.FOUNDER_DISCOUNT}. Il reste {seats_left()} place(s).{link}\n")
+    return (f"\nP.S. For the launch of {config.SENDER_COMPANY}, the first {config.FOUNDER_SEATS} businesses get "
+            f"{config.FOUNDER_DISCOUNT}. {seats_left()} spot(s) left.{link}\n")
+
+
+def followup(row, step):
+    lang = "fr" if row.get("lang", "fr") == "fr" else "en"
+    tpl = (FOLLOWUP_FR if lang == "fr" else FOLLOWUP_EN)[step]
+    body = tpl.format(name=row["name"], sender=config.SENDER_NAME, founder=founder_line(lang))
+    subject = row["subject"] if row["subject"].lower().startswith("re:") else "Re: " + row["subject"]
+    return subject, body
+
+
 SUBJECT = {"fr": "Une page web pour {name} ?", "en": "A website for {name}?"}
 MOBILE_PREFIX = {"33": ("6", "7"), "32": ("4",), "41": ("7",), "352": ("6",), "212": ("6", "7"), "61": ("4",),
                  "971": ("5",), "44": ("7",), "1": tuple("23456789")}
@@ -100,6 +171,11 @@ def build(b, lang, problem):
     subject = SUBJECT[lang].format(name=b["name"])
     body = (EMAIL_FR if lang == "fr" else EMAIL_EN).format(opening=opening, sender=config.SENDER_NAME)
     dm = (DM_FR if lang == "fr" else DM_EN).format(opening=opening)
+    offer = founder_line(lang)
+    if offer:
+        stop = "\n\nSi vous ne souhaitez" if lang == "fr" else "\n\nIf you’d rather"
+        body = body.replace(stop, "\n" + offer.rstrip("\n") + stop, 1)
+        dm += "\n\n" + offer.strip().removeprefix("P.S. ")
     wa = whatsapp_number(b)
     m = {
         "email_subject": subject,

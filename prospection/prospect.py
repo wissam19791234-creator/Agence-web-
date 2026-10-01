@@ -20,6 +20,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import config  # noqa: E402
 from lib import analyze, mailer, messages, output, scoring, sources  # noqa: E402
+from lib.crm import CRM  # noqa: E402
 from lib.dnc import ContactLog, DoNotContact  # noqa: E402
 from lib.net import Net  # noqa: E402
 
@@ -129,6 +130,40 @@ def run_one(country, city, sector, limit, args, ctx):
     return kept[:limit]
 
 
+def make_ctx(args, dnc):
+    net = Net()
+    ctx = {"net": net, "ws": sources.WebSearch(net, enabled=not args.no_web_search), "dnc": dnc,
+           "log": ContactLog(), "seen": set(), "render": analyze.playwright_renderer() if args.js else None}
+    if args.js and not ctx["render"]:
+        print("(info) Playwright non installé : rendu JavaScript désactivé.")
+    return ctx
+
+
+def run_batch(args, ctx, limit, stamp, max_results=None):
+    """Parcourt villes × secteurs de config.py ; reprend où il s'était arrêté."""
+    state = json.loads(STATE.read_text()) if STATE.exists() else {"done": [], "seen": []}
+    ctx["seen"] |= set(state["seen"])
+    results = []
+    countries = [args.country] if args.country else list(config.ZONES)
+    for country in countries:
+        for city in ([args.city] if args.city else config.ZONES.get(country, [])):
+            for sector in ([args.sector] if args.sector else config.SECTORS):
+                key = f"{country}|{city}|{sector}"
+                if key in state["done"]:
+                    continue
+                results += run_one(country, city, sector, limit, args, ctx)
+                state["done"].append(key)
+                state["seen"] = sorted(ctx["seen"])
+                STATE.parent.mkdir(exist_ok=True)
+                STATE.write_text(json.dumps(state))
+                output.save(results, stamp)  # sauvegarde après chaque lot : rien n'est perdu
+                if max_results and len(results) >= max_results:
+                    return results
+    if not results:
+        print("Aucun nouveau lot (déjà traités). Supprimez results/batch_state.json pour tout recommencer.")
+    return results
+
+
 def main():
     args = parse_args()
     dnc = DoNotContact()
@@ -136,39 +171,18 @@ def main():
         print("Ajouté à do_not_contact.csv" if dnc.add(args.stop) else "Déjà présent dans do_not_contact.csv")
         return
     if args.sync_stop:
-        mailer.sync_stop(dnc)
+        mailer.sync_inbox(dnc, CRM())
         return
 
     limit = min(args.limit, config.TEST_LIMIT) if args.test else args.limit
     if not args.test and not args.batch and limit not in config.REAL_LIMITS:
         print(f"(info) limite {limit} : en mode réel, 20, 30 ou 50 sont conseillés.")
-    net = Net()
-    ctx = {"net": net, "ws": sources.WebSearch(net, enabled=not args.no_web_search), "dnc": dnc,
-           "log": ContactLog(), "seen": set(), "render": analyze.playwright_renderer() if args.js else None}
-    if args.js and not ctx["render"]:
-        print("(info) Playwright non installé : rendu JavaScript désactivé.")
-
+    ctx = make_ctx(args, dnc)
     stamp = datetime.now().strftime("%Y-%m-%d_%H%M")
     results = []
     try:
         if args.batch:
-            state = json.loads(STATE.read_text()) if STATE.exists() else {"done": [], "seen": []}
-            ctx["seen"] = set(state["seen"])
-            countries = [args.country] if args.country else list(config.ZONES)
-            for country in countries:
-                for city in ([args.city] if args.city else config.ZONES.get(country, [])):
-                    for sector in ([args.sector] if args.sector else config.SECTORS):
-                        key = f"{country}|{city}|{sector}"
-                        if key in state["done"]:
-                            continue
-                        results += run_one(country, city, sector, limit, args, ctx)
-                        state["done"].append(key)
-                        state["seen"] = sorted(ctx["seen"])
-                        STATE.parent.mkdir(exist_ok=True)
-                        STATE.write_text(json.dumps(state))
-                        output.save(results, stamp)  # sauvegarde après chaque lot : rien n'est perdu
-            if not results:
-                print("Aucun nouveau lot (déjà traités). Supprimez results/batch_state.json pour tout recommencer.")
+            results = run_batch(args, ctx, limit, stamp)
         else:
             if not args.city or not args.sector:
                 sys.exit("--city et --sector sont obligatoires (ou utilisez --batch).")
@@ -187,7 +201,7 @@ def main():
         if args.test:
             print("Mode test : aucun email envoyé.")
         else:
-            mailer.send_all(results, ctx["log"], dnc)
+            mailer.send_all(results, ctx["log"], dnc, CRM())
 
 
 if __name__ == "__main__":

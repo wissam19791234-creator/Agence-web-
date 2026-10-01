@@ -7,6 +7,18 @@ SENDER_COMPANY = "Scalify"
 # demandent de pouvoir joindre l'auteur des requêtes.
 CONTACT_EMAIL = "scalifyfr@gmail.com"
 
+# ───────── Offre de lancement (15 premiers clients) ─────────
+FOUNDER_SEATS = 15                       # nombre de places fondateurs
+FOUNDER_DISCOUNT = "-30 % pendant 12 mois"  # à adapter : c'est ce qui est promis dans les messages
+FOUNDER_URL = ""                         # lien de réservation sur votre site (ajouté aux messages s'il est rempli)
+# Les places restantes sont calculées depuis results/crm.csv (python crm.py client <email>).
+# Quand il n'en reste plus, l'offre disparaît automatiquement des messages.
+
+# ───────── Automatisation quotidienne (auto.py) ─────────
+DAILY_EMAIL_CAP = 40        # emails max par jour, relances comprises (au-delà : risque de spam)
+DAILY_NEW_PROSPECTS = 60    # nouveaux prospects cherchés chaque jour
+FOLLOWUP_DAYS = (4, 10)     # relance 1 à J+4, relance 2 à J+10, puis plus rien
+
 # ───────── Filtres ─────────
 MIN_SCORE = 65          # prospects gardés à partir de ce score (baissez à ~50 sans Google Places)
 TEST_LIMIT = 5          # --test : 5 prospects maximum, aucun envoi
