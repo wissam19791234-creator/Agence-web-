@@ -1,5 +1,6 @@
 """Liste do_not_contact + journal des contacts : on ne recontacte jamais une personne qui refuse."""
 import csv
+import hashlib
 import re
 from datetime import datetime
 from pathlib import Path
@@ -46,15 +47,26 @@ def guess_type(value):
     return "name"
 
 
+def _hash(bucket, key):
+    return hashlib.sha256(f"{bucket}:{key}".encode()).hexdigest()
+
+
 class DoNotContact:
+    """Les entrées sont enregistrées sous forme d'empreinte (sha256) : le fichier ne contient
+    aucune adresse lisible, il peut donc rester dans un dépôt public."""
+
     def __init__(self):
         self.keys = set()
         if not DNC_FILE.exists():
             DNC_FILE.write_text(",".join(DNC_FIELDS) + "\n", encoding="utf-8")
         with DNC_FILE.open(encoding="utf-8") as f:
             for row in csv.DictReader(f):
-                if row.get("value"):
-                    self.keys.add((self._bucket(row["type"]), _key(row["type"], row["value"])))
+                if not row.get("value"):
+                    continue
+                if row["type"] == "sha256":
+                    self.keys.add(row["value"].strip())
+                else:  # ancienne ligne en clair : acceptée aussi
+                    self.keys.add(_hash(self._bucket(row["type"]), _key(row["type"], row["value"])))
 
     @staticmethod
     def _bucket(kind):
@@ -62,12 +74,12 @@ class DoNotContact:
 
     def add(self, value, kind=None, reason="STOP"):
         kind = kind or guess_type(value)
-        k = (self._bucket(kind), _key(kind, value))
-        if k in self.keys:
+        h = _hash(self._bucket(kind), _key(kind, value))
+        if h in self.keys:
             return False
-        self.keys.add(k)
+        self.keys.add(h)
         with DNC_FILE.open("a", encoding="utf-8", newline="") as f:
-            csv.writer(f).writerow([kind, value, reason, datetime.now().strftime("%Y-%m-%d")])
+            csv.writer(f).writerow(["sha256", h, reason, datetime.now().strftime("%Y-%m-%d")])
         return True
 
     def hit(self, b):
@@ -75,7 +87,7 @@ class DoNotContact:
                   ("domain", b.get("website")), ("instagram", b.get("instagram")), ("tiktok", b.get("tiktok")),
                   ("facebook", b.get("facebook")), ("name", f'{b.get("name")} {b.get("city")}'),
                   ("name", b.get("name"))]
-        return any((self._bucket(k), _key(k, v)) in self.keys for k, v in checks if v)
+        return any(_hash(self._bucket(k), _key(k, v)) in self.keys for k, v in checks if v)
 
 
 class ContactLog:

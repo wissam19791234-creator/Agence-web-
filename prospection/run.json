@@ -1,0 +1,10 @@
+{
+  "note": "Modifier cette liste puis pousser : GitHub lance la recherche (aucun envoi).",
+  "min_score": 50,
+  "mode": "both",
+  "jobs": [
+    {"country": "France", "city": "Paris", "sector": "institut de beauté", "limit": 30},
+    {"country": "France", "city": "Paris", "sector": "coiffeur", "limit": 30},
+    {"country": "France", "city": "Paris", "sector": "restaurant", "limit": 30}
+  ]
+}

@@ -1,0 +1,30 @@
+name: Prospection
+# Se lance quand prospection/run.json change. Cherche et prépare les messages : aucun envoi.
+on:
+  push:
+    paths: ["prospection/run.json"]
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r prospection/requirements.txt
+      - name: Recherche
+        env:
+          GOOGLE_PLACES_API_KEY: ${{ secrets.GOOGLE_PLACES_API_KEY }}
+        run: python prospection/run_jobs.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: prospects
+          path: |
+            prospection/results/*.html
+            prospection/results/*.csv
+            prospection/results/*.json
+            !prospection/results/batch_state.json
+          retention-days: 3
