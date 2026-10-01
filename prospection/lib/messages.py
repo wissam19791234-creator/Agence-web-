@@ -27,19 +27,21 @@ EMAIL_FR = """Bonjour,
 
 Je suis tombé sur {name} en cherchant des commerces à {city}, et {opening}
 
-Je lance {company}, un abonnement qui gère toute la présence en ligne des commerces :
-- un site professionnel, en ligne en 7 jours
-- votre fiche Google tenue à jour
-- une réponse à chaque avis
-- des posts réguliers sur vos réseaux
-- un assistant IA qui répond à vos clients 24 h/24
+Aujourd’hui, vos clients vous cherchent d’abord sur Google et Instagram. S’ils ne trouvent pas vite vos horaires, vos photos ou un moyen de vous joindre, ils vont chez le voisin.
 
-Vous validez en un clic, on s’occupe du reste. C’est {price}.
+Avec {company}, on s’en occupe pour vous :
+✓ un site pro, en ligne en 7 jours
+✓ votre fiche Google toujours à jour
+✓ une réponse à chaque avis
+✓ des posts chaque semaine sur vos réseaux
+✓ une IA qui répond à vos clients, même la nuit
 
-Je peux vous montrer à quoi ressemblerait votre espace en 10 minutes, par téléphone ou en visio. Ça vous dit ?
+Vous, vous validez en un clic. Deux minutes par semaine.
+{offer}
+On vous montre votre futur espace en 10 minutes ? Répondez simplement « OUI ».
 
-Bonne journée,
 {sender} · {company}
+{price_cap}
 
 Si vous ne souhaitez pas être recontacté, répondez simplement STOP."""
 
@@ -47,33 +49,35 @@ EMAIL_EN = """Hello,
 
 I came across {name} while looking at local businesses in {city}, and {opening}
 
-I’m launching {company}, a subscription that runs a local business’s whole online presence:
-- a professional website, live in 7 days
-- your Google listing kept up to date
-- a reply to every review
-- regular posts on your social media
-- an AI assistant that answers your customers 24/7
+Today, customers look you up on Google and Instagram first. If they can’t quickly find your hours, photos or a way to reach you, they go next door.
 
-You approve in one click, we handle the rest. It’s {price}.
+With {company}, we handle it for you:
+✓ a professional website, live in 7 days
+✓ your Google listing always up to date
+✓ a reply to every review
+✓ weekly posts on your social media
+✓ an AI that answers your customers, even at night
 
-I can show you what your space would look like in 10 minutes, by phone or video call. Interested?
+You just approve in one click. Two minutes a week.
+{offer}
+Want to see your future space in 10 minutes? Just reply “YES”.
 
-Have a great day,
 {sender} · {company}
+{price_cap}
 
 If you’d rather not hear from me again, just reply STOP."""
 
 DM_FR = """Bonjour ! Je suis tombé sur {name} et {opening}
 
-Je lance {company} : on gère votre site, votre fiche Google, vos avis et vos posts, et une IA répond à vos clients 24 h/24. Vous validez en un clic. C’est {price}.
-
-Je peux vous montrer votre espace en 10 minutes si ça vous intéresse ?"""
+On lance {company} : site, fiche Google, avis, posts et une IA qui répond à vos clients 24 h/24. Tout est géré pour vous, vous validez en un clic.
+{offer}
+Je vous montre votre espace en 10 minutes ? 🙂"""
 
 DM_EN = """Hi! I came across {name} and {opening}
 
-I’m launching {company}: we run your website, Google listing, reviews and posts, and an AI answers your customers 24/7. You approve in one click. It’s {price}.
-
-Happy to show you your space in 10 minutes if you’re interested?"""
+We’re launching {company}: website, Google listing, reviews, posts and an AI answering your customers 24/7. All handled for you, you approve in one click.
+{offer}
+Want a 10-minute look at your space? 🙂"""
 
 FOLLOWUP_FR = [
     """Bonjour,
@@ -151,7 +155,19 @@ def followup(row, step):
     return subject, body
 
 
-SUBJECT = {"fr": "{name} : votre présence en ligne, gérée pour vous", "en": "{name}: your online presence, handled for you"}
+SUBJECT = {"fr": "{name} : plus de clients, sans y passer vos soirées", "en": "{name}: more customers, without the late nights"}
+
+
+def offer_short(lang):
+    """Offre de lancement en une ligne, mise en avant dans le corps du message."""
+    if seats_left() <= 0:
+        return ""
+    link = f" {config.FOUNDER_URL}" if config.FOUNDER_URL else ""
+    if lang == "fr":
+        return (f"\n🎁 Lancement : les {config.FOUNDER_SEATS} premiers commerces ont {config.FOUNDER_DISCOUNT}. "
+                f"Il reste {seats_left()} place(s).{link}\n")
+    return (f"\n🎁 Launch offer: the first {config.FOUNDER_SEATS} businesses get {config.FOUNDER_DISCOUNT}. "
+            f"{seats_left()} spot(s) left.{link}\n")
 
 
 def _price(lang):
@@ -191,14 +207,10 @@ def build(b, lang, problem):
     opening = _opening(b, lang, problem)
     subject = SUBJECT[lang].format(name=b["name"])
     fields = {"opening": opening, "sender": config.SENDER_NAME, "company": config.SENDER_COMPANY,
-              "price": _price(lang), "name": b["name"], "city": b.get("city", "")}
+              "price": _price(lang), "name": b["name"], "city": b.get("city", ""), "offer": offer_short(lang),
+              "price_cap": _price(lang)[0].upper() + _price(lang)[1:] + "."}
     body = (EMAIL_FR if lang == "fr" else EMAIL_EN).format(**fields)
     dm = (DM_FR if lang == "fr" else DM_EN).format(**fields)
-    offer = founder_line(lang)
-    if offer:
-        stop = "\n\nSi vous ne souhaitez" if lang == "fr" else "\n\nIf you’d rather"
-        body = body.replace(stop, "\n" + offer.rstrip("\n") + stop, 1)
-        dm += "\n\n" + offer.strip().removeprefix("P.S. ")
     wa = whatsapp_number(b)
     m = {
         "email_subject": subject,

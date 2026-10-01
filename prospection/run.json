@@ -3,8 +3,125 @@
   "min_score": 50,
   "mode": "both",
   "jobs": [
-    {"country": "France", "city": "Paris", "sector": "institut de beauté", "limit": 30},
-    {"country": "France", "city": "Paris", "sector": "coiffeur", "limit": 30},
-    {"country": "France", "city": "Paris", "sector": "restaurant", "limit": 30}
+    {
+      "country": "France",
+      "city": "Paris",
+      "sector": "restaurant",
+      "limit": 30
+    },
+    {
+      "country": "France",
+      "city": "Paris",
+      "sector": "coiffeur",
+      "limit": 30
+    },
+    {
+      "country": "France",
+      "city": "Paris",
+      "sector": "institut de beauté",
+      "limit": 30
+    },
+    {
+      "country": "France",
+      "city": "Paris",
+      "sector": "boulangerie",
+      "limit": 30
+    },
+    {
+      "country": "France",
+      "city": "Lyon",
+      "sector": "restaurant",
+      "limit": 30
+    },
+    {
+      "country": "France",
+      "city": "Lyon",
+      "sector": "coiffeur",
+      "limit": 30
+    },
+    {
+      "country": "France",
+      "city": "Lyon",
+      "sector": "institut de beauté",
+      "limit": 30
+    },
+    {
+      "country": "France",
+      "city": "Lyon",
+      "sector": "boulangerie",
+      "limit": 30
+    },
+    {
+      "country": "France",
+      "city": "Marseille",
+      "sector": "restaurant",
+      "limit": 30
+    },
+    {
+      "country": "France",
+      "city": "Marseille",
+      "sector": "coiffeur",
+      "limit": 30
+    },
+    {
+      "country": "France",
+      "city": "Marseille",
+      "sector": "institut de beauté",
+      "limit": 30
+    },
+    {
+      "country": "France",
+      "city": "Marseille",
+      "sector": "boulangerie",
+      "limit": 30
+    },
+    {
+      "country": "France",
+      "city": "Toulouse",
+      "sector": "restaurant",
+      "limit": 30
+    },
+    {
+      "country": "France",
+      "city": "Toulouse",
+      "sector": "coiffeur",
+      "limit": 30
+    },
+    {
+      "country": "France",
+      "city": "Toulouse",
+      "sector": "institut de beauté",
+      "limit": 30
+    },
+    {
+      "country": "France",
+      "city": "Toulouse",
+      "sector": "boulangerie",
+      "limit": 30
+    },
+    {
+      "country": "France",
+      "city": "Bordeaux",
+      "sector": "restaurant",
+      "limit": 30
+    },
+    {
+      "country": "France",
+      "city": "Bordeaux",
+      "sector": "coiffeur",
+      "limit": 30
+    },
+    {
+      "country": "France",
+      "city": "Bordeaux",
+      "sector": "institut de beauté",
+      "limit": 30
+    },
+    {
+      "country": "France",
+      "city": "Bordeaux",
+      "sector": "boulangerie",
+      "limit": 30
+    }
   ]
 }
