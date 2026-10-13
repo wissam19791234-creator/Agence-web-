@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+// Système « atelier éditorial » : toile noire, typographie blanche, un seul accent corail.
 const v = (name) => `rgb(var(--${name}) / <alpha-value>)`;
 export default {
   content: ['./index.html', './src/**/*.{ts,tsx}'],
@@ -7,23 +8,22 @@ export default {
       colors: {
         brand: { DEFAULT: v('brand'), soft: v('brand-soft'), deep: v('brand-deep') },
         champagne: { DEFAULT: v('champagne'), deep: v('champagne-deep') },
-        ivoire: '#F8F2EC',
-        cream: '#FFFCF8',
-        brun: { DEFAULT: '#30231F', 2: '#5C4A43', 3: '#8A766D' },
-        line: '#E7DACB',
-        ok: '#2F6B4F',
-        warn: '#8A5A12',
-        danger: '#9B2C2C',
+        cream: '#000000',      // toile (Obsidian)
+        ivoire: '#0E0E0E',     // fond discret
+        panel: '#0A0A0A',      // panneaux de l'espace pro
+        brun: { DEFAULT: '#FFFFFF', 2: '#A3A3A3', 3: '#808080' },
+        line: '#333333',       // Graphite
+        smoke: '#808080',
+        ok: '#5CC48A',
+        warn: '#E8B04B',
+        danger: '#FF6B6B',
       },
       fontFamily: {
-        serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+        serif: ['Tinos', '"Times New Roman"', 'Times', 'serif'],
         sans: ['Inter', '"Segoe UI"', 'system-ui', 'sans-serif'],
-        script: ['Allura', '"Snell Roundhand"', 'cursive'],
+        script: ['Tinos', '"Times New Roman"', 'Times', 'serif'],
       },
-      boxShadow: {
-        soft: '0 18px 40px -28px rgba(48,35,31,.45)',
-        lift: '0 24px 60px -30px rgba(48,35,31,.55)',
-      },
+      boxShadow: { soft: 'none', lift: '0 0 0 1px #333333' },
       maxWidth: { site: '1200px' },
     },
   },

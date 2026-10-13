@@ -12,12 +12,12 @@ import { Panel, ProHeader } from './ProApp';
 function Kpi({ label, value, sub, icon, href, id }: { label: string; value: string; sub?: string; icon: IconName; href: string; id: string }) {
   const { highlight } = useUi();
   return (
-    <a href={href} data-kpi={id} className={cx('group block min-w-0 rounded-2xl border border-line bg-white p-4 sm:p-5 no-underline transition hover:-translate-y-0.5 hover:shadow-soft', highlight === 'kpis' && 'animate-glow')}>
+    <a href={href} data-kpi={id} className={cx('group block min-w-0 rounded-none border border-line bg-panel p-4 sm:p-5 no-underline transition hover:-translate-y-0.5 hover:', highlight === 'kpis' && 'animate-glow')}>
       <div className="flex items-start justify-between gap-3">
         <p className="text-[12.5px] leading-snug text-brun-2 sm:text-[13px]">{label}</p>
-        <span className="grid h-8 w-8 place-items-center rounded-full bg-brand-soft text-brand"><Icon name={icon} className="h-4 w-4" /></span>
+        <Icon name={icon} className="h-4 w-4 shrink-0 text-smoke" />
       </div>
-      <p className="mt-3 font-serif text-[28px] font-medium leading-none text-brun tabular sm:text-[34px]">{value}</p>
+      <p className="mt-3 font-serif text-[34px] leading-none text-brun tabular sm:text-[44px]">{value}</p>
       {sub && <p className="mt-2 text-xs text-brun-3">{sub}</p>}
     </a>
   );

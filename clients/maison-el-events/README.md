@@ -3,6 +3,16 @@
 Proposition Scalify pour Maison EL Events (Orléans) : site public, CRM de démonstration et parcours guidé.
 Toutes les données sont fictives et restent dans le navigateur (localStorage pour les données, IndexedDB pour les photos).
 
+## Direction artistique
+
+Atelier éditorial sombre : toile noire, typographie Tinos (équivalent de Times New Roman) pour les grands titres, Inter pour le texte, un seul accent corail (#EB516D) par écran, boutons pilule au trait, filets gris, aucune ombre.
+
+## Photos
+
+- Photos de démonstration : déposer `src/assets/demo/<emplacement>.jpg` (cover, coin-maries, svc-deco-tables, svc-buffets, svc-traiteur, menu-sucre, menu-sale, menu-mocktail, gal-<id>…). Elles s'affichent avec la mention « Photo de démonstration ».
+- `node scripts/fetch-demo-photos.mjs` récupère et compresse les photos générées pour la démo (accès réseau au domaine des images requis).
+- Les photos importées dans l'espace pro passent devant les photos de démonstration.
+
 ## Lancer
 
 ```bash

@@ -44,8 +44,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const r = document.documentElement.style;
     const b = hexToRgbTriplet(data.settings.colorBrand), c = hexToRgbTriplet(data.settings.colorChampagne);
-    if (b) { r.setProperty('--brand', b); r.setProperty('--brand-soft', shadeTriplet(data.settings.colorBrand, 0.9)!); r.setProperty('--brand-deep', shadeTriplet(data.settings.colorBrand, -0.25)!); }
-    if (c) { r.setProperty('--champagne', c); r.setProperty('--champagne-deep', shadeTriplet(data.settings.colorChampagne, -0.38)!); }
+    if (b) { r.setProperty('--brand', b); r.setProperty('--brand-soft', shadeTriplet(data.settings.colorBrand, -0.86)!); r.setProperty('--brand-deep', shadeTriplet(data.settings.colorBrand, 0.18)!); }
+    if (c) { r.setProperty('--champagne', c); r.setProperty('--champagne-deep', c); }
   }, [data.settings.colorBrand, data.settings.colorChampagne]);
 
   // Application synchrone : les identifiants créés dans `fn` sont disponibles dès le retour.

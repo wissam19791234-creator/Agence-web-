@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 
 // Couleurs de données validées (contraste, daltonisme) sur fond blanc.
-export const DATA_COLORS = { a: '#9B3550', b: '#B98A2E' };
-const GRID = '#EFE6DB', AXIS = '#8A766D', INK = '#30231F', INK2 = '#5C4A43';
+// Fond noir : une seule couleur chromatique (corail) et un neutre clair, séparés de plus de 22 ΔE (contrôlé).
+export const DATA_COLORS = { a: '#EB516D', b: '#D9D9D9' };
+const SINGLE = '#E6E6E6';
+const GRID = '#262626', AXIS = '#808080', INK = '#FFFFFF', INK2 = '#A3A3A3';
 
 function useWidth<T extends HTMLElement>(): [React.RefObject<T>, number] {
   const ref = useRef<T>(null);
@@ -29,7 +31,7 @@ const compact = (v: number) => (v >= 1000 ? `${(v / 1000).toLocaleString('fr-FR'
 
 function Tip({ x, y, children, w }: { x: number; y: number; children: ReactNode; w: number }) {
   const left = Math.max(4, Math.min(x - 70, w - 144));
-  return <div className="pointer-events-none absolute z-10 w-[140px] rounded-xl bg-brun px-3 py-2 text-xs text-cream shadow-lift" style={{ left, top: Math.max(0, y - 58) }}>{children}</div>;
+  return <div className="pointer-events-none absolute z-10 w-[140px] bg-white px-3 py-2 text-xs text-black" style={{ left, top: Math.max(0, y - 58) }}>{children}</div>;
 }
 
 function TableView({ head, rows }: { head: string[]; rows: (string | number)[][] }) {
@@ -65,13 +67,13 @@ export function ColumnChart({ data, height = 200, unit = '' }: { data: { label: 
             return (
               <g key={d.label} onMouseEnter={() => setHover(i)} onMouseLeave={() => setHover(null)} onFocus={() => setHover(i)} onBlur={() => setHover(null)} tabIndex={0} aria-label={`${d.label} : ${d.value}${unit}`}>
                 <rect x={padL + band * i} y={padT} width={band} height={ih} fill="transparent" />
-                {h > 0 && <path d={`M${x},${padT + ih} V${y + r} Q${x},${y} ${x + r},${y} H${x + bw - r} Q${x + bw},${y} ${x + bw},${y + r} V${padT + ih} Z`} fill={DATA_COLORS.a} opacity={hover == null || hover === i ? 1 : 0.55} />}
+                {h > 0 && <path d={`M${x},${padT + ih} V${y + r} Q${x},${y} ${x + r},${y} H${x + bw - r} Q${x + bw},${y} ${x + bw},${y + r} V${padT + ih} Z`} fill={SINGLE} opacity={hover == null || hover === i ? 1 : 0.45} />}
                 <text x={padL + band * i + band / 2} y={height - 8} textAnchor="middle" fontSize="11" fill={AXIS}>{d.label}</text>
                 {i === last && <text x={x + bw / 2} y={y - 6} textAnchor="middle" fontSize="12" fontWeight="600" fill={INK}>{d.value}</text>}
               </g>
             );
           })}
-          <line x1={padL} x2={w - 6} y1={padT + ih} y2={padT + ih} stroke="#DCCFC0" />
+          <line x1={padL} x2={w - 6} y1={padT + ih} y2={padT + ih} stroke="#444444" />
         </svg>
       )}
       {hover != null && w > 0 && <Tip w={w} x={padL + band * hover + band / 2} y={padT + ih - (data[hover].value / max) * ih}><b className="block font-medium">{data[hover].label}</b>{data[hover].value}{unit}</Tip>}
@@ -91,8 +93,8 @@ export function BarList({ data, format = (v: number) => String(v) }: { data: { l
           <li key={d.label} className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1.5 text-[13px]">
             <span className="truncate text-brun-2">{d.label}</span>
             <span className="tabular-nums font-medium text-brun">{format(d.value)}</span>
-            <span className="col-span-2 h-2 rounded-full bg-[#F4ECE2]">
-              <span className="block h-2 rounded-r-full rounded-l-sm transition-[width] duration-500" style={{ width: `${(d.value / max) * 100}%`, background: DATA_COLORS.a }} />
+            <span className="col-span-2 h-2 rounded-full bg-[#1F1F1F]">
+              <span className="block h-2 rounded-r-full rounded-l-sm transition-[width] duration-500" style={{ width: `${(d.value / max) * 100}%`, background: SINGLE }} />
             </span>
           </li>
         ))}
@@ -133,7 +135,7 @@ export function PairBars({ data, a, b, format }: { data: { label: string; a: num
               </g>
             );
           })}
-          <line x1={padL} x2={w - 6} y1={padT + ih} y2={padT + ih} stroke="#DCCFC0" />
+          <line x1={padL} x2={w - 6} y1={padT + ih} y2={padT + ih} stroke="#444444" />
         </svg>
       )}
       {hover != null && w > 0 && <Tip w={w} x={padL + band * hover + band / 2} y={padT + ih - (Math.max(data[hover].a, data[hover].b) / max) * ih}><b className="block font-medium">{data[hover].label}</b>{a} : {format(data[hover].a)}<br />{b} : {format(data[hover].b)}</Tip>}

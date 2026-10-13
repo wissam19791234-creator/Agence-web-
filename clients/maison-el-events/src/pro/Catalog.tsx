@@ -96,8 +96,8 @@ export default function Catalog() {
   return (
     <>
       <ProHeader title="Catalogue" sub="Prix et prestations utilisés par le simulateur, le menu et les nouveaux devis. Les devis déjà enregistrés gardent leurs prix." actions={tab === 'catalogue' ? <Button icon="plus" onClick={() => setEdit('new')}>Nouvelle prestation</Button> : undefined} />
-      <div className="mb-5 inline-flex rounded-full bg-white p-1 ring-1 ring-line" role="tablist">
-        {([['catalogue', 'Prestations et tarifs'], ['site', 'Prestations affichées sur le site']] as const).map(([k, v]) => <button key={k} type="button" role="tab" aria-selected={tab === k} onClick={() => setTab(k)} className={cx('rounded-full px-4 py-1.5 text-[13px] transition', tab === k ? 'bg-brand text-cream' : 'text-brun-2')}>{v}</button>)}
+      <div className="mb-5 inline-flex rounded-full bg-panel p-1 ring-1 ring-line" role="tablist">
+        {([['catalogue', 'Prestations et tarifs'], ['site', 'Prestations affichées sur le site']] as const).map(([k, v]) => <button key={k} type="button" role="tab" aria-selected={tab === k} onClick={() => setTab(k)} className={cx('rounded-full px-4 py-1.5 text-[13px] transition', tab === k ? 'bg-white text-black' : 'text-brun-2')}>{v}</button>)}
       </div>
 
       {tab === 'catalogue' ? (
@@ -107,7 +107,7 @@ export default function Catalog() {
             <Select aria-label="Filtrer par catégorie" value={cat} onChange={(e) => setCat(e.target.value)}><option value="">Toutes les catégories</option>{CATS.map((c) => <option key={c}>{c}</option>)}</Select>
           </div>
           {list.length ? (
-            <div className="overflow-hidden rounded-2xl border border-line bg-white">
+            <div className="overflow-hidden rounded-none border border-line bg-panel">
               <ul className="divide-y divide-line">
                 {list.map((c) => (
                   <li key={c.id} className={cx('flex flex-wrap items-center gap-3 px-4 py-3 sm:flex-nowrap', !c.active && 'bg-cream/70')}>
@@ -115,10 +115,10 @@ export default function Catalog() {
                       <p className={cx('font-medium', c.active ? 'text-brun' : 'text-brun-3')}>{c.name}{c.menu && <Badge className="ml-2">Menu</Badge>}</p>
                       <p className="truncate text-xs text-brun-3">{c.category}{c.ingredients ? ` · ${c.ingredients}` : c.description ? ` · ${c.description}` : ''}</p>
                     </div>
-                    <p className="w-36 shrink-0 text-right tabular"><span className="font-serif text-xl text-brun">{c.price != null ? eur(c.price) : 'Sur devis'}</span><span className="block text-[11px] text-brun-3">{c.unit}</span></p>
+                    <p className="w-36 shrink-0 text-right tabular"><span className="text-xl text-brun">{c.price != null ? eur(c.price) : 'Sur devis'}</span><span className="block text-[11px] text-brun-3">{c.unit}</span></p>
                     <Toggle checked={c.active} label={`${c.name} active`} onChange={(v) => { update((d) => { d.catalog.find((x) => x.id === c.id)!.active = v; }); toast(v ? `${c.name} activée.` : `${c.name} masquée.`); }} />
                     <IconButton icon="edit" label={`Modifier ${c.name}`} onClick={() => setEdit(c)} />
-                    <IconButton icon="trash" label={`Supprimer ${c.name}`} className="hover:bg-[#F8E7E7] hover:text-danger" onClick={async () => { if (await confirm({ title: `Supprimer « ${c.name} » ?`, message: 'La prestation disparaît du catalogue. Les devis existants ne sont pas modifiés.', confirm: 'Supprimer', danger: true })) { update((d) => { d.catalog = d.catalog.filter((x) => x.id !== c.id); log(d, `Catalogue : ${c.name} supprimé.`, 'catalogue'); }); toast('Prestation supprimée.'); } }} />
+                    <IconButton icon="trash" label={`Supprimer ${c.name}`} className="hover:bg-[#2A1215] hover:text-danger" onClick={async () => { if (await confirm({ title: `Supprimer « ${c.name} » ?`, message: 'La prestation disparaît du catalogue. Les devis existants ne sont pas modifiés.', confirm: 'Supprimer', danger: true })) { update((d) => { d.catalog = d.catalog.filter((x) => x.id !== c.id); log(d, `Catalogue : ${c.name} supprimé.`, 'catalogue'); }); toast('Prestation supprimée.'); } }} />
                   </li>
                 ))}
               </ul>
@@ -128,7 +128,7 @@ export default function Catalog() {
       ) : (
         <ul className="grid gap-3 md:grid-cols-2">
           {data.services.map((s, i) => (
-            <li key={s.id} className={cx('flex items-start gap-3 rounded-2xl border border-line bg-white p-4', !s.active && 'opacity-70')}>
+            <li key={s.id} className={cx('flex items-start gap-3 rounded-none border border-line bg-panel p-4', !s.active && 'opacity-70')}>
               <div className="flex flex-col gap-1">
                 <IconButton icon="left" label={`Monter ${s.title}`} className="rotate-90" disabled={i === 0} onClick={() => update((d) => { const [x] = d.services.splice(i, 1); d.services.splice(i - 1, 0, x); })} />
                 <IconButton icon="right" label={`Descendre ${s.title}`} className="rotate-90" disabled={i === data.services.length - 1} onClick={() => update((d) => { const [x] = d.services.splice(i, 1); d.services.splice(i + 1, 0, x); })} />

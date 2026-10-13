@@ -1,16 +1,16 @@
 import type { EventStatus, EventType, Priority, QuoteStatus, ServiceKey, StageKey } from './types';
 
 export const STAGES: { key: StageKey; label: string; short: string; dot: string }[] = [
-  { key: 'nouveau', label: 'Nouveau prospect', short: 'Nouveau', dot: '#C9B08C' },
-  { key: 'qualifier', label: 'Demande à qualifier', short: 'À qualifier', dot: '#B9926A' },
-  { key: 'preparer', label: 'Devis à préparer', short: 'Devis à préparer', dot: '#A8744F' },
-  { key: 'envoye', label: 'Devis envoyé — simulation', short: 'Devis envoyé (simulation)', dot: '#93503F' },
-  { key: 'relance', label: 'Relance à effectuer', short: 'Relance', dot: '#8A3A3A' },
-  { key: 'reservation', label: 'Réservation confirmée — simulation', short: 'Réservation (simulation)', dot: '#65172D' },
-  { key: 'termine', label: 'Événement terminé', short: 'Terminé', dot: '#8A766D' },
+  { key: 'nouveau', label: 'Nouveau prospect', short: 'Nouveau', dot: '#5C5C5C' },
+  { key: 'qualifier', label: 'Demande à qualifier', short: 'À qualifier', dot: '#7A7A7A' },
+  { key: 'preparer', label: 'Devis à préparer', short: 'Devis à préparer', dot: '#999999' },
+  { key: 'envoye', label: 'Devis envoyé — simulation', short: 'Devis envoyé (simulation)', dot: '#B8B8B8' },
+  { key: 'relance', label: 'Relance à effectuer', short: 'Relance', dot: '#E0E0E0' },
+  { key: 'reservation', label: 'Réservation confirmée — simulation', short: 'Réservation (simulation)', dot: '#EB516D' },
+  { key: 'termine', label: 'Événement terminé', short: 'Terminé', dot: '#4A4A4A' },
 ];
 export const stageLabel = (k: StageKey) => STAGES.find((s) => s.key === k)?.label ?? k;
-export const stageDot = (k: StageKey) => STAGES.find((s) => s.key === k)?.dot ?? '#8A766D';
+export const stageDot = (k: StageKey) => STAGES.find((s) => s.key === k)?.dot ?? '#808080';
 
 export const EVENT_TYPES: EventType[] = ['Mariage', 'Henné', 'Fiançailles', 'Anniversaire', 'Baptême', 'Baby shower', "Événement d'entreprise", 'Autre'];
 

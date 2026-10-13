@@ -113,43 +113,43 @@ export function DemoTour({ route }: { route: Route }) {
 
   if (tour.minimized) {
     return (
-      <button type="button" onClick={() => setTour({ minimized: false })} className="fixed bottom-4 right-4 z-[65] inline-flex items-center gap-2 rounded-full bg-brun px-4 py-3 text-sm font-medium text-cream shadow-lift">
+      <button type="button" onClick={() => setTour({ minimized: false })} className="fixed bottom-4 right-4 z-[65] inline-flex items-center gap-2 rounded-[40px] bg-white px-4 py-3 text-sm text-black ">
         <Icon name="play" className="h-3.5 w-3.5" />Démonstration · étape {tour.step}/8
       </button>
     );
   }
 
   return (
-    <aside aria-label="Démonstration guidée" className="fixed inset-x-0 bottom-0 z-[65] max-h-[58dvh] overflow-y-auto rounded-t-3xl bg-brun p-5 text-cream shadow-lift animate-rise sm:inset-x-auto sm:bottom-4 sm:right-4 sm:w-[390px] sm:rounded-3xl">
+    <aside aria-label="Démonstration guidée" className="fixed inset-x-0 bottom-0 z-[65] max-h-[58dvh] overflow-y-auto rounded-none border-t border-white/70 bg-black p-5 text-white animate-rise sm:border sm:inset-x-auto sm:bottom-4 sm:right-4 sm:w-[390px] sm:rounded-none">
       <div className="flex items-center justify-between gap-3">
-        <p className="text-[11px] font-semibold uppercase tracking-[.22em] text-champagne">Démonstration guidée · {tour.step}/8</p>
+        <p className="thin text-[14px]">Démonstration guidée · {tour.step}/8</p>
         <div className="flex gap-1">
-          <button type="button" aria-label="Réduire la démonstration" className="grid h-8 w-8 place-items-center rounded-full text-cream/70 hover:bg-cream/10 hover:text-cream" onClick={() => setTour({ minimized: true })}><span className="block h-0.5 w-3 bg-current" /></button>
-          <button type="button" aria-label="Quitter la démonstration" className="grid h-8 w-8 place-items-center rounded-full text-cream/70 hover:bg-cream/10 hover:text-cream" onClick={stopTour}><Icon name="x" className="h-4 w-4" /></button>
+          <button type="button" aria-label="Réduire la démonstration" className="grid h-8 w-8 place-items-center rounded-full text-white/70 hover:bg-white/10 hover:text-white" onClick={() => setTour({ minimized: true })}><span className="block h-0.5 w-3 bg-current" /></button>
+          <button type="button" aria-label="Quitter la démonstration" className="grid h-8 w-8 place-items-center rounded-full text-white/70 hover:bg-white/10 hover:text-white" onClick={stopTour}><Icon name="x" className="h-4 w-4" /></button>
         </div>
       </div>
       <ol className="mt-3 flex gap-1.5" aria-label="Étapes">
-        {STEPS.map((s, i) => <li key={s.title} className="flex-1"><button type="button" onClick={() => go(i + 1)} aria-label={`Étape ${i + 1} : ${s.title}`} aria-current={tour.step === i + 1 ? 'step' : undefined} className={cx('block h-1.5 w-full rounded-full transition', i + 1 === tour.step ? 'bg-champagne' : i + 1 < tour.step ? 'bg-champagne/60' : 'bg-cream/15')} /></li>)}
+        {STEPS.map((s, i) => <li key={s.title} className="flex-1"><button type="button" onClick={() => go(i + 1)} aria-label={`Étape ${i + 1} : ${s.title}`} aria-current={tour.step === i + 1 ? 'step' : undefined} className={cx('block h-1.5 w-full rounded-full transition', i + 1 === tour.step ? 'bg-white' : i + 1 < tour.step ? 'bg-white/50' : 'bg-white/15')} /></li>)}
       </ol>
-      <h2 className="mt-4 font-serif text-[26px] leading-tight">{step.title}</h2>
-      <p className="mt-2 text-[13.5px] leading-relaxed text-cream/85">{step.what}</p>
-      <p className="mt-3 rounded-2xl bg-cream/10 px-3.5 py-2.5 text-[12.5px] leading-relaxed text-cream/85"><span className="font-semibold text-champagne">Intérêt commercial · </span>{step.why}</p>
+      <h2 className="mt-4 font-serif text-[32px] leading-[1.02]">{step.title}</h2>
+      <p className="mt-2 text-[13.5px] leading-relaxed text-white/85">{step.what}</p>
+      <p className="mt-3 rounded-none bg-white/10 px-3.5 py-2.5 text-[12.5px] leading-relaxed text-white/85"><span className="text-white">Intérêt commercial · </span>{step.why}</p>
       {needsP ? (
-        <div className="mt-4 rounded-2xl bg-cream/10 p-3 text-[13px] text-cream/85">Il faut d’abord une demande. <button type="button" className="font-semibold text-champagne underline" onClick={() => { ensureProspect(); toast('Demande d’exemple créée.'); }}>Créer la demande d’exemple</button> ou revenez à l’étape 1.</div>
+        <div className="mt-4 rounded-none bg-white/10 p-3 text-[13px] text-white/85">Il faut d’abord une demande. <button type="button" className="text-white underline" onClick={() => { ensureProspect(); toast('Demande d’exemple créée.'); }}>Créer la demande d’exemple</button> ou revenez à l’étape 1.</div>
       ) : (
-        <div className="mt-4 flex flex-wrap gap-2 [&_button]:bg-cream [&_button]:text-brun [&_button:hover]:bg-white">{actions[tour.step]}</div>
+        <div className="mt-4 flex flex-wrap gap-2 [&_button]:bg-white [&_button]:text-black [&_button]:ring-0 [&_button:hover]:bg-[#D9D9D9]">{actions[tour.step]}</div>
       )}
-      {done && !needsP && tour.step < 8 && <p className="mt-3 flex items-center gap-2 text-[12.5px] text-champagne"><Icon name="check" className="h-4 w-4" />Étape réalisée{tour.step === 1 && p ? ` : ${fullName(p)} est dans le CRM` : ''}{tour.step === 4 && q ? ` : ${q.number}, ${eur(quoteTotals(q).known)}` : ''}</p>}
-      {tour.step === 8 && <p className="mt-3 text-[12.5px] text-cream/75">{data.prospects.length} demandes · {data.quotes.filter((x) => x.status === 'envoye').length} devis en attente · {data.events.filter((e) => e.date >= todayISO() && e.status !== 'termine').length} événements à venir.</p>}
+      {done && !needsP && tour.step < 8 && <p className="mt-3 flex items-center gap-2 text-[12.5px] text-white"><Icon name="check" className="h-4 w-4" />Étape réalisée{tour.step === 1 && p ? ` : ${fullName(p)} est dans le CRM` : ''}{tour.step === 4 && q ? ` : ${q.number}, ${eur(quoteTotals(q).known)}` : ''}</p>}
+      {tour.step === 8 && <p className="mt-3 text-[12.5px] text-white/75">{data.prospects.length} demandes · {data.quotes.filter((x) => x.status === 'envoye').length} devis en attente · {data.events.filter((e) => e.date >= todayISO() && e.status !== 'termine').length} événements à venir.</p>}
       <div className="mt-5 flex items-center justify-between gap-2 border-t border-cream/10 pt-4">
-        <button type="button" disabled={tour.step === 1} onClick={() => go(tour.step - 1)} className="inline-flex h-9 items-center gap-1 rounded-full px-3 text-[13px] text-cream/80 hover:bg-cream/10 disabled:opacity-40"><Icon name="left" className="h-4 w-4" />Étape précédente</button>
+        <button type="button" disabled={tour.step === 1} onClick={() => go(tour.step - 1)} className="inline-flex h-9 items-center gap-1 rounded-full px-3 text-[13px] text-white/80 hover:bg-white/10 disabled:opacity-40"><Icon name="left" className="h-4 w-4" />Étape précédente</button>
         {tour.step < 8 ? (
-          <button type="button" onClick={() => go(tour.step + 1)} className="inline-flex h-9 items-center gap-1 rounded-full bg-champagne px-4 text-[13px] font-medium text-brun hover:bg-cream">Étape suivante<Icon name="right" className="h-4 w-4" /></button>
+          <button type="button" onClick={() => go(tour.step + 1)} className="inline-flex h-9 items-center gap-1 rounded-[40px] bg-white px-4 text-[13px] text-black hover:bg-[#D9D9D9]">Étape suivante<Icon name="right" className="h-4 w-4" /></button>
         ) : (
-          <button type="button" onClick={startTour} className="inline-flex h-9 items-center gap-1.5 rounded-full bg-champagne px-4 text-[13px] font-medium text-brun hover:bg-cream"><Icon name="refresh" className="h-4 w-4" />Recommencer la démonstration</button>
+          <button type="button" onClick={startTour} className="inline-flex h-9 items-center gap-1.5 rounded-[40px] bg-white px-4 text-[13px] text-black hover:bg-[#D9D9D9]"><Icon name="refresh" className="h-4 w-4" />Recommencer la démonstration</button>
         )}
       </div>
-      {tour.step < 8 && <button type="button" onClick={startTour} className="mt-2 w-full text-center text-[12px] text-cream/60 underline-offset-4 hover:text-cream hover:underline">Recommencer la démonstration</button>}
+      {tour.step < 8 && <button type="button" onClick={startTour} className="mt-2 w-full text-center text-[12px] text-white/60 underline-offset-4 hover:text-white hover:underline">Recommencer la démonstration</button>}
     </aside>
   );
 }

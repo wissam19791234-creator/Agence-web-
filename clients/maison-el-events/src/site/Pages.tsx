@@ -1,7 +1,6 @@
-import { useMemo, useState } from 'react';
-import { Icon } from '../components/Icon';
+import { useMemo, useState, type ReactNode } from 'react';
 import { Visual } from '../components/Visual';
-import { Button, cx, LinkButton, Modal, Ornament, SectionTitle } from '../components/ui';
+import { Button, cx, LinkButton, Modal } from '../components/ui';
 import { GALLERY_CATS } from '../lib/constants';
 import { eur } from '../lib/format';
 import { navigate } from '../lib/router';
@@ -10,12 +9,13 @@ import type { CatalogItem, GalleryItem, ServiceKey } from '../lib/types';
 import { useUi } from '../lib/ui';
 import { galKey, SERVICE_ART } from './shared';
 
-export function PageHead({ eyebrow, title, children }: { eyebrow: string; title: string; children?: React.ReactNode }) {
+/** Ouverture de page : légende fine, grand titre serif, texte court. */
+export function PageHead({ eyebrow, title, children }: { eyebrow: string; title: ReactNode; children?: ReactNode }) {
   return (
-    <section className="border-b border-line bg-ivoire">
-      <div className="mx-auto max-w-site px-4 pb-14 pt-14 sm:px-6 lg:pb-20 lg:pt-20">
-        <SectionTitle as="h1" eyebrow={eyebrow} title={title}>{children}</SectionTitle>
-      </div>
+    <section className="mx-auto max-w-site px-5 pb-14 pt-10 sm:px-6 lg:pb-20 lg:pt-14">
+      <p className="thin text-[14px]">{eyebrow}</p>
+      <h1 className="display mt-5 text-[15vw] sm:text-[96px] lg:text-[120px]">{title}</h1>
+      {children && <div className="mt-8 max-w-[600px] text-[18px] leading-[1.4] text-brun-2">{children}</div>}
     </section>
   );
 }
@@ -28,58 +28,52 @@ export function Services() {
   const devisFor = (id: ServiceKey) => { setPrefill({ services: [id] }); navigate('devis'); };
   return (
     <>
-      <PageHead eyebrow="Nos prestations" title="Décoration, location et traiteur pour vos réceptions">
-        Des prestations à choisir séparément ou à réunir pour votre événement à {data.settings.city}. Les tarifs connus sont indiqués ; les autres prestations sont établies sur devis.
+      <PageHead eyebrow={`Prestations / ${String(list.length).padStart(2, '0')}`} title={<>Nos<br />prestations</>}>
+        Décoration, location et traiteur pour vos réceptions à {data.settings.city}. Les tarifs connus sont indiqués ; les autres prestations sont établies sur devis.
       </PageHead>
-      <section className="mx-auto max-w-site px-4 py-16 sm:px-6">
-        <ol className="space-y-6">
-          {list.map((s, i) => (
-            <li key={s.id} className="grid overflow-hidden rounded-[26px] border border-line bg-white md:grid-cols-[minmax(0,.9fr)_minmax(0,1.1fr)]">
-              <Visual imageKey={s.imageKey} art={SERVICE_ART[s.id]} alt={s.title} className={cx('aspect-[16/10] md:aspect-auto md:min-h-[300px]', i % 2 === 1 && 'md:order-2')} rounded="rounded-none" />
-              <div className="flex flex-col justify-center p-7 sm:p-10">
-                <p className="font-serif text-lg italic text-champagne-deep">{String(i + 1).padStart(2, '0')}</p>
-                <h2 className="mt-1 font-serif text-3xl font-medium leading-tight text-brun sm:text-[34px]">{s.title}</h2>
-                <p className="mt-4 max-w-prose text-[15.5px] leading-relaxed text-brun-2">{s.description}</p>
-                <p className="mt-5 inline-flex items-center gap-2 self-start rounded-full bg-brand-soft px-3.5 py-1.5 text-sm font-medium text-brand">{s.priceNote}</p>
-                <div className="mt-6 flex flex-wrap gap-3">
-                  <Button onClick={() => devisFor(s.id)} iconRight="arrow">Demander un devis</Button>
-                  {(s.id === 'mignardises' || s.id === 'mocktails') ? <LinkButton href="#menu" variant="secondary">Voir le menu</LinkButton> : <LinkButton href="#tarifs" variant="secondary">Tarifs et simulateur</LinkButton>}
-                </div>
+      <ol className="mx-auto max-w-site border-t border-smoke/60 px-5 sm:px-6">
+        {list.map((s, i) => (
+          <li key={s.id} className="grid gap-8 border-b border-line py-12 md:grid-cols-2 md:items-center md:gap-14">
+            <Visual imageKey={s.imageKey} art={SERVICE_ART[s.id]} alt={s.title} className={cx('aspect-[4/5] w-full md:aspect-[4/5]', i % 2 === 1 && 'md:order-2')} rounded="rounded-none" />
+            <div>
+              <p className="thin text-[14px] text-smoke">{String(i + 1).padStart(2, '0')} / {String(list.length).padStart(2, '0')}</p>
+              <h2 className="mt-4 font-serif text-[40px] leading-[1.02] sm:text-[56px]">{s.title}</h2>
+              <p className="mt-5 max-w-[520px] text-[17px] leading-[1.4] text-brun-2">{s.description}</p>
+              <p className="mt-6 border-t border-line pt-4 text-[18px]">{s.priceNote}</p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Button variant="secondary" onClick={() => devisFor(s.id)}>Demander un devis</Button>
+                {(s.id === 'mignardises' || s.id === 'mocktails') ? <LinkButton href="#menu" variant="ghost">Voir le menu</LinkButton> : <LinkButton href="#tarifs" variant="ghost">Tarifs et simulateur</LinkButton>}
               </div>
-            </li>
-          ))}
-        </ol>
-        <p className="mt-10 flex items-start gap-2.5 text-sm text-brun-3"><Icon name="info" className="mt-0.5 h-4 w-4 shrink-0" />Les frais d'installation et de déplacement sont établis sur devis. Un acompte peut être demandé.</p>
-      </section>
+            </div>
+          </li>
+        ))}
+      </ol>
+      <p className="mx-auto mt-8 max-w-site px-5 text-[15px] text-smoke sm:px-6">Les frais d'installation et de déplacement sont établis sur devis. Un acompte peut être demandé.</p>
     </>
   );
 }
 
 /* ───────────── Menu ───────────── */
-function MenuSection({ title, price, items, imageKey, art }: { title: string; price: string; items: CatalogItem[]; imageKey: string; art: 'verrine' | 'mignardise' | 'mocktail' }) {
+function MenuSection({ n, title, price, items, imageKey, art }: { n: string; title: string; price: string; items: CatalogItem[]; imageKey: string; art: 'verrine' | 'mignardise' | 'mocktail' }) {
   return (
-    <section className="relative grid overflow-hidden rounded-[28px] border border-champagne bg-white lg:grid-cols-[minmax(0,1fr)_320px]">
-      <div className="relative p-7 sm:p-11">
-        <div className="pointer-events-none absolute inset-3 rounded-[22px] border border-line" aria-hidden="true" />
-        <div className="relative">
-          <h2 className="text-center font-script text-[44px] leading-none text-brand">{title}</h2>
-          <p className="mt-3 text-center text-[12px] font-medium uppercase tracking-[.3em] text-champagne-deep">{price}</p>
-          <Ornament className="mx-auto mt-3" />
-          <ul className="mx-auto mt-8 max-w-xl divide-y divide-line">
-            {items.map((m) => (
-              <li key={m.id} className="flex items-baseline gap-4 py-4">
-                <div className="min-w-0 flex-1">
-                  <p className="font-serif text-[22px] leading-tight text-brun">{m.name}</p>
-                  {m.ingredients && <p className="mt-1 text-sm italic text-brun-3">{m.ingredients}</p>}
-                  {m.allergens && <p className="mt-1 text-xs text-brun-2"><span className="font-medium">Allergènes :</span> {m.allergens}</p>}
-                </div>
-                <span className="shrink-0 font-serif text-xl tabular text-brand">{m.price != null ? eur(m.price) : 'Sur devis'}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+    <section className="grid gap-10 border-t border-smoke/60 py-14 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,.8fr)] lg:gap-16">
+      <div className="min-w-0">
+        <p className="thin text-[14px] text-smoke">{n} · {price}</p>
+        <h2 className="mt-4 font-serif text-[48px] leading-[1] sm:text-[72px]">{title}</h2>
+        <ul className="mt-10 border-t border-line">
+          {items.map((m) => (
+            <li key={m.id} className="flex items-baseline gap-6 border-b border-line py-5">
+              <div className="min-w-0 flex-1">
+                <p className="text-[22px] leading-[1.2] tracking-[-.01em]">{m.name}</p>
+                {m.ingredients && <p className="thin mt-1.5 text-[15px] text-brun-2">{m.ingredients}</p>}
+                {m.allergens && <p className="mt-1.5 text-[13px] text-smoke">Allergènes : {m.allergens}</p>}
+              </div>
+              <span className="shrink-0 text-[20px] tabular">{m.price != null ? eur(m.price) : 'Sur devis'}</span>
+            </li>
+          ))}
+        </ul>
       </div>
-      <Visual imageKey={imageKey} art={art} alt={`${title} de Maison EL Events`} className="order-first aspect-[16/9] lg:order-none lg:aspect-auto" rounded="rounded-none" />
+      <Visual imageKey={imageKey} art={art} alt={`${title} de Maison EL Events`} className="aspect-[4/5] w-full lg:sticky lg:top-8" rounded="rounded-none" />
     </section>
   );
 }
@@ -88,18 +82,18 @@ export function MenuPage() {
   const { data } = useStore();
   const { setPrefill } = useUi();
   const items = data.catalog.filter((c) => c.menu && c.active);
-  const price = (k: 'sucre' | 'sale' | 'mocktail') => { const p = items.find((i) => i.menu === k)?.price; return p != null ? `${eur(p)} ${k === 'mocktail' ? '' : 'la pièce'}`.trim() : 'Sur devis'; };
+  const price = (k: 'sucre' | 'sale' | 'mocktail') => { const p = items.find((i) => i.menu === k)?.price; return p != null ? `${eur(p)} ${k === 'mocktail' ? 'le verre' : 'la pièce'}` : 'Sur devis'; };
   return (
     <>
-      <PageHead eyebrow="Notre menu" title="Mignardises sucrées, salées et mocktails">Une sélection pour vos buffets et vos réceptions. Chaque composition peut être adaptée à votre événement.</PageHead>
-      <div className="mx-auto max-w-site space-y-8 px-4 py-16 sm:px-6">
-        <MenuSection title="Mignardises sucrées" price={price('sucre')} items={items.filter((i) => i.menu === 'sucre')} imageKey="menu-sucre" art="verrine" />
-        <MenuSection title="Mignardises salées" price={price('sale')} items={items.filter((i) => i.menu === 'sale')} imageKey="menu-sale" art="mignardise" />
-        <MenuSection title="Mocktails" price={price('mocktail')} items={items.filter((i) => i.menu === 'mocktail')} imageKey="menu-mocktail" art="mocktail" />
-        <div className="flex flex-col items-center gap-4 rounded-[26px] bg-ivoire px-6 py-10 text-center">
-          <p className="font-serif text-3xl text-brun">Envie d’une composition personnalisée ?</p>
-          <p className="max-w-lg text-sm text-brun-2">Indiquez vos préférences et le nombre d’invités : la composition vous sera proposée sur devis.</p>
-          <Button size="lg" iconRight="arrow" onClick={() => { setPrefill({ services: ['mignardises', 'mocktails'], needs: 'Composition personnalisée : ' }); navigate('devis'); }}>Demander une composition personnalisée</Button>
+      <PageHead eyebrow="Le menu traiteur" title={<>Notre<br />menu</>}>Mignardises sucrées et salées, mocktails : une sélection pour vos buffets et vos réceptions, à adapter à votre événement.</PageHead>
+      <div className="mx-auto max-w-site px-5 sm:px-6">
+        <MenuSection n="I" title="Mignardises sucrées" price={price('sucre')} items={items.filter((i) => i.menu === 'sucre')} imageKey="menu-sucre" art="verrine" />
+        <MenuSection n="II" title="Mignardises salées" price={price('sale')} items={items.filter((i) => i.menu === 'sale')} imageKey="menu-sale" art="mignardise" />
+        <MenuSection n="III" title="Mocktails" price={price('mocktail')} items={items.filter((i) => i.menu === 'mocktail')} imageKey="menu-mocktail" art="mocktail" />
+        <div className="border-t border-smoke/60 pt-14">
+          <p className="font-serif text-[40px] leading-[1.02] sm:text-[56px]">Une composition sur mesure ?</p>
+          <p className="mt-4 max-w-[560px] text-[17px] leading-[1.4] text-brun-2">Indiquez vos préférences et le nombre d’invités : la composition vous sera proposée sur devis.</p>
+          <Button className="mt-8" size="lg" variant="secondary" onClick={() => { setPrefill({ services: ['mignardises', 'mocktails'], needs: 'Composition personnalisée : ' }); navigate('devis'); }}>Demander une composition personnalisée</Button>
         </div>
       </div>
     </>
@@ -114,33 +108,30 @@ export function Gallery() {
   const list = useMemo(() => data.gallery.filter((g) => cat === 'Tous' || g.category === cat), [data.gallery, cat]);
   return (
     <>
-      <PageHead eyebrow="Galerie" title="Ambiances et réalisations">Mariages, tables, buffets et événements privés. Les visuels temporaires seront remplacés par les photographies de Maison EL Events depuis l’espace professionnel.</PageHead>
-      <section className="mx-auto max-w-site px-4 py-12 sm:px-6">
-        <div className="flex flex-wrap gap-2" role="group" aria-label="Filtrer la galerie">
+      <PageHead eyebrow={`Galerie / ${String(data.gallery.length).padStart(2, '0')}`} title="Ambiances">Mariages, tables, buffets et événements privés. Les photos de démonstration seront remplacées par celles de Maison EL Events depuis l’espace professionnel.</PageHead>
+      <section className="mx-auto max-w-site px-5 sm:px-6">
+        <div className="flex flex-wrap gap-x-6 gap-y-2 border-y border-line py-4" role="group" aria-label="Filtrer la galerie">
           {['Tous', ...GALLERY_CATS].map((c) => (
-            <button key={c} type="button" aria-pressed={cat === c} onClick={() => setCat(c)} className={cx('rounded-full px-4 py-2 text-sm transition', cat === c ? 'bg-brand text-cream' : 'bg-white text-brun-2 ring-1 ring-inset ring-line hover:ring-champagne-deep/50')}>{c}</button>
+            <button key={c} type="button" aria-pressed={cat === c} onClick={() => setCat(c)} className={cx('text-[15px] transition', cat === c ? 'text-white underline decoration-1 underline-offset-[6px]' : 'text-smoke hover:text-white')}>{c}</button>
           ))}
         </div>
         {list.length ? (
           <ul className="mt-8 columns-1 gap-4 sm:columns-2 lg:columns-3">
             {list.map((g, i) => (
-              <li key={g.id} className="mb-4 break-inside-avoid">
-                <button type="button" onClick={() => setOpen(g)} className="group block w-full overflow-hidden rounded-[22px] bg-white text-left ring-1 ring-line transition hover:shadow-soft">
-                  <Visual imageKey={galKey(g)} art={g.art} alt={g.title} className={i % 3 === 1 ? 'aspect-[3/4]' : 'aspect-[4/3]'} rounded="rounded-none" />
-                  <span className="block px-5 py-4">
-                    <span className="block text-[11px] uppercase tracking-[.2em] text-champagne-deep">{g.category}</span>
-                    <span className="mt-1 block font-serif text-xl text-brun">{g.title}</span>
-                  </span>
+              <li key={g.id} className="mb-8 break-inside-avoid">
+                <button type="button" onClick={() => setOpen(g)} className="block w-full text-left">
+                  <Visual imageKey={galKey(g)} art={g.art} alt={g.title} className={i % 3 === 1 ? 'aspect-[3/4]' : 'aspect-[4/5]'} rounded="rounded-none" />
+                  <span className="mt-3 flex items-baseline justify-between gap-3"><span className="text-[18px]">{g.title}</span><span className="thin shrink-0 text-[13px] text-smoke">{g.category}</span></span>
                 </button>
               </li>
             ))}
           </ul>
-        ) : <p className="mt-10 text-brun-3">Aucune photo dans cette catégorie pour le moment.</p>}
+        ) : <p className="mt-10 text-smoke">Aucune photo dans cette catégorie pour le moment.</p>}
       </section>
       <Modal open={!!open} onClose={() => setOpen(null)} title={open?.title ?? ''} size="lg">
         {open && <>
-          <Visual imageKey={galKey(open)} art={open.art} alt={open.title} className="aspect-[4/3]" />
-          <p className="mt-4 text-[11px] uppercase tracking-[.2em] text-champagne-deep">{open.category}</p>
+          <Visual imageKey={galKey(open)} art={open.art} alt={open.title} className="aspect-[4/5] sm:aspect-[4/3]" rounded="rounded-none" />
+          <p className="thin mt-4 text-[14px] text-smoke">{open.category}</p>
           <p className="mt-1 text-brun-2">{open.description}</p>
         </>}
       </Modal>
@@ -152,22 +143,22 @@ export function Gallery() {
 export function Legal() {
   const { data } = useStore();
   const s = data.settings;
-  const v = (x: string) => x || <span className="text-warn">À compléter</span>;
+  const v = (x: string) => x || <span className="text-smoke">À compléter</span>;
   return (
     <>
-      <PageHead eyebrow="Informations" title="Mentions légales">Informations à compléter par l’entreprise avant toute mise en ligne.</PageHead>
-      <section className="mx-auto max-w-3xl space-y-8 px-4 py-14 text-[15px] leading-relaxed text-brun-2 sm:px-6">
-        <div><h2 className="font-serif text-2xl text-brun">Éditeur du site</h2>
-          <dl className="mt-3 grid gap-2 sm:grid-cols-[220px_1fr]">
-            <dt className="font-medium text-brun">Nom commercial</dt><dd>{s.businessName}</dd>
-            <dt className="font-medium text-brun">Forme juridique</dt><dd>{v(s.legalForm)}</dd>
-            <dt className="font-medium text-brun">SIRET</dt><dd>{v(s.siret)}</dd>
-            <dt className="font-medium text-brun">Adresse</dt><dd>{s.address ? `${s.address}, ${s.city}` : v('')}</dd>
-            <dt className="font-medium text-brun">Contact</dt><dd>{s.email || s.phone ? [s.email, s.phone].filter(Boolean).join(' · ') : v('')}</dd>
-            <dt className="font-medium text-brun">Directeur de la publication</dt><dd>{v(s.publisher)}</dd>
+      <PageHead eyebrow="Informations" title={<>Mentions<br />légales</>}>Informations à compléter par l’entreprise avant toute mise en ligne.</PageHead>
+      <section className="mx-auto max-w-site space-y-12 px-5 text-[16px] leading-[1.4] text-brun-2 sm:px-6">
+        <div className="border-t border-smoke/60 pt-8"><h2 className="font-serif text-[32px] text-white">Éditeur du site</h2>
+          <dl className="mt-5 grid max-w-[720px] gap-x-6 gap-y-3 sm:grid-cols-[240px_1fr]">
+            <dt className="text-white">Nom commercial</dt><dd>{s.businessName}</dd>
+            <dt className="text-white">Forme juridique</dt><dd>{v(s.legalForm)}</dd>
+            <dt className="text-white">SIRET</dt><dd>{v(s.siret)}</dd>
+            <dt className="text-white">Adresse</dt><dd>{s.address ? `${s.address}, ${s.city}` : v('')}</dd>
+            <dt className="text-white">Contact</dt><dd>{s.email || s.phone ? [s.email, s.phone].filter(Boolean).join(' · ') : v('')}</dd>
+            <dt className="text-white">Directeur de la publication</dt><dd>{v(s.publisher)}</dd>
           </dl></div>
-        <div><h2 className="font-serif text-2xl text-brun">Hébergement</h2><p className="mt-2">{v(s.host)}</p></div>
-        <div><h2 className="font-serif text-2xl text-brun">Données personnelles</h2><p className="mt-2">Dans cette démonstration, les informations saisies restent enregistrées dans votre navigateur et ne sont transmises à personne. La politique de confidentialité définitive sera rédigée avec l’entreprise avant la mise en ligne.</p></div>
+        <div className="border-t border-line pt-8"><h2 className="font-serif text-[32px] text-white">Hébergement</h2><p className="mt-3">{v(s.host)}</p></div>
+        <div className="border-t border-line pt-8"><h2 className="font-serif text-[32px] text-white">Données personnelles</h2><p className="mt-3 max-w-[600px]">Dans cette démonstration, les informations saisies restent enregistrées dans votre navigateur et ne sont transmises à personne. La politique de confidentialité définitive sera rédigée avec l’entreprise avant la mise en ligne.</p></div>
       </section>
     </>
   );

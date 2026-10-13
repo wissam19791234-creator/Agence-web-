@@ -6,17 +6,18 @@ export { cx };
 
 type Variant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'light';
 const VARIANTS: Record<Variant, string> = {
-  primary: 'bg-brand text-cream hover:bg-brand-deep shadow-soft',
-  secondary: 'bg-white text-brun ring-1 ring-inset ring-line hover:ring-champagne-deep/60 hover:bg-cream',
-  ghost: 'text-brun-2 hover:bg-brand-soft hover:text-brand',
-  danger: 'bg-white text-danger ring-1 ring-inset ring-danger/30 hover:bg-danger hover:text-white',
-  light: 'bg-cream/95 text-brand hover:bg-white',
+  // Action principale remplie en blanc ; les autres boutons restent des pilules au trait.
+  primary: 'bg-white text-black hover:bg-[#D9D9D9]',
+  secondary: 'text-white ring-1 ring-inset ring-white/80 hover:bg-white hover:text-black',
+  ghost: 'text-brun-2 hover:text-white hover:bg-white/5',
+  danger: 'text-danger ring-1 ring-inset ring-danger/50 hover:bg-danger hover:text-black',
+  light: 'text-white ring-1 ring-inset ring-white hover:bg-white hover:text-black',
 };
 
 export function Button({ variant = 'primary', size = 'md', icon, iconRight, className, children, ...rest }: ButtonHTMLAttributes<HTMLButtonElement> & { variant?: Variant; size?: 'sm' | 'md' | 'lg'; icon?: IconName; iconRight?: IconName }) {
   const sz = size === 'sm' ? 'h-9 px-3.5 text-[13px] gap-1.5' : size === 'lg' ? 'h-[52px] px-7 text-[15px] gap-2.5' : 'h-11 px-5 text-sm gap-2';
   return (
-    <button type="button" className={cx('inline-flex items-center justify-center rounded-full font-medium tracking-[.01em] transition duration-200 disabled:cursor-not-allowed disabled:opacity-50 active:scale-[.98]', sz, VARIANTS[variant], className)} {...rest}>
+    <button type="button" className={cx('inline-flex items-center justify-center rounded-[40px] font-normal tracking-[-.008em] transition duration-200 disabled:cursor-not-allowed disabled:opacity-40 active:scale-[.98]', sz, VARIANTS[variant], className)} {...rest}>
       {icon && <Icon name={icon} className="h-4 w-4" />}
       {children}
       {iconRight && <Icon name={iconRight} className="h-4 w-4" />}
@@ -27,7 +28,7 @@ export function Button({ variant = 'primary', size = 'md', icon, iconRight, clas
 export function LinkButton({ href, variant = 'primary', size = 'md', className, children, icon, iconRight, ...rest }: { href: string; variant?: Variant; size?: 'sm' | 'md' | 'lg'; className?: string; children: ReactNode; icon?: IconName; iconRight?: IconName; target?: string; rel?: string; onClick?: () => void }) {
   const sz = size === 'sm' ? 'h-9 px-3.5 text-[13px] gap-1.5' : size === 'lg' ? 'h-[52px] px-7 text-[15px] gap-2.5' : 'h-11 px-5 text-sm gap-2';
   return (
-    <a href={href} className={cx('inline-flex items-center justify-center rounded-full font-medium tracking-[.01em] no-underline transition duration-200 active:scale-[.98]', sz, VARIANTS[variant], className)} {...rest}>
+    <a href={href} className={cx('inline-flex items-center justify-center rounded-[40px] font-normal tracking-[-.008em] no-underline transition duration-200 active:scale-[.98]', sz, VARIANTS[variant], className)} {...rest}>
       {icon && <Icon name={icon} className="h-4 w-4" />}
       {children}
       {iconRight && <Icon name={iconRight} className="h-4 w-4" />}
@@ -37,7 +38,7 @@ export function LinkButton({ href, variant = 'primary', size = 'md', className, 
 
 export function IconButton({ icon, label, className, ...rest }: ButtonHTMLAttributes<HTMLButtonElement> & { icon: IconName; label: string }) {
   return (
-    <button type="button" aria-label={label} title={label} className={cx('inline-grid h-9 w-9 place-items-center rounded-full text-brun-2 transition hover:bg-brand-soft hover:text-brand', className)} {...rest}>
+    <button type="button" aria-label={label} title={label} className={cx('inline-grid h-9 w-9 place-items-center rounded-full text-brun-2 transition hover:bg-white/10 hover:text-white disabled:opacity-30', className)} {...rest}>
       <Icon name={icon} />
     </button>
   );
@@ -60,7 +61,7 @@ export function Field({ label, hint, error, children, className, required }: { l
   );
 }
 
-const inputCls = 'w-full rounded-xl border border-line bg-white px-3.5 text-[15px] text-brun placeholder:text-brun-3/70 transition focus:border-brand/50 focus:outline-none focus:ring-4 focus:ring-brand/10 aria-[invalid=true]:border-danger/60';
+const inputCls = 'w-full rounded-none border border-line bg-[#0E0E0E] px-3.5 text-[15px] text-white placeholder:text-smoke transition focus:border-white/70 focus:outline-none focus:ring-0 aria-[invalid=true]:border-danger [color-scheme:dark]';
 export const Input = ({ className, ...p }: InputHTMLAttributes<HTMLInputElement>) => <input className={cx(inputCls, 'h-11', className)} {...p} />;
 export const Select = ({ className, children, ...p }: SelectHTMLAttributes<HTMLSelectElement>) => <select className={cx(inputCls, 'h-11 pr-8', className)} {...p}>{children}</select>;
 export const Textarea = ({ className, ...p }: TextareaHTMLAttributes<HTMLTextAreaElement>) => <textarea className={cx(inputCls, 'min-h-[96px] py-2.5 leading-relaxed', className)} {...p} />;
@@ -68,31 +69,31 @@ export const Textarea = ({ className, ...p }: TextareaHTMLAttributes<HTMLTextAre
 export function Toggle({ checked, onChange, label }: { checked: boolean; onChange: (v: boolean) => void; label: string }) {
   return (
     <button type="button" role="switch" aria-checked={checked} aria-label={label} onClick={() => onChange(!checked)}
-      className={cx('relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition', checked ? 'bg-brand' : 'bg-brun-3/30')}>
-      <span className={cx('inline-block h-5 w-5 rounded-full bg-white shadow transition', checked ? 'translate-x-[22px]' : 'translate-x-0.5')} />
+      className={cx('relative inline-flex h-6 w-11 shrink-0 items-center rounded-full ring-1 ring-inset transition', checked ? 'bg-white ring-white' : 'bg-transparent ring-smoke')}>
+      <span className={cx('inline-block h-4 w-4 rounded-full transition', checked ? 'translate-x-[24px] bg-black' : 'translate-x-1 bg-smoke')} />
     </button>
   );
 }
 
 export function Badge({ children, tone = 'neutral', className }: { children: ReactNode; tone?: 'neutral' | 'brand' | 'ok' | 'warn' | 'danger' | 'demo'; className?: string }) {
   const t = {
-    neutral: 'bg-ivoire text-brun-2 ring-line',
-    brand: 'bg-brand-soft text-brand ring-brand/15',
-    ok: 'bg-[#EAF3EE] text-ok ring-ok/15',
-    warn: 'bg-[#FBF1DF] text-warn ring-warn/20',
-    danger: 'bg-[#F8E7E7] text-danger ring-danger/15',
-    demo: 'bg-[#FBF1DF] text-warn ring-warn/25',
+    neutral: 'text-brun-2 ring-line',
+    brand: 'text-white ring-white/60',
+    ok: 'text-ok ring-ok/40',
+    warn: 'text-warn ring-warn/40',
+    danger: 'text-danger ring-danger/40',
+    demo: 'text-smoke ring-smoke/60',
   }[tone];
-  return <span className={cx('inline-flex items-center gap-1 whitespace-nowrap rounded-full px-2.5 py-0.5 text-[11.5px] font-medium ring-1 ring-inset', t, className)}>{children}</span>;
+  return <span className={cx('inline-flex items-center gap-1 whitespace-nowrap rounded-[44px] px-2.5 py-0.5 text-[11.5px] font-normal ring-1 ring-inset', t, className)}>{children}</span>;
 }
 
 export const FictifBadge = () => <Badge tone="demo">Fictif</Badge>;
 
 export function EmptyState({ icon = 'info', title, children, action }: { icon?: IconName; title: string; children?: ReactNode; action?: ReactNode }) {
   return (
-    <div className="grid place-items-center rounded-2xl border border-dashed border-line bg-cream/60 px-6 py-10 text-center">
-      <span className="mb-3 grid h-11 w-11 place-items-center rounded-full bg-brand-soft text-brand"><Icon name={icon} /></span>
-      <p className="font-serif text-xl text-brun">{title}</p>
+    <div className="grid place-items-center border border-dashed border-line px-6 py-10 text-center">
+      <span className="mb-3 grid h-11 w-11 place-items-center rounded-full ring-1 ring-line text-white"><Icon name={icon} /></span>
+      <p className="text-xl text-brun">{title}</p>
       {children && <div className="mt-1 max-w-md text-sm text-brun-2">{children}</div>}
       {action && <div className="mt-4">{action}</div>}
     </div>
@@ -127,15 +128,15 @@ export function Modal({ open, onClose, title, children, footer, size = 'md', sid
   const w = { sm: 'sm:max-w-md', md: 'sm:max-w-xl', lg: 'sm:max-w-3xl', xl: 'sm:max-w-5xl' }[size];
   return (
     <div className="fixed inset-0 z-[70] flex items-end justify-center sm:items-center" role="presentation">
-      <div className="absolute inset-0 bg-brun/40 backdrop-blur-[2px] animate-fade" onClick={onClose} />
+      <div className="absolute inset-0 bg-black/75 animate-fade" onClick={onClose} />
       <div ref={ref} role="dialog" aria-modal="true" aria-labelledby={titleId}
-        className={cx('relative flex max-h-[92dvh] w-full flex-col overflow-hidden rounded-t-3xl bg-cream shadow-lift sm:rounded-3xl animate-rise', w, side && 'sm:ml-auto sm:mr-0 sm:h-[100dvh] sm:max-h-none sm:rounded-none sm:rounded-l-3xl')}>
+        className={cx('relative flex max-h-[92dvh] w-full flex-col overflow-hidden border border-line bg-black animate-rise', w, side && 'sm:ml-auto sm:mr-0 sm:h-[100dvh] sm:max-h-none sm:border-y-0 sm:border-r-0')}>
         <div className="flex items-center justify-between gap-3 border-b border-line px-5 py-4 sm:px-6">
-          <h2 id={titleId} className="font-serif text-[22px] font-medium leading-tight text-brun">{title}</h2>
+          <h2 id={titleId} className="text-[22px] font-normal leading-tight tracking-[-.01em] text-brun">{title}</h2>
           <IconButton icon="x" label="Fermer" onClick={onClose} />
         </div>
         <div className="flex-1 overflow-y-auto px-5 py-5 sm:px-6">{children}</div>
-        {footer && <div className="flex flex-wrap items-center justify-end gap-2 border-t border-line bg-white/60 px-5 py-3.5 sm:px-6">{footer}</div>}
+        {footer && <div className="flex flex-wrap items-center justify-end gap-2 border-t border-line px-5 py-3.5 sm:px-6">{footer}</div>}
       </div>
     </div>
   );
@@ -171,7 +172,7 @@ export function FeedbackProvider({ children }: { children: ReactNode }) {
         </Modal>
         <div className="pointer-events-none fixed inset-x-0 bottom-4 z-[90] flex flex-col items-center gap-2 px-4" aria-live="polite">
           {toasts.map((t) => (
-            <div key={t.id} className={cx('pointer-events-auto flex max-w-md items-center gap-2.5 rounded-2xl px-4 py-3 text-sm shadow-lift animate-rise', t.tone === 'error' ? 'bg-danger text-white' : 'bg-brun text-cream')}>
+            <div key={t.id} className={cx('pointer-events-auto flex max-w-md items-center gap-2.5 rounded-[44px] px-5 py-3 text-sm animate-rise', t.tone === 'error' ? 'bg-danger text-black' : 'bg-white text-black')}>
               <Icon name={t.tone === 'error' ? 'info' : 'check'} className="h-4 w-4 shrink-0" />{t.text}
             </div>
           ))}
@@ -184,9 +185,9 @@ export function FeedbackProvider({ children }: { children: ReactNode }) {
 export function SectionTitle({ eyebrow, title, children, align = 'left', as: H = 'h2' }: { eyebrow?: string; title: ReactNode; children?: ReactNode; align?: 'left' | 'center'; as?: 'h1' | 'h2' }) {
   return (
     <div className={cx('max-w-2xl', align === 'center' && 'mx-auto text-center')}>
-      {eyebrow && <p className={cx('mb-3 flex items-center gap-3 text-[11px] font-medium uppercase tracking-[.28em] text-champagne-deep', align === 'center' && 'justify-center')}><span className="h-px w-8 bg-champagne-deep/60" />{eyebrow}{align === 'center' && <span className="h-px w-8 bg-champagne-deep/60" />}</p>}
-      <H className="font-serif text-[2.35rem] font-medium leading-[1.05] text-brun sm:text-5xl">{title}</H>
-      {children && <div className="mt-4 text-[15.5px] leading-relaxed text-brun-2">{children}</div>}
+      {eyebrow && <p className="thin mb-4 text-[14px] text-brun">{eyebrow}</p>}
+      <H className="font-serif text-[2.6rem] font-normal leading-[1.02] text-brun sm:text-[56px]">{title}</H>
+      {children && <div className={cx('mt-5 max-w-[600px] text-[17px] leading-[1.4] text-brun-2', align === 'center' && 'mx-auto')}>{children}</div>}
     </div>
   );
 }

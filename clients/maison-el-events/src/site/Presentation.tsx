@@ -44,25 +44,25 @@ export default function Presentation() {
   const { startTour } = useUi();
   return (
     <>
-      <section className="border-b border-line bg-brand text-cream">
+      <section className="border-b border-line">
         <div className="mx-auto max-w-site px-4 py-16 sm:px-6 lg:py-24">
-          <p className="text-[11px] font-medium uppercase tracking-[.3em] text-champagne">Présentation privée · proposition Scalify</p>
-          <h1 className="mt-4 max-w-3xl font-serif text-5xl font-medium leading-[1.03] sm:text-6xl">Un site et un espace de gestion pensés pour Maison EL Events</h1>
-          <p className="mt-6 max-w-2xl text-[16px] leading-relaxed text-cream/85">Cette page explique, étape par étape, comment le site attire les demandes et comment l’espace professionnel aide à les transformer en événements. Tout est testable : les données sont fictives et restent dans votre navigateur.</p>
+          <p className="thin text-[14px]">Présentation privée · proposition Scalify</p>
+          <h1 className="display mt-6 max-w-[1000px] text-[13vw] sm:text-[90px] lg:text-[110px]">Un site et un espace de gestion pensés pour Maison EL Events</h1>
+          <p className="mt-8 max-w-[600px] text-[18px] leading-[1.4] text-brun-2">Cette page explique, étape par étape, comment le site attire les demandes et comment l’espace professionnel aide à les transformer en événements. Tout est testable : les données sont fictives et restent dans votre navigateur.</p>
           <div className="mt-9 flex flex-wrap gap-3">
-            <Button size="lg" variant="light" icon="play" onClick={startTour}>Parcourir la démonstration guidée</Button>
-            <LinkButton href="#accueil" size="lg" variant="ghost" className="text-cream ring-1 ring-inset ring-cream/40 hover:bg-cream/10 hover:text-cream">Voir le site</LinkButton>
+            <Button size="lg" variant="primary" icon="play" onClick={startTour}>Parcourir la démonstration guidée</Button>
+            <LinkButton href="#accueil" size="lg" variant="secondary">Voir le site</LinkButton>
           </div>
         </div>
       </section>
 
       <section className="mx-auto max-w-site px-4 py-16 sm:px-6 lg:py-20">
         <SectionTitle eyebrow="Fonctionnement" title="Du premier message au jour J" />
-        <ol className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <ol className="mt-12 grid border-t border-smoke/60 md:grid-cols-2 lg:grid-cols-3">
           {BLOCKS.map((b, i) => (
-            <li key={b.t} className="flex flex-col rounded-[22px] border border-line bg-white p-6">
-              <div className="flex items-center gap-3"><span className="grid h-10 w-10 place-items-center rounded-full bg-brand-soft text-brand"><Icon name={b.icon} /></span><span className="font-serif text-lg italic text-champagne-deep">Étape {i + 1}</span></div>
-              <h2 className="mt-4 font-serif text-2xl leading-tight text-brun">{b.t}</h2>
+            <li key={b.t} className="flex flex-col border-b border-line py-8 md:pr-8">
+              <div className="flex items-center gap-3"><Icon name={b.icon} className="h-5 w-5 text-smoke" /><span className="thin text-[14px] text-smoke">Étape {String(i + 1).padStart(2, '0')}</span></div>
+              <h2 className="mt-5 text-[24px] leading-[1.2] text-brun">{b.t}</h2>
               <p className="mt-2 flex-1 text-sm leading-relaxed text-brun-2">{b.d}</p>
               <LinkButton href={`#${b.r}`} variant="secondary" size="sm" className="mt-5 self-start" iconRight="arrow">{b.cta}</LinkButton>
             </li>
@@ -70,17 +70,17 @@ export default function Presentation() {
         </ol>
       </section>
 
-      <section className="bg-white py-16 lg:py-20" aria-labelledby="features-t">
+      <section className="py-16 lg:py-20" aria-labelledby="features-t">
         <div className="mx-auto max-w-site px-4 sm:px-6">
           <SectionTitle eyebrow="Transparence" title={<span id="features-t">Fonctionnalités disponibles</span>}>Ce qui fonctionne déjà dans cette démonstration, et ce qu’il reste à connecter pour une utilisation réelle.</SectionTitle>
           <div className="mt-10 grid gap-6 lg:grid-cols-2">
-            <div className="rounded-[22px] border border-ok/20 bg-[#F3F8F5] p-6">
-              <h3 className="flex items-center gap-2 font-serif text-2xl text-brun"><Icon name="check" className="h-5 w-5 text-ok" />Disponible dans cette démonstration</h3>
-              <ul className="mt-4 space-y-2.5 text-sm text-brun-2">{AVAILABLE.map((a) => <li key={a} className="flex gap-2.5"><Icon name="check" className="mt-0.5 h-4 w-4 shrink-0 text-ok" />{a}</li>)}</ul>
+            <div className="border-t border-white pt-6">
+              <h3 className="font-serif text-[32px] leading-[1.05] text-brun">Disponible dans cette démonstration</h3>
+              <ul className="mt-5 space-y-2.5 text-[15px] text-brun-2">{AVAILABLE.map((a) => <li key={a} className="flex gap-2.5 border-b border-line pb-2.5"><Icon name="check" className="mt-0.5 h-4 w-4 shrink-0 text-white" />{a}</li>)}</ul>
             </div>
-            <div className="rounded-[22px] border border-warn/25 bg-[#FCF6EC] p-6">
-              <h3 className="flex items-center gap-2 font-serif text-2xl text-brun"><Icon name="settings" className="h-5 w-5 text-warn" />À connecter ou configurer pour la production</h3>
-              <ul className="mt-4 space-y-2.5 text-sm text-brun-2">{TO_CONNECT.map((a) => <li key={a} className="flex gap-2.5"><span className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-warn" />{a}</li>)}</ul>
+            <div className="bg-brand p-6 text-white">
+              <h3 className="font-serif text-[32px] leading-[1.05]">À connecter pour la production</h3>
+              <ul className="mt-5 space-y-2.5 text-[15px]">{TO_CONNECT.map((a) => <li key={a} className="flex gap-2.5 border-b border-white/30 pb-2.5"><span className="shrink-0">—</span>{a}</li>)}</ul>
             </div>
           </div>
         </div>

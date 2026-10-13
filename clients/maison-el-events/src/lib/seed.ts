@@ -4,7 +4,7 @@ import { PRICE_IDS } from './constants';
 import { addDays, todayISO, uid } from './format';
 import type { CalEvent, CatalogItem, Data, EventType, Expense, GalleryItem, Prospect, Quote, ServiceKey, SiteService, StageKey, Task } from './types';
 
-export const DATA_VERSION = 3;
+export const DATA_VERSION = 4;
 
 export function seedCatalog(): CatalogItem[] {
   const base = (o: Partial<CatalogItem> & Pick<CatalogItem, 'id' | 'name' | 'category' | 'price' | 'unit'>): CatalogItem => ({
@@ -53,17 +53,18 @@ export function seedServices(): SiteService[] {
 }
 
 export function seedGallery(): GalleryItem[] {
-  const g = (title: string, category: GalleryItem['category'], art: GalleryItem['art'], description: string): GalleryItem => ({ id: uid('g'), title, category, art, description, imageKey: '' });
+  // Identifiants fixes : la photo de démonstration src/assets/demo/gal-<id>.jpg s'y rattache.
+  const g = (id: string, title: string, category: GalleryItem['category'], art: GalleryItem['art'], description: string): GalleryItem => ({ id, title, category, art, description, imageKey: '' });
   return [
-    g('Table de réception', 'Décoration de tables', 'table', 'Visuel temporaire : remplacez-le par une photo de vos tables.'),
-    g('Arche de cérémonie', 'Mariages', 'arche', 'Visuel temporaire : remplacez-le par une photo de mariage.'),
-    g('Buffet sucré', 'Buffets', 'buffet', 'Visuel temporaire : remplacez-le par une photo de buffet.'),
-    g('Coin mariés', 'Mariages', 'canape', 'Visuel temporaire : remplacez-le par une photo du coin mariés.'),
-    g('Verrines et mignardises', 'Traiteur', 'verrine', 'Visuel temporaire : remplacez-le par une photo de vos mignardises.'),
-    g('Mocktails', 'Traiteur', 'mocktail', 'Visuel temporaire : remplacez-le par une photo de vos boissons.'),
-    g('Anniversaire', 'Événements privés', 'salon', 'Visuel temporaire : remplacez-le par une photo d’événement privé.'),
-    g('Table d’honneur', 'Décoration de tables', 'table', 'Visuel temporaire : remplacez-le par une photo de table d’honneur.'),
-    g('Plateau de mignardises', 'Buffets', 'mignardise', 'Visuel temporaire : remplacez-le par une photo de plateau.'),
+    g('table', 'Table de réception', 'Décoration de tables', 'table', 'Photo de démonstration : à remplacer par une photo de vos tables.'),
+    g('arche', 'Arche de cérémonie', 'Mariages', 'arche', 'Photo de démonstration : à remplacer par une photo de mariage.'),
+    g('buffet', 'Buffet sucré et salé', 'Buffets', 'buffet', 'Photo de démonstration : à remplacer par une photo de buffet.'),
+    g('coin-maries', 'Coin mariés', 'Mariages', 'canape', 'Photo de démonstration : à remplacer par une photo du coin mariés.'),
+    g('verrines', 'Verrines et tartelettes', 'Traiteur', 'verrine', 'Photo de démonstration : à remplacer par une photo de vos mignardises.'),
+    g('mocktails', 'Mocktails', 'Traiteur', 'mocktail', 'Photo de démonstration : à remplacer par une photo de vos boissons.'),
+    g('centre', 'Centre de table', 'Décoration de tables', 'table', 'Photo de démonstration : à remplacer par une photo de centre de table.'),
+    g('bouchees', 'Bouchées salées', 'Buffets', 'mignardise', 'Photo de démonstration : à remplacer par une photo de plateau.'),
+    g('anniversaire', 'Anniversaire', 'Événements privés', 'salon', 'Visuel temporaire : à remplacer par une photo d’événement privé.'),
   ];
 }
 
@@ -164,7 +165,7 @@ export function seed(): Data {
     settings: {
       businessName: 'Maison EL Events', tagline: 'Décoration événementielle & traiteur', city: 'Orléans',
       email: '', phone: '', address: '', instagram: '', tiktok: 'maisonelevents', hours: '',
-      colorBrand: '#65172D', colorChampagne: '#D8C3A7',
+      colorBrand: '#EB516D', colorChampagne: '#808080',
       legalForm: '', siret: '', publisher: '', host: '',
       conditions: "Les tarifs s'appliquent aux prestations listées. Les frais d'installation et de déplacement sont établis sur devis. Un acompte peut être demandé pour confirmer la réservation.",
       quoteFooter: 'Devis établi par Maison EL Events, Orléans.',

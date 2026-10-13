@@ -51,7 +51,7 @@ export default function Media() {
   return (
     <>
       <ProHeader title="Photos et galerie" sub="Remplacez les visuels temporaires par vos photos. Elles sont compressées et gardées dans ce navigateur pour la démonstration." />
-      {!images.persistent && <p className="mb-4 rounded-xl bg-[#FBF1DF] px-4 py-2.5 text-sm text-warn">Ce navigateur ne permet pas de conserver les photos : elles disparaîtront à la fermeture de la page.</p>}
+      {!images.persistent && <p className="mb-4 rounded-none bg-[#2A2112] px-4 py-2.5 text-sm text-warn">Ce navigateur ne permet pas de conserver les photos : elles disparaîtront à la fermeture de la page.</p>}
       <Panel title="Emplacements du site" actions={images.count > 0 ? <Button size="sm" variant="ghost" onClick={async () => { if (await confirm({ title: 'Retirer toutes les photos importées ?', message: 'Les visuels temporaires seront rétablis partout.', confirm: 'Tout retirer', danger: true })) { await images.clearAll(); toast('Photos retirées.'); } }}>Tout retirer</Button> : undefined}>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
           {SLOTS.map((s) => <ImageSlotEditor key={s.key} imageKey={s.key} art={s.art} label={s.label} />)}
@@ -61,7 +61,7 @@ export default function Media() {
       <Panel title="Galerie publique" className="mt-5" actions={<Button size="sm" icon="plus" onClick={() => openForm('new')}>Ajouter une photo</Button>}>
         <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {data.gallery.map((g) => (
-            <li key={g.id} className="overflow-hidden rounded-2xl border border-line bg-white">
+            <li key={g.id} className="overflow-hidden rounded-none border border-line bg-panel">
               <Visual imageKey={galKey(g)} art={g.art} alt={g.title} className="aspect-[4/3]" rounded="rounded-none" />
               <div className="flex items-start gap-2 p-3">
                 <div className="min-w-0 flex-1"><p className="truncate text-sm font-medium text-brun">{g.title}</p><p className="text-xs text-brun-3">{g.category}</p></div>
