@@ -62,7 +62,8 @@ function Hero() {
   const runway = useRef<HTMLElement>(null);
   const bar = useRef<HTMLSpanElement>(null);
   const [stage, setStage] = useState(0);
-  const static_ = reducedMotion();
+  // Sans animation si l'utilisateur la refuse, ou si la page est affichée dans un aperçu qui l'étire à sa hauteur totale.
+  const static_ = reducedMotion() || window.innerHeight > 1300;
 
   useLayoutEffect(() => {
     if (static_ || !runway.current) return;
@@ -92,8 +93,8 @@ function Hero() {
   const s = STAGES[stage];
 
   return (
-    <section ref={runway} className={cx('relative', static_ ? 'h-[100svh]' : 'h-[300vh]')} aria-label="Présentation">
-      <div className="sticky top-0 h-[100svh] w-full overflow-hidden">
+    <section ref={runway} className={cx('relative', static_ ? 'h-[min(100svh,960px)]' : 'h-[min(300vh,2880px)]')} aria-label="Présentation">
+      <div className="sticky top-0 h-[min(100svh,960px)] w-full overflow-hidden">
         {STAGES.map((x, i) => (
           <div key={x.img} data-hero-layer className="absolute inset-0 will-change-transform" style={{ opacity: i === 0 ? 1 : 0 }}>
             <Visual imageKey={x.img} art="table" alt={x.title.join(' ')} className="h-full w-full" rounded="" eager badge={false} />

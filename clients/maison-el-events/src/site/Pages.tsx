@@ -24,7 +24,7 @@ export function PageHead({ eyebrow, title, children, imageKey, art = 'table', n 
   );
   if (!imageKey) return <section className="mx-auto max-w-site px-4 pb-14 pt-[calc(var(--hdr)+56px)] sm:px-6 lg:pb-20">{body}</section>;
   return (
-    <section className="relative flex min-h-[68svh] items-end overflow-hidden sm:min-h-[72svh]">
+    <section className="relative flex min-h-[min(68svh,640px)] items-end overflow-hidden sm:min-h-[min(72svh,720px)]">
       <Backdrop imageKey={imageKey} art={art} alt="" eager badgePos="trh" />
       <div className="pointer-events-none absolute inset-x-0 top-0 h-40 scrim-t" />
       <div className="relative z-10 mx-auto w-full max-w-site px-4 pb-12 pt-[calc(var(--hdr)+64px)] sm:px-6 sm:pb-16">{body}</div>
