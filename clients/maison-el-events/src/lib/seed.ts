@@ -4,7 +4,7 @@ import { PRICE_IDS } from './constants';
 import { addDays, todayISO, uid } from './format';
 import type { CalEvent, CatalogItem, Data, EventType, Expense, FaqItem, GalleryItem, Prospect, Quote, ServiceKey, SiteService, StageKey, Task } from './types';
 
-export const DATA_VERSION = 5;
+export const DATA_VERSION = 6;
 
 export function seedCatalog(): CatalogItem[] {
   const base = (o: Partial<CatalogItem> & Pick<CatalogItem, 'id' | 'name' | 'category' | 'price' | 'unit'>): CatalogItem => ({
@@ -193,7 +193,7 @@ export function seed(): Data {
       businessName: 'Maison EL Events', tagline: 'Décoration événementielle & traiteur', city: 'Orléans',
       email: '', phone: '', address: '', instagram: '', tiktok: 'maisonelevents',
       openingHours: WEEK.map((day) => ({ day, hours: '' })), cateringHours: '', bookingLead: '', zone: 'Orléans',
-      colorBrand: '#EB516D', colorChampagne: '#D9B46A',
+      colorBrand: '#C59B5F', colorChampagne: '#DFBE88',
       legalForm: '', siret: '', publisher: '', host: '',
       conditions: "Les tarifs s'appliquent aux prestations listées. Les frais d'installation et de déplacement sont établis sur devis. Un acompte peut être demandé pour confirmer la réservation.",
       quoteFooter: 'Devis établi par Maison EL Events, Orléans.',

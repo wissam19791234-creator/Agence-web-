@@ -6,7 +6,7 @@ import { Icon } from './Icon';
 import { Button, cx, useToast } from './ui';
 
 // Illustrations au trait, utilisées tant que la propriétaire n'a pas importé ses photos.
-const G = '#6E6E6E', B = '#EB516D', S = '#4A4A4A'; // B : accent rose
+const G = '#6E6E6E', B = '#C59B5F', S = '#4A4A4A'; // B : accent doré
 function Art({ kind }: { kind: ArtKind }) {
   const common = { fill: 'none', stroke: G, strokeWidth: 1.4, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const };
   const flowers = (cx: number, cy: number, r = 9) => (

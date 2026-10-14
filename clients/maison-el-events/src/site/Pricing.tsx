@@ -24,7 +24,7 @@ function Qty({ label, value, onChange, max, hint, id }: { label: string; value: 
   return (
     <div>
       <label htmlFor={id} className="mono mb-2 block text-ash">{label}</label>
-      <div className="flex items-stretch overflow-hidden rounded-ctl border border-frost/20 bg-[#0B0B0B] focus-within:border-frost">
+      <div className="flex items-stretch overflow-hidden rounded-ctl border border-frost/20 bg-navy-card focus-within:border-frost">
         <button type="button" className="w-11 shrink-0 text-xl text-brun-2 hover:bg-white/10 hover:text-white" aria-label={`Diminuer : ${label}`} onClick={() => step(-1)}>−</button>
         <input id={id} inputMode="numeric" className="h-11 w-full min-w-0 bg-transparent text-center text-[15px] tabular outline-none" value={value} onChange={(e) => onChange(e.target.value.replace(/[^\d]/g, ''))} aria-invalid={!!err} aria-describedby={err ? id + '-e' : hint ? id + '-h' : undefined} />
         <button type="button" className="w-11 shrink-0 text-xl text-brun-2 hover:bg-white/10 hover:text-white" aria-label={`Augmenter : ${label}`} onClick={() => step(1)}>+</button>
@@ -97,14 +97,14 @@ export default function Pricing() {
           {priced.map((c) => c && (
             <article key={c.id} className="flex flex-col bg-black p-5 sm:p-6">
               <h2 className="mono text-ash">{c.id === PRICE_IDS.boisson ? 'Cocktails et mocktails' : c.id === PRICE_IDS.sucree ? 'Mignardises sucrées' : c.id === PRICE_IDS.salee ? 'Mignardises salées' : c.name}</h2>
-              <p className="mt-4 text-[52px] leading-none tracking-[-.05em] text-white tabular">{c.price != null ? eur(c.price) : 'Sur devis'}</p>
+              <p className="mt-4 text-[52px] font-serif leading-none text-white tabular">{c.price != null ? eur(c.price) : 'Sur devis'}</p>
               <p className="mono mt-2 text-brand">{c.unit}</p>
               <p className="mt-4 text-sm leading-relaxed text-ash">{c.description}</p>
             </article>
           ))}
         </div>
         <div className="mt-12 border-t border-frost/15 pt-6">
-          <h2 className="text-[30px] tracking-[-.04em] text-brun">Sur devis</h2>
+          <h2 className="font-serif text-[32px] text-brun">Sur devis</h2>
           <ul className="mt-3 grid gap-2 text-sm text-brun-2 sm:grid-cols-2">
             {onQuote.map((c) => c && <li key={c.id} className="flex gap-2"><Icon name="check" className="mt-0.5 h-4 w-4 shrink-0 text-champagne" />{c.name}</li>)}
             <li className="flex gap-2"><Icon name="check" className="mt-0.5 h-4 w-4 shrink-0 text-champagne" />Un acompte peut être demandé pour confirmer la réservation.</li>
@@ -133,13 +133,13 @@ export default function Pricing() {
               <div className="flex flex-wrap gap-2">
                 {EXTRAS.map((x) => {
                   const on = extras.includes(x.k);
-                  return <button key={x.k} type="button" aria-pressed={on} onClick={() => setExtras(on ? extras.filter((y) => y !== x.k) : [...extras, x.k])} className={cx('mono mono-lg h-9 rounded-ctl border px-3.5 transition', on ? 'border-brand bg-brand text-black' : 'border-frost/25 text-ash hover:border-frost hover:text-white')}>{x.label}</button>;
+                  return <button key={x.k} type="button" aria-pressed={on} onClick={() => setExtras(on ? extras.filter((y) => y !== x.k) : [...extras, x.k])} className={cx('h-10 rounded-full border px-5 text-[13px] font-semibold transition', on ? 'border-brand bg-brand text-navy' : 'border-white/20 text-white/80 hover:border-brand hover:text-brand')}>{x.label}</button>;
                 })}
               </div>
             </fieldset>
           </div>
 
-          <aside className="self-start rounded-box border border-frost/30 bg-[#0B0B0B] p-6 lg:sticky lg:top-[calc(var(--hdr)+24px)]" aria-live="polite">
+          <aside className="self-start rounded-box border border-frost/30 bg-navy-card p-6 lg:sticky lg:top-[calc(var(--hdr)+24px)]" aria-live="polite">
             <p className="mono text-brand">Estimation</p>
             <ul className="mt-4 divide-y divide-frost/10 text-sm">
               {sim.rows.map((r) => (
@@ -153,7 +153,7 @@ export default function Pricing() {
             </ul>
             <div className="mt-4 flex items-baseline justify-between gap-4 border-t border-frost/40 pt-4">
               <span className="font-medium text-brun">Total des prestations tarifées</span>
-              <span data-total className="text-[52px] leading-none tracking-[-.05em] text-brand tabular">{valid ? eur(sim.total) : '—'}</span>
+              <span data-total className="text-[52px] font-serif leading-none text-brand tabular">{valid ? eur(sim.total) : '—'}</span>
             </div>
             {!valid && <p className="mt-2 text-xs font-medium text-danger">Corrigez les quantités pour afficher l’estimation.</p>}
             <p className="mt-4 text-xs leading-relaxed text-brun-3">Estimation basée sur vos sélections ; elle ne constitue pas un devis définitif. Les frais de déplacement, d’installation et les prestations non tarifées restent à confirmer.</p>

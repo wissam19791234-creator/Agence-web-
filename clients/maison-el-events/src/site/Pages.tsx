@@ -18,7 +18,7 @@ export function PageHead({ eyebrow, title, children, imageKey, art = 'table', n 
   const body = (
     <>
       <Eyebrow n={n}>{eyebrow}</Eyebrow>
-      <Display as="h1" lines={title} className="mt-6 text-[clamp(56px,14vw,128px)]" brand={title.length - 1} />
+      <Display as="h1" lines={title} className="mt-6 text-[clamp(50px,9vw,104px)] text-shadow" brand={title.length - 1} />
       {children && <div className="mt-8 max-w-[560px] text-[17px] leading-[1.5] text-white/85">{children}</div>}
     </>
   );
@@ -49,7 +49,7 @@ export function Services() {
             <Visual imageKey={s.imageKey} art={SERVICE_ART[s.id]} alt={s.title} className={cx('aspect-[4/3] w-full', i % 2 === 1 && 'md:order-2')} />
             <div>
               <Eyebrow n={i + 1}>{s.priceNote}</Eyebrow>
-              <h2 className="mt-5 text-[38px] leading-[.95] tracking-[-.045em] sm:text-[52px]">{s.title}</h2>
+              <h2 className="mt-5 text-[38px] font-serif leading-[1.06] sm:text-[52px]">{s.title}</h2>
               <p className="mt-5 max-w-[520px] text-[17px] leading-[1.5] text-ash">{s.description}</p>
               <div className="mt-8 flex flex-wrap gap-2.5">
                 <Button onClick={() => devisFor(s.id)}>Demander un devis</Button>
@@ -70,7 +70,7 @@ function MenuSection({ n, title, price, items, imageKey, art }: { n: number; tit
     <section className="grid gap-10 border-t border-frost/15 py-14 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,.85fr)] lg:gap-16">
       <div className="min-w-0">
         <Eyebrow n={n}>{price}</Eyebrow>
-        <h2 className="mt-5 text-[44px] leading-[.92] tracking-[-.045em] sm:text-[68px]">{title}</h2>
+        <h2 className="mt-5 text-[44px] font-serif leading-[1.06] sm:text-[68px]">{title}</h2>
         <ul className="mt-10 border-t border-frost/15">
           {items.map((m) => (
             <li key={m.id} className="flex items-baseline gap-6 border-b border-frost/15 py-5">
@@ -101,7 +101,7 @@ export function MenuPage() {
         <MenuSection n={1} title="Mignardises sucrées" price={price('sucre')} items={items.filter((i) => i.menu === 'sucre')} imageKey="menu-sucre" art="verrine" />
         <MenuSection n={2} title="Mignardises salées" price={price('sale')} items={items.filter((i) => i.menu === 'sale')} imageKey="menu-sale" art="mignardise" />
         <MenuSection n={3} title="Mocktails" price={price('mocktail')} items={items.filter((i) => i.menu === 'mocktail')} imageKey="menu-mocktail" art="mocktail" />
-        <div className="rounded-box border border-frost/20 bg-[#0B0B0B] p-6 sm:p-10">
+        <div className="rounded-box border border-frost/20 bg-navy-card p-6 sm:p-10">
           <Display lines={['Une composition', 'sur mesure ?']} className="text-[clamp(40px,8vw,72px)]" brand={1} />
           <p className="mt-6 max-w-[560px] text-[17px] leading-[1.5] text-ash">Indiquez vos préférences et le nombre d’invités : la composition vous sera proposée sur devis.</p>
           <Button className="mt-8" size="lg" onClick={() => { setPrefill({ services: ['mignardises', 'mocktails'], needs: 'Composition personnalisée : ' }); navigate('devis'); }}>Demander une composition personnalisée</Button>
@@ -123,7 +123,7 @@ export function Gallery() {
       <section className="mx-auto mt-6 max-w-site px-4 sm:px-6">
         <div className="flex flex-wrap gap-2" role="group" aria-label="Filtrer la galerie">
           {['Tous', ...GALLERY_CATS].map((c) => (
-            <button key={c} type="button" aria-pressed={cat === c} onClick={() => setCat(c)} className={cx('mono mono-lg h-9 rounded-ctl border px-3.5 transition', cat === c ? 'border-brand bg-brand text-black' : 'border-frost/25 text-ash hover:border-frost hover:text-white')}>{c}</button>
+            <button key={c} type="button" aria-pressed={cat === c} onClick={() => setCat(c)} className={cx('h-10 rounded-full border px-5 text-[13px] font-semibold transition', cat === c ? 'border-brand bg-brand text-navy shadow-gold' : 'border-white/20 text-white/80 hover:border-brand hover:text-brand')}>{c}</button>
           ))}
         </div>
         {list.length ? (
@@ -174,9 +174,9 @@ export function PracticalInfo({ className }: { className?: string }) {
   const { data } = useStore();
   const p = practical(data);
   return (
-    <section className={cx('rounded-card border border-frost/20 bg-[#0B0B0B] p-5 sm:p-7', className)} aria-labelledby="infos-t">
+    <section className={cx('rounded-card border border-frost/20 bg-navy-card p-5 sm:p-7', className)} aria-labelledby="infos-t">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 id="infos-t" className="text-[24px] leading-none tracking-[-.04em]">Horaires et infos pratiques</h2>
+        <h2 id="infos-t" className="font-serif text-[28px] leading-none">Horaires et infos pratiques</h2>
         {p.pending && <Badge tone="warn">À confirmer</Badge>}
       </div>
       <h3 className="mono mt-6 text-ash">Accueil et réponses</h3>
@@ -211,7 +211,7 @@ export function Faq() {
         <div className="lg:sticky lg:top-[calc(var(--hdr)+24px)]">
           <PracticalInfo />
           <div className="mt-4 rounded-card border border-brand/50 bg-brand/10 p-5 sm:p-7">
-            <p className="text-[22px] leading-[1.1] tracking-[-.035em]">Une autre question ?</p>
+            <p className="text-[22px] font-serif leading-[1.1]">Une autre question ?</p>
             <p className="mt-2 text-[15px] text-ash">Décrivez votre événement : la réponse vous parviendra avec votre devis.</p>
             <div className="mt-5 flex flex-wrap gap-2.5"><LinkButton href="#devis">Demander un devis</LinkButton><LinkButton href="#tarifs" variant="secondary">Simuler mon budget</LinkButton></div>
           </div>
@@ -230,7 +230,7 @@ export function Legal() {
     <>
       <PageHead eyebrow="Informations" title={['Mentions', 'légales']}>Informations à compléter par l’entreprise avant toute mise en ligne.</PageHead>
       <section className="mx-auto max-w-site space-y-12 px-4 text-[16px] leading-[1.5] text-ash sm:px-6">
-        <div className="border-t border-frost/15 pt-8"><h2 className="text-[30px] tracking-[-.04em] text-white">Éditeur du site</h2>
+        <div className="border-t border-frost/15 pt-8"><h2 className="font-serif text-[32px] text-white">Éditeur du site</h2>
           <dl className="mt-5 grid max-w-[720px] gap-x-6 gap-y-3 sm:grid-cols-[240px_1fr]">
             <dt className="mono pt-1 text-white">Nom commercial</dt><dd>{s.businessName}</dd>
             <dt className="mono pt-1 text-white">Forme juridique</dt><dd>{v(s.legalForm)}</dd>
@@ -239,8 +239,8 @@ export function Legal() {
             <dt className="mono pt-1 text-white">Contact</dt><dd>{s.email || s.phone ? [s.email, s.phone].filter(Boolean).join(' · ') : v('')}</dd>
             <dt className="mono pt-1 text-white">Directeur de la publication</dt><dd>{v(s.publisher)}</dd>
           </dl></div>
-        <div className="border-t border-frost/15 pt-8"><h2 className="text-[30px] tracking-[-.04em] text-white">Hébergement</h2><p className="mt-3">{v(s.host)}</p></div>
-        <div className="border-t border-frost/15 pt-8"><h2 className="text-[30px] tracking-[-.04em] text-white">Données personnelles</h2><p className="mt-3 max-w-[600px]">Dans cette démonstration, les informations saisies restent enregistrées dans votre navigateur et ne sont transmises à personne. La politique de confidentialité définitive sera rédigée avec l’entreprise avant la mise en ligne.</p></div>
+        <div className="border-t border-frost/15 pt-8"><h2 className="font-serif text-[32px] text-white">Hébergement</h2><p className="mt-3">{v(s.host)}</p></div>
+        <div className="border-t border-frost/15 pt-8"><h2 className="font-serif text-[32px] text-white">Données personnelles</h2><p className="mt-3 max-w-[600px]">Dans cette démonstration, les informations saisies restent enregistrées dans votre navigateur et ne sont transmises à personne. La politique de confidentialité définitive sera rédigée avec l’entreprise avant la mise en ligne.</p></div>
       </section>
     </>
   );

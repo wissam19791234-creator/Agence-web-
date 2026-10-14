@@ -36,7 +36,7 @@ export function ProHeader({ title, sub, actions }: { title: string; sub?: ReactN
   return (
     <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
       <div className="min-w-0">
-        <h1 className="text-[36px] font-normal leading-[.95] tracking-[-.045em] text-brun sm:text-[48px]">{title}</h1>
+        <h1 className="text-[36px] font-normal font-serif leading-[1.06] text-brun sm:text-[48px]">{title}</h1>
         {sub && <p className="mt-1 text-sm text-brun-2">{sub}</p>}
       </div>
       {actions && <div className="flex flex-wrap gap-2">{actions}</div>}
@@ -71,7 +71,7 @@ function Search() {
     <div ref={box} className="relative w-full max-w-md">
       <Icon name="search" className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-brun-3" />
       <input type="search" value={q} onChange={(e) => { setQ(e.target.value); setOpen(true); }} onFocus={() => setOpen(true)} onKeyDown={(e) => e.key === 'Escape' && setOpen(false)}
-        placeholder="Rechercher un client, un e-mail, un lieu…" aria-label="Rechercher un prospect" className="h-10 w-full rounded-ctl border border-frost/20 bg-[#0B0B0B] pl-10 pr-4 text-sm text-white outline-none transition placeholder:text-smoke focus:border-white/60" />
+        placeholder="Rechercher un client, un e-mail, un lieu…" aria-label="Rechercher un prospect" className="h-10 w-full rounded-ctl border border-frost/20 bg-navy-card pl-10 pr-4 text-sm text-white outline-none transition placeholder:text-smoke focus:border-white/60" />
       {open && q.trim().length >= 2 && (
         <div className="absolute left-0 right-0 top-12 z-50 overflow-hidden border border-line bg-black">
           {res.length ? res.map((p) => (

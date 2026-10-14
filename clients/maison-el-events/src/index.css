@@ -1,10 +1,11 @@
-/* Polices auto-hébergées (aucune dépendance externe). */
+/* Polices auto-hébergées (aucune dépendance externe) : Cormorant Garamond pour les titres, Inter pour le texte. */
 @font-face { font-family: 'Inter'; font-weight: 300; font-style: normal; font-display: swap; src: url('../node_modules/@fontsource/inter/files/inter-latin-300-normal.woff2') format('woff2'); }
 @font-face { font-family: 'Inter'; font-weight: 400; font-style: normal; font-display: swap; src: url('../node_modules/@fontsource/inter/files/inter-latin-400-normal.woff2') format('woff2'); }
 @font-face { font-family: 'Inter'; font-weight: 500; font-style: normal; font-display: swap; src: url('../node_modules/@fontsource/inter/files/inter-latin-500-normal.woff2') format('woff2'); }
 @font-face { font-family: 'Inter'; font-weight: 600; font-style: normal; font-display: swap; src: url('../node_modules/@fontsource/inter/files/inter-latin-600-normal.woff2') format('woff2'); }
-@font-face { font-family: 'JetBrains Mono'; font-weight: 400; font-style: normal; font-display: swap; src: url('../node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-400-normal.woff2') format('woff2'); }
-@font-face { font-family: 'JetBrains Mono'; font-weight: 500; font-style: normal; font-display: swap; src: url('../node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-500-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Cormorant Garamond'; font-weight: 500; font-style: normal; font-display: swap; src: url('../node_modules/@fontsource/cormorant-garamond/files/cormorant-garamond-latin-500-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Cormorant Garamond'; font-weight: 600; font-style: normal; font-display: swap; src: url('../node_modules/@fontsource/cormorant-garamond/files/cormorant-garamond-latin-600-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Cormorant Garamond'; font-weight: 500; font-style: italic; font-display: swap; src: url('../node_modules/@fontsource/cormorant-garamond/files/cormorant-garamond-latin-500-italic.woff2') format('woff2'); }
 
 @tailwind base;
 @tailwind components;
@@ -12,21 +13,21 @@
 
 :root {
   color-scheme: dark;
-  --brand: 235 81 109;
-  --brand-soft: 33 11 15;
-  --brand-deep: 255 112 137;
-  --champagne: 217 180 106;
-  --champagne-deep: 217 180 106;
-  --hdr: 88px;
+  --brand: 197 155 95;
+  --brand-soft: 28 26 22;
+  --brand-deep: 223 190 136;
+  --champagne: 223 190 136;
+  --champagne-deep: 223 190 136;
+  --hdr: 96px;
 }
 
 @layer base {
   html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: var(--hdr); }
-  body { @apply bg-cream font-sans text-brun antialiased; letter-spacing: -0.01em; }
+  body { @apply bg-cream font-sans text-brun antialiased; }
   h1, h2, h3 { text-wrap: balance; }
   p { text-wrap: pretty; }
   ::selection { background: rgb(var(--brand) / .45); color: #fff; }
-  :focus-visible { outline: 1px solid #E2E2E2; outline-offset: 3px; border-radius: 2px; }
+  :focus-visible { outline: 2px solid rgb(var(--brand)); outline-offset: 3px; border-radius: 4px; }
   input[type='number'] { -moz-appearance: textfield; }
 }
 
@@ -35,23 +36,31 @@
   .animate-rise { animation: rise .28s cubic-bezier(.2, .8, .2, 1) both; }
   .animate-glow { animation: glow 1.6s ease-in-out 3; }
   .tabular { font-variant-numeric: lining-nums tabular-nums; }
-  .font-serif { font-variant-numeric: lining-nums; letter-spacing: -0.04em; }
-  /* Habillage : libellés, navigation, légendes en chasse fixe. */
-  .mono, .thin { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; line-height: 1.45; letter-spacing: -0.02em; text-transform: uppercase; font-weight: 400; }
-  .mono-lg { font-size: 12px; }
-  /* Titres d'affiche : Inter régulier, interlignage serré, sans ligatures. */
-  .display { font-family: Inter, 'Segoe UI', system-ui, sans-serif; font-weight: 400; line-height: .78; letter-spacing: -0.045em; font-feature-settings: "liga" 0; }
-  /* Trait de soulignement sous chaque ligne d'affiche (30 à 50 % de la largeur). */
-  .mark { position: relative; display: block; width: fit-content; padding-bottom: .16em; margin-bottom: .1em; }
-  .mark::after { content: ''; position: absolute; left: 0; bottom: 0; height: 1px; width: var(--mark, 40%); background: #E2E2E2; }
-  .mark-brand::after { background: rgb(var(--brand)); }
-  .scrim-b { background: linear-gradient(to top, rgba(0,0,0,.92) 0%, rgba(0,0,0,.55) 38%, rgba(0,0,0,0) 72%); }
-  .scrim-t { background: linear-gradient(to bottom, rgba(0,0,0,.7) 0%, rgba(0,0,0,0) 100%); }
+  .font-serif { font-variant-numeric: lining-nums; letter-spacing: -0.01em; font-weight: 500; }
+  /* Sur-titres : petites capitales espacées, précédées d'un filet doré. */
+  .mono, .thin { font-family: Inter, -apple-system, sans-serif; font-size: 11px; line-height: 1.5; letter-spacing: .2em; text-transform: uppercase; font-weight: 600; }
+  .mono-lg { font-size: 11.5px; }
+  /* Titres d'affiche : Cormorant Garamond. */
+  .display { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; line-height: 1.02; letter-spacing: -0.015em; font-variant-numeric: lining-nums; }
+  .mark { display: block; }
+  .reveal { will-change: transform, opacity; }
+  .scrim-b { background: linear-gradient(to top, rgba(7,15,23,.9) 0%, rgba(7,15,23,.45) 38%, rgba(7,15,23,0) 70%); }
+  .scrim-t { background: linear-gradient(to bottom, rgba(7,15,23,.65) 0%, rgba(7,15,23,0) 100%); }
+  .text-shadow { text-shadow: 0 4px 24px rgba(0,0,0,.55); }
+  .text-shadow-sm { text-shadow: 0 2px 12px rgba(0,0,0,.6); }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { scrollbar-width: none; }
 }
 
 @keyframes fade { from { opacity: 0 } }
 @keyframes rise { from { opacity: 0; transform: translateY(14px) } }
+@keyframes pulse-ring { 0% { transform: scale(1); opacity: .6 } 100% { transform: scale(1.9); opacity: 0 } }
 @keyframes glow { 50% { box-shadow: 0 0 0 1px rgb(var(--brand)), 0 0 0 5px rgb(var(--brand) / .25) } }
+
+/* Défilement doux (Lenis) */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

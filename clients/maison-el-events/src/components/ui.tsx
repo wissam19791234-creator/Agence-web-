@@ -6,15 +6,15 @@ export { cx };
 
 type Variant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'light';
 const VARIANTS: Record<Variant, string> = {
-  // Action principale à la couleur de la marque ; les autres en charbon au trait givré.
-  primary: 'bg-brand text-black border border-brand hover:bg-white hover:border-white',
-  secondary: 'bg-charcoal text-white border border-frost/80 hover:bg-white hover:text-black hover:border-white',
-  ghost: 'text-ash border border-transparent hover:text-white hover:border-frost/30',
-  danger: 'text-danger border border-danger/60 hover:bg-danger hover:text-black',
-  light: 'text-white border border-frost/80 hover:bg-white hover:text-black',
+  // Action principale : pilule dorée ; les autres au trait, sur fond translucide.
+  primary: 'bg-brand text-navy shadow-gold hover:bg-gold-light hover:-translate-y-px',
+  secondary: 'border border-white/35 bg-white/[.06] text-white backdrop-blur hover:border-brand hover:text-brand',
+  ghost: 'text-ash hover:text-brand',
+  danger: 'border border-danger/60 text-danger hover:bg-danger hover:text-navy',
+  light: 'border border-brand/60 text-brand hover:bg-brand hover:text-navy',
 };
-const SIZES = { sm: 'h-9 px-3.5 gap-1.5', md: 'h-11 px-5 gap-2', lg: 'h-[52px] px-7 gap-2.5' };
-const BTN = 'mono mono-lg inline-flex items-center justify-center rounded-ctl transition duration-200 disabled:cursor-not-allowed disabled:opacity-40 active:scale-[.98]';
+const SIZES = { sm: 'h-9 px-4 gap-1.5 text-[12.5px]', md: 'h-11 px-6 gap-2 text-[13.5px]', lg: 'h-[52px] px-8 gap-2.5 text-[14px]' };
+const BTN = 'inline-flex items-center justify-center rounded-full font-semibold tracking-[.02em] transition-all duration-300 ease-lux disabled:cursor-not-allowed disabled:opacity-40 active:scale-[.98]';
 
 export function Button({ variant = 'primary', size = 'md', icon, iconRight, className, children, ...rest }: ButtonHTMLAttributes<HTMLButtonElement> & { variant?: Variant; size?: 'sm' | 'md' | 'lg'; icon?: IconName; iconRight?: IconName }) {
   return (
@@ -38,7 +38,7 @@ export function LinkButton({ href, variant = 'primary', size = 'md', className, 
 
 export function IconButton({ icon, label, className, ...rest }: ButtonHTMLAttributes<HTMLButtonElement> & { icon: IconName; label: string }) {
   return (
-    <button type="button" aria-label={label} title={label} className={cx('inline-grid h-9 w-9 place-items-center rounded-ctl text-brun-2 transition hover:bg-white/10 hover:text-white disabled:opacity-30', className)} {...rest}>
+    <button type="button" aria-label={label} title={label} className={cx('inline-grid h-9 w-9 place-items-center rounded-full text-brun-2 transition hover:bg-white/10 hover:text-brand disabled:opacity-30', className)} {...rest}>
       <Icon name={icon} />
     </button>
   );
@@ -61,7 +61,7 @@ export function Field({ label, hint, error, children, className, required }: { l
   );
 }
 
-const inputCls = 'w-full rounded-ctl border border-frost/20 bg-[#0B0B0B] px-3.5 text-[15px] text-white placeholder:text-smoke transition focus:border-frost focus:outline-none focus:ring-0 aria-[invalid=true]:border-danger [color-scheme:dark]';
+const inputCls = 'w-full rounded-ctl border border-white/15 bg-navy-card px-3.5 text-[15px] text-white placeholder:text-smoke transition focus:border-brand focus:outline-none focus:ring-0 aria-[invalid=true]:border-danger [color-scheme:dark]';
 export const Input = ({ className, ...p }: InputHTMLAttributes<HTMLInputElement>) => <input className={cx(inputCls, 'h-11', className)} {...p} />;
 export const Select = ({ className, children, ...p }: SelectHTMLAttributes<HTMLSelectElement>) => <select className={cx(inputCls, 'h-11 pr-8', className)} {...p}>{children}</select>;
 export const Textarea = ({ className, ...p }: TextareaHTMLAttributes<HTMLTextAreaElement>) => <textarea className={cx(inputCls, 'min-h-[96px] py-2.5 leading-relaxed', className)} {...p} />;
@@ -84,7 +84,7 @@ export function Badge({ children, tone = 'neutral', className }: { children: Rea
     danger: 'text-danger ring-danger/40',
     demo: 'text-smoke ring-smoke/60',
   }[tone];
-  return <span className={cx('mono inline-flex items-center gap-1 whitespace-nowrap rounded-ctl px-2 py-[3px] !text-[10.5px] ring-1 ring-inset', t, className)}>{children}</span>;
+  return <span className={cx('mono inline-flex items-center gap-1 whitespace-nowrap rounded-full px-2.5 py-[3px] !text-[10px] !tracking-[.14em] ring-1 ring-inset', t, className)}>{children}</span>;
 }
 
 export const FictifBadge = () => <Badge tone="demo">Fictif</Badge>;
@@ -129,7 +129,7 @@ export function Modal({ open, onClose, title, children, footer, size = 'md', sid
   return (
     <div className="fixed inset-0 z-[70] flex items-end justify-center sm:items-center" role="presentation">
       <div className="absolute inset-0 bg-black/75 animate-fade" onClick={onClose} />
-      <div ref={ref} role="dialog" aria-modal="true" aria-labelledby={titleId}
+      <div ref={ref} role="dialog" aria-modal="true" aria-labelledby={titleId} data-lenis-prevent
         className={cx('relative flex max-h-[92dvh] w-full flex-col overflow-hidden rounded-t-card border border-frost/20 bg-black animate-rise sm:rounded-card', w, side && 'sm:ml-auto sm:mr-0 sm:h-[100dvh] sm:max-h-none sm:rounded-none sm:border-y-0 sm:border-r-0')}>
         <div className="flex items-center justify-between gap-3 border-b border-line px-5 py-4 sm:px-6">
           <h2 id={titleId} className="text-[22px] font-normal leading-tight tracking-[-.03em] text-brun">{title}</h2>
@@ -172,7 +172,7 @@ export function FeedbackProvider({ children }: { children: ReactNode }) {
         </Modal>
         <div className="pointer-events-none fixed inset-x-0 bottom-4 z-[90] flex flex-col items-center gap-2 px-4" aria-live="polite">
           {toasts.map((t) => (
-            <div key={t.id} className={cx('pointer-events-auto flex max-w-md items-center gap-2.5 rounded-ctl border px-5 py-3 text-sm animate-rise', t.tone === 'error' ? 'border-danger bg-danger text-black' : 'border-frost bg-charcoal text-white')}>
+            <div key={t.id} className={cx('pointer-events-auto flex max-w-md items-center gap-2.5 rounded-full border px-5 py-3 text-sm shadow-deep animate-rise', t.tone === 'error' ? 'border-danger bg-danger text-navy' : 'border-brand/50 bg-navy-surface text-white')}>
               <Icon name={t.tone === 'error' ? 'info' : 'check'} className="h-4 w-4 shrink-0" />{t.text}
             </div>
           ))}
@@ -182,11 +182,11 @@ export function FeedbackProvider({ children }: { children: ReactNode }) {
   );
 }
 
-/** Titre d'affiche : une ligne par élément, chacune soulignée d'un trait court. */
-export function Display({ lines, as: H = 'h2', className, id, marks = [44, 32, 48, 38], brand, hidden }: { lines: ReactNode[]; as?: 'h1' | 'h2' | 'h3' | 'p'; className?: string; id?: string; marks?: number[]; brand?: number; hidden?: boolean }) {
+/** Titre d'affiche en Cormorant Garamond, une ligne par élément ; `brand` met une ligne en italique doré. */
+export function Display({ lines, as: H = 'h2', className, id, brand, hidden }: { lines: ReactNode[]; as?: 'h1' | 'h2' | 'h3' | 'p'; className?: string; id?: string; marks?: number[]; brand?: number; hidden?: boolean }) {
   return (
     <H id={id} className={cx('display', className)} aria-hidden={hidden || undefined}>
-      {lines.map((l, i) => <span key={i} className={cx('mark', brand === i && 'mark-brand')} style={{ ['--mark' as string]: `${marks[i % marks.length]}%` }}>{l}{' '}</span>)}
+      {lines.map((l, i) => <span key={i} className={cx('mark', brand === i && 'italic text-brand')}>{l}{' '}</span>)}
     </H>
   );
 }
@@ -195,13 +195,13 @@ export function SectionTitle({ eyebrow, title, children, align = 'left', as: H =
   return (
     <div className={cx('max-w-2xl', align === 'center' && 'mx-auto text-center')}>
       {eyebrow && <p className="mono mb-4 text-ash">{eyebrow}</p>}
-      <H className="text-[2.6rem] font-normal leading-[.92] tracking-[-.04em] text-brun sm:text-[56px]">{title}</H>
+      <H className="font-serif text-[2.6rem] leading-[1.1] text-brun sm:text-[54px]">{title}</H>
       {children && <div className={cx('mt-5 max-w-[600px] text-[17px] leading-[1.45] text-brun-2', align === 'center' && 'mx-auto')}>{children}</div>}
     </div>
   );
 }
 
-/** Repère d'index en chasse fixe : « 01 — Libellé ». */
+/** Sur-titre : filet doré, numéro éventuel, petites capitales espacées. */
 export const Eyebrow = ({ n, children, className }: { n?: number | string; children: ReactNode; className?: string }) => (
-  <p className={cx('mono flex items-center gap-2 text-ash', className)}>{n != null && <span className="text-brand">{typeof n === 'number' ? String(n).padStart(2, '0') : n}</span>}{n != null && <span aria-hidden="true" className="h-px w-6 bg-frost/50" />}<span>{children}</span></p>
+  <p className={cx('mono flex items-center gap-3 text-brand', className)}><span aria-hidden="true" className="h-[1.5px] w-8 shrink-0 bg-brand" />{n != null && <span>{typeof n === 'number' ? String(n).padStart(2, '0') : n}</span>}<span>{children}</span></p>
 );

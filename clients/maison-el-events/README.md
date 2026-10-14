@@ -5,23 +5,24 @@ Toutes les données sont fictives et restent dans le navigateur (localStorage po
 
 ## Direction artistique
 
-Galerie de nuit : toile noire, texte blanc, grands titres en Inter (interlignage 0,78, sans ligatures) soulignés d'un trait court,
-habillage et libellés en JetBrains Mono, boutons charbon (#444345) au trait givré (#E2E2E2), rayons 2 / 10 / 20 px, aucune ombre.
-La couleur vient des visuels plein cadre (texte posé en bas à gauche) et de deux accents modifiables dans les paramètres :
-rose (#EB516D) et or champagne (#D9B46A).
+« Luxe discret » : nuit océane (#070F17), or champagne (#C59B5F, modifiable dans les paramètres) et albâtre (#FAF8F5).
+Titres en Cormorant Garamond, texte en Inter, sur-titres en petites capitales précédés d'un filet doré, boutons pilule dorés.
+
+Animations (GSAP + ScrollTrigger, défilement doux Lenis, carrousel Swiper) :
+ouverture épinglée en trois temps au défilement, apparitions en fondu, parallaxe des photos, compteurs de tarifs,
+cartes de prestations à onglets avec fiche détail, carrousel d'événements, simulateur de budget animé.
+Tout est désactivé quand le système demande de réduire les animations.
 
 ## Visuels
 
-Ordre de priorité pour chaque emplacement (cover, coin-maries, svc-deco-tables, svc-buffets, menu-sucre, menu-sale, menu-mocktail, faq, gal-<id>…) :
+Ordre de priorité pour chaque emplacement (cover, coin-maries, svc-deco-tables, svc-buffets, menu-sucre, menu-sale, menu-mocktail, gal-arche, evt-…) :
 
 1. photo importée dans l'espace pro (Photos et galerie) ;
-2. vraie photo déposée dans `src/assets/demo/<emplacement>.jpg`, affichée avec la mention « Photo de démonstration » ;
-3. visuel 3D de `src/assets/demo3d/<emplacement>.webp`, affiché avec la mention « Visuel 3D de démonstration ».
+2. visuel de `src/assets/demo/<emplacement>.webp`, affiché avec la mention « Visuel de démonstration ».
 
-Une variante `<emplacement>@m` (portrait) est servie aux écrans étroits.
-
-- `node scripts/render3d/render.cjs` refait les visuels 3D (three.js dans Chromium sans affichage ; `--preview` pour des aperçus rapides dans `.render-preview/`, ou un nom de prise pour n'en refaire qu'une).
-- `node scripts/fetch-demo-photos.mjs` récupère et compresse les photos générées pour la démo (accès réseau au domaine des images requis).
+Les visuels actuels ont été générés pour la démonstration (Figma, génération d'images) : ils ne représentent pas des réalisations
+de Maison EL Events et doivent être remplacés par ses vraies photos avant toute mise en ligne.
+Les scènes 3D de `scripts/render3d` restent disponibles pour produire des visuels hors ligne.
 
 ## Horaires et FAQ
 

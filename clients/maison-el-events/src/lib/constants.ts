@@ -6,7 +6,7 @@ export const STAGES: { key: StageKey; label: string; short: string; dot: string 
   { key: 'preparer', label: 'Devis à préparer', short: 'Devis à préparer', dot: '#F0B95B' },
   { key: 'envoye', label: 'Devis envoyé — simulation', short: 'Devis envoyé (simulation)', dot: '#4FD1C5' },
   { key: 'relance', label: 'Relance à effectuer', short: 'Relance', dot: '#FF8A65' },
-  { key: 'reservation', label: 'Réservation confirmée — simulation', short: 'Réservation (simulation)', dot: '#EB516D' },
+  { key: 'reservation', label: 'Réservation confirmée — simulation', short: 'Réservation (simulation)', dot: '#C59B5F' },
   { key: 'termine', label: 'Événement terminé', short: 'Terminé', dot: '#8C8D8E' },
 ];
 export const stageLabel = (k: StageKey) => STAGES.find((s) => s.key === k)?.label ?? k;
