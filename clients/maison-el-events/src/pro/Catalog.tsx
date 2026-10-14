@@ -107,7 +107,7 @@ export default function Catalog() {
             <Select aria-label="Filtrer par catégorie" value={cat} onChange={(e) => setCat(e.target.value)}><option value="">Toutes les catégories</option>{CATS.map((c) => <option key={c}>{c}</option>)}</Select>
           </div>
           {list.length ? (
-            <div className="overflow-hidden rounded-none border border-line bg-panel">
+            <div className="overflow-hidden rounded-card border border-line bg-panel">
               <ul className="divide-y divide-line">
                 {list.map((c) => (
                   <li key={c.id} className={cx('flex flex-wrap items-center gap-3 px-4 py-3 sm:flex-nowrap', !c.active && 'bg-cream/70')}>
@@ -128,7 +128,7 @@ export default function Catalog() {
       ) : (
         <ul className="grid gap-3 md:grid-cols-2">
           {data.services.map((s, i) => (
-            <li key={s.id} className={cx('flex items-start gap-3 rounded-none border border-line bg-panel p-4', !s.active && 'opacity-70')}>
+            <li key={s.id} className={cx('flex items-start gap-3 rounded-card border border-line bg-panel p-4', !s.active && 'opacity-70')}>
               <div className="flex flex-col gap-1">
                 <IconButton icon="left" label={`Monter ${s.title}`} className="rotate-90" disabled={i === 0} onClick={() => update((d) => { const [x] = d.services.splice(i, 1); d.services.splice(i - 1, 0, x); })} />
                 <IconButton icon="right" label={`Descendre ${s.title}`} className="rotate-90" disabled={i === data.services.length - 1} onClick={() => update((d) => { const [x] = d.services.splice(i, 1); d.services.splice(i + 1, 0, x); })} />

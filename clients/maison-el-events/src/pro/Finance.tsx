@@ -42,10 +42,10 @@ export default function Finance() {
   return (
     <>
       <ProHeader title="Rentabilité (démonstration)" sub="Données d’exemple : ce ne sont pas les comptes réels de l’entreprise." actions={<Button icon="plus" onClick={() => setOpen(true)}>Ajouter une dépense fictive</Button>} />
-      <p className="mb-5 rounded-none bg-[#2A2112] px-4 py-2.5 text-sm text-warn">Exemples à but de démonstration. Recettes = devis acceptés (simulation) ; dépenses saisies à la main.</p>
+      <p className="mb-5 rounded-card bg-[#2A2112] px-4 py-2.5 text-sm text-warn">Exemples à but de démonstration. Recettes = devis acceptés (simulation) ; dépenses saisies à la main.</p>
       <div className="grid gap-4 sm:grid-cols-3">
         {[['Recettes prévisionnelles simulées', tot.revenue], ['Dépenses fictives', tot.costs + unassigned], ['Marge indicative', margin]].map(([k, v]) => (
-          <div key={k as string} className="rounded-none border border-line bg-panel p-5"><p className="text-[13px] text-brun-2">{k}</p><p className="mt-2 font-serif text-[34px] leading-none text-brun tabular">{eur(v as number, true)}</p>{k === 'Marge indicative' && tot.revenue > 0 && <p className="mt-2 text-xs text-brun-3">{Math.round((margin / tot.revenue) * 100)} % des recettes</p>}</div>
+          <div key={k as string} className="rounded-card border border-line bg-panel p-5"><p className="text-[13px] text-brun-2">{k}</p><p className="mt-2 font-serif text-[34px] leading-none text-brun tabular">{eur(v as number, true)}</p>{k === 'Marge indicative' && tot.revenue > 0 && <p className="mt-2 text-xs text-brun-3">{Math.round((margin / tot.revenue) * 100)} % des recettes</p>}</div>
         ))}
       </div>
       <Panel title="Recettes et dépenses par événement" className="mt-5">

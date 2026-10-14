@@ -113,7 +113,7 @@ export function DemoTour({ route }: { route: Route }) {
 
   if (tour.minimized) {
     return (
-      <button type="button" onClick={() => setTour({ minimized: false })} className="fixed bottom-4 right-4 z-[65] inline-flex items-center gap-2 rounded-[40px] bg-white px-4 py-3 text-sm text-black ">
+      <button type="button" onClick={() => setTour({ minimized: false })} className="fixed bottom-4 right-4 z-[65] inline-flex items-center gap-2 rounded-ctl bg-white px-4 py-3 text-sm text-black ">
         <Icon name="play" className="h-3.5 w-3.5" />Démonstration · étape {tour.step}/8
       </button>
     );
@@ -122,7 +122,7 @@ export function DemoTour({ route }: { route: Route }) {
   return (
     <aside aria-label="Démonstration guidée" className="fixed inset-x-0 bottom-0 z-[65] max-h-[58dvh] overflow-y-auto rounded-none border-t border-white/70 bg-black p-5 text-white animate-rise sm:border sm:inset-x-auto sm:bottom-4 sm:right-4 sm:w-[390px] sm:rounded-none">
       <div className="flex items-center justify-between gap-3">
-        <p className="thin text-[14px]">Démonstration guidée · {tour.step}/8</p>
+        <p className="mono">Démonstration guidée · {tour.step}/8</p>
         <div className="flex gap-1">
           <button type="button" aria-label="Réduire la démonstration" className="grid h-8 w-8 place-items-center rounded-full text-white/70 hover:bg-white/10 hover:text-white" onClick={() => setTour({ minimized: true })}><span className="block h-0.5 w-3 bg-current" /></button>
           <button type="button" aria-label="Quitter la démonstration" className="grid h-8 w-8 place-items-center rounded-full text-white/70 hover:bg-white/10 hover:text-white" onClick={stopTour}><Icon name="x" className="h-4 w-4" /></button>
@@ -144,9 +144,9 @@ export function DemoTour({ route }: { route: Route }) {
       <div className="mt-5 flex items-center justify-between gap-2 border-t border-cream/10 pt-4">
         <button type="button" disabled={tour.step === 1} onClick={() => go(tour.step - 1)} className="inline-flex h-9 items-center gap-1 rounded-full px-3 text-[13px] text-white/80 hover:bg-white/10 disabled:opacity-40"><Icon name="left" className="h-4 w-4" />Étape précédente</button>
         {tour.step < 8 ? (
-          <button type="button" onClick={() => go(tour.step + 1)} className="inline-flex h-9 items-center gap-1 rounded-[40px] bg-white px-4 text-[13px] text-black hover:bg-[#D9D9D9]">Étape suivante<Icon name="right" className="h-4 w-4" /></button>
+          <button type="button" onClick={() => go(tour.step + 1)} className="inline-flex h-9 items-center gap-1 rounded-ctl bg-white px-4 text-[13px] text-black hover:bg-[#D9D9D9]">Étape suivante<Icon name="right" className="h-4 w-4" /></button>
         ) : (
-          <button type="button" onClick={startTour} className="inline-flex h-9 items-center gap-1.5 rounded-[40px] bg-white px-4 text-[13px] text-black hover:bg-[#D9D9D9]"><Icon name="refresh" className="h-4 w-4" />Recommencer la démonstration</button>
+          <button type="button" onClick={startTour} className="inline-flex h-9 items-center gap-1.5 rounded-ctl bg-white px-4 text-[13px] text-black hover:bg-[#D9D9D9]"><Icon name="refresh" className="h-4 w-4" />Recommencer la démonstration</button>
         )}
       </div>
       {tour.step < 8 && <button type="button" onClick={startTour} className="mt-2 w-full text-center text-[12px] text-white/60 underline-offset-4 hover:text-white hover:underline">Recommencer la démonstration</button>}

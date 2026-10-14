@@ -113,9 +113,9 @@ export default function QuoteRequest() {
   if (done) {
     return (
       <>
-        <PageHead eyebrow="Demande de devis" title="Merci." />
+        <PageHead eyebrow="Demande de devis" title={['Merci.']} />
         <section ref={top} className="mx-auto max-w-site px-5 pb-14 sm:px-6">
-          <span className="grid h-16 w-16 place-items-center rounded-full ring-1 ring-white"><Icon name="check" className="h-8 w-8" /></span>
+          <span className="grid h-16 w-16 place-items-center rounded-ctl border border-brand bg-brand/15 text-brand"><Icon name="check" className="h-8 w-8" /></span>
           <p className="mt-6 font-serif text-[40px] leading-[1.02] text-brun">Votre demande est enregistrée</p>
           <p className="mt-4 max-w-[600px] text-[17px] leading-[1.4] text-brun-2">Elle apparaît maintenant comme <strong>nouveau prospect</strong> dans l’espace professionnel. Aucun message n’a été envoyé à l’entreprise : en production, la demande lui sera transmise par e-mail une fois l’envoi configuré.</p>
           <div className="mt-8 flex flex-wrap gap-3">
@@ -130,21 +130,21 @@ export default function QuoteRequest() {
   const err = (k: string) => errors[k];
   return (
     <>
-      <PageHead eyebrow="Demande de devis" title={<>Créons votre<br />événement</>}>Quelques étapes suffisent. Les champs marqués d’un astérisque sont obligatoires.</PageHead>
+      <PageHead n={6} eyebrow="Demande de devis" title={['Créons votre', 'événement']} imageKey="coin-maries" art="canape">Quelques étapes suffisent. Les champs marqués d’un astérisque sont obligatoires.</PageHead>
       <section ref={top} className="mx-auto max-w-site scroll-mt-6 px-5 pb-12 sm:px-6">
         <ol className="mb-8 grid grid-cols-5 gap-2" aria-label="Étapes du formulaire">
           {STEPS.map((s, i) => (
             <li key={s} className="min-w-0">
               <button type="button" disabled={i > step} onClick={() => i < step && goto(i)} aria-current={i === step ? 'step' : undefined} className="group block w-full text-left disabled:cursor-default">
-                <span className={cx('block h-px transition', i <= step ? 'bg-white' : 'bg-line')} />
-                <span className={cx('thin mt-3 hidden truncate text-[13px] sm:block', i === step ? 'text-white' : 'text-smoke')}>{i + 1}. {s}</span>
+                <span className={cx('block h-[2px] transition', i <= step ? 'bg-brand' : 'bg-line')} />
+                <span className={cx('mono mt-3 hidden truncate sm:block', i === step ? 'text-white' : 'text-smoke')}>{i + 1}. {s}</span>
               </button>
             </li>
           ))}
         </ol>
         <p className="mb-6 text-sm text-brun-3 sm:hidden">Étape {step + 1} sur 5 · {STEPS[step]}</p>
 
-        <div className="max-w-[860px] border-t border-smoke/60 pt-8">
+        <div className="max-w-[860px] border-t border-frost/15 pt-8">
           <h2 className="mb-8 font-serif text-[40px] leading-[1.02] text-brun sm:text-[56px]">{STEPS[step]}</h2>
 
           {step === 0 && (
@@ -168,13 +168,13 @@ export default function QuoteRequest() {
           {step === 2 && (
             <div className="space-y-6">
               <fieldset>
-                <legend className="mb-3 text-[13px] font-medium text-brun-2">Prestations souhaitées<span className="text-brand"> *</span></legend>
+                <legend className="mono mb-3 text-ash">Prestations souhaitées<span className="text-brand"> *</span></legend>
                 <div className="grid gap-2 sm:grid-cols-2" data-err={err('services') ? true : undefined} tabIndex={err('services') ? -1 : undefined}>
                   {SERVICE_KEYS.map((k) => {
                     const on = f.services.includes(k);
                     return (
-                      <label key={k} className={cx('flex cursor-pointer items-center gap-3 border px-4 py-3.5 text-[15px] transition', on ? 'border-white bg-white text-black' : 'border-line text-brun hover:border-white/60')}>
-                        <input type="checkbox" className="h-4 w-4 accent-black" checked={on} onChange={() => set('services', on ? f.services.filter((x) => x !== k) : [...f.services, k])} />
+                      <label key={k} className={cx('flex cursor-pointer items-center gap-3 rounded-ctl border px-4 py-3.5 text-[15px] transition', on ? 'border-brand bg-brand/15 text-white' : 'border-line text-brun hover:border-white/60')}>
+                        <input type="checkbox" className="h-4 w-4 accent-[rgb(var(--brand))]" checked={on} onChange={() => set('services', on ? f.services.filter((x) => x !== k) : [...f.services, k])} />
                         {SERVICE_LABELS[k]}
                       </label>
                     );
@@ -193,13 +193,13 @@ export default function QuoteRequest() {
               <input ref={fileRef} type="file" accept="image/*" multiple className="sr-only" onChange={(e) => addPhotos(e.target.files)} aria-label="Ajouter des photos d'inspiration" />
               <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
                 {photos.map((k) => (
-                  <div key={k} className="group relative aspect-square overflow-hidden bg-ivoire">
+                  <div key={k} className="group relative aspect-square overflow-hidden rounded-card bg-ivoire">
                     <img src={images.get(k)} alt="Photo d'inspiration ajoutée" className="h-full w-full object-cover" />
                     <button type="button" aria-label="Retirer cette photo" onClick={() => { images.remove(k); setPhotos((p) => p.filter((x) => x !== k)); }} className="absolute right-2 top-2 grid h-8 w-8 place-items-center rounded-full bg-black/80 text-white ring-1 ring-white/60"><Icon name="x" className="h-4 w-4" /></button>
                   </div>
                 ))}
                 {photos.length < 4 && (
-                  <button type="button" disabled={busy} onClick={() => fileRef.current?.click()} className="grid aspect-square place-items-center border border-dashed border-smoke text-sm text-brun-2 transition hover:border-white hover:text-white">
+                  <button type="button" disabled={busy} onClick={() => fileRef.current?.click()} className="grid aspect-square place-items-center rounded-card border border-dashed border-smoke text-sm text-brun-2 transition hover:border-white hover:text-white">
                     <span className="grid justify-items-center gap-2"><Icon name="upload" className="h-6 w-6" />{busy ? 'Import en cours…' : 'Ajouter une photo'}</span>
                   </button>
                 )}
@@ -213,10 +213,10 @@ export default function QuoteRequest() {
                 ['Contact', `${f.firstName} ${f.lastName}`], ['E-mail', f.email], ['Téléphone', f.phone || 'Non renseigné'],
                 ['Événement', f.eventType], ['Date souhaitée', fmtDate(f.eventDate)], ['Lieu', f.place], ['Invités', f.guests],
                 ['Budget indicatif', f.budget || 'Non renseigné'],
-              ].map(([k, val]) => <div key={k}><dt className="thin text-[13px] text-smoke">{k}</dt><dd className="mt-1 text-brun">{val}</dd></div>)}
-              <div className="sm:col-span-2"><dt className="thin text-[13px] text-smoke">Prestations</dt><dd className="mt-2 flex flex-wrap gap-1.5">{f.services.map((s) => <span key={s} className="rounded-[44px] px-3 py-1 text-xs text-white ring-1 ring-inset ring-white/60">{SERVICE_LABELS[s]}</span>)}</dd></div>
-              {f.needs && <div className="sm:col-span-2"><dt className="thin text-[13px] text-smoke">Besoins</dt><dd className="mt-1 whitespace-pre-line text-brun">{f.needs}</dd></div>}
-              <div className="sm:col-span-2"><dt className="thin text-[13px] text-smoke">Photos d’inspiration</dt><dd className="mt-1 text-brun">{photos.length ? `${photos.length} photo(s)` : 'Aucune'}</dd></div>
+              ].map(([k, val]) => <div key={k}><dt className="mono text-smoke">{k}</dt><dd className="mt-1 text-brun">{val}</dd></div>)}
+              <div className="sm:col-span-2"><dt className="mono text-smoke">Prestations</dt><dd className="mt-2 flex flex-wrap gap-1.5">{f.services.map((s) => <span key={s} className="rounded-ctl px-3 py-1 text-xs text-white ring-1 ring-inset ring-white/60">{SERVICE_LABELS[s]}</span>)}</dd></div>
+              {f.needs && <div className="sm:col-span-2"><dt className="mono text-smoke">Besoins</dt><dd className="mt-1 whitespace-pre-line text-brun">{f.needs}</dd></div>}
+              <div className="sm:col-span-2"><dt className="mono text-smoke">Photos d’inspiration</dt><dd className="mt-1 text-brun">{photos.length ? `${photos.length} photo(s)` : 'Aucune'}</dd></div>
               <p className="border-t border-line pt-4 text-[13px] leading-relaxed text-smoke sm:col-span-2">Démonstration : la demande est enregistrée dans l’espace professionnel de ce navigateur. Aucun e-mail n’est envoyé.</p>
             </dl>
           )}

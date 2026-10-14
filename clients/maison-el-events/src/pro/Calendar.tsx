@@ -123,7 +123,7 @@ export default function Calendar() {
       </div>
 
       {view === 'mois' && (
-        <div className="overflow-x-auto rounded-none border border-line bg-panel">
+        <div className="overflow-x-auto rounded-card border border-line bg-panel">
           <div className="grid min-w-[700px] grid-cols-7">
             {DAYS.map((d) => <div key={d} className="border-b border-line px-2 py-2 text-center text-[11px] font-semibold uppercase tracking-[.1em] text-brun-3">{d}</div>)}
             {shown.map((d) => {
@@ -143,7 +143,7 @@ export default function Calendar() {
       {view === 'semaine' && (
         <div className="grid gap-3 md:grid-cols-7">
           {Array.from({ length: 7 }, (_, i) => addDays(week, i)).map((d, i) => (
-            <div key={d} className={cx('min-h-[160px] rounded-none border bg-panel p-3', d === today ? 'border-brand/40' : 'border-line')}>
+            <div key={d} className={cx('min-h-[160px] rounded-card border bg-panel p-3', d === today ? 'border-brand/40' : 'border-line')}>
               <p className="text-xs text-brun-3">{DAYS[i]}</p>
               <p className={cx('text-2xl leading-none', d === today ? 'text-brand' : 'text-brun')}>{parseISO(d).getDate()}</p>
               <div className="mt-3 space-y-1.5">{(byDay[d] || []).map((e) => chip(e))}{!(byDay[d] || []).length && <p className="text-xs text-brun-3/70">—</p>}</div>
@@ -154,7 +154,7 @@ export default function Calendar() {
 
       {view === 'liste' && (
         events.length ? (
-          <ul className="divide-y divide-line overflow-hidden rounded-none border border-line bg-panel">
+          <ul className="divide-y divide-line overflow-hidden rounded-card border border-line bg-panel">
             {events.map((e) => {
               const p = data.prospects.find((x) => x.id === e.prospectId);
               return (

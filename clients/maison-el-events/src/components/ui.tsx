@@ -6,18 +6,19 @@ export { cx };
 
 type Variant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'light';
 const VARIANTS: Record<Variant, string> = {
-  // Action principale remplie en blanc ; les autres boutons restent des pilules au trait.
-  primary: 'bg-white text-black hover:bg-[#D9D9D9]',
-  secondary: 'text-white ring-1 ring-inset ring-white/80 hover:bg-white hover:text-black',
-  ghost: 'text-brun-2 hover:text-white hover:bg-white/5',
-  danger: 'text-danger ring-1 ring-inset ring-danger/50 hover:bg-danger hover:text-black',
-  light: 'text-white ring-1 ring-inset ring-white hover:bg-white hover:text-black',
+  // Action principale à la couleur de la marque ; les autres en charbon au trait givré.
+  primary: 'bg-brand text-black border border-brand hover:bg-white hover:border-white',
+  secondary: 'bg-charcoal text-white border border-frost/80 hover:bg-white hover:text-black hover:border-white',
+  ghost: 'text-ash border border-transparent hover:text-white hover:border-frost/30',
+  danger: 'text-danger border border-danger/60 hover:bg-danger hover:text-black',
+  light: 'text-white border border-frost/80 hover:bg-white hover:text-black',
 };
+const SIZES = { sm: 'h-9 px-3.5 gap-1.5', md: 'h-11 px-5 gap-2', lg: 'h-[52px] px-7 gap-2.5' };
+const BTN = 'mono mono-lg inline-flex items-center justify-center rounded-ctl transition duration-200 disabled:cursor-not-allowed disabled:opacity-40 active:scale-[.98]';
 
 export function Button({ variant = 'primary', size = 'md', icon, iconRight, className, children, ...rest }: ButtonHTMLAttributes<HTMLButtonElement> & { variant?: Variant; size?: 'sm' | 'md' | 'lg'; icon?: IconName; iconRight?: IconName }) {
-  const sz = size === 'sm' ? 'h-9 px-3.5 text-[13px] gap-1.5' : size === 'lg' ? 'h-[52px] px-7 text-[15px] gap-2.5' : 'h-11 px-5 text-sm gap-2';
   return (
-    <button type="button" className={cx('inline-flex items-center justify-center rounded-[40px] font-normal tracking-[-.008em] transition duration-200 disabled:cursor-not-allowed disabled:opacity-40 active:scale-[.98]', sz, VARIANTS[variant], className)} {...rest}>
+    <button type="button" className={cx(BTN, SIZES[size], VARIANTS[variant], className)} {...rest}>
       {icon && <Icon name={icon} className="h-4 w-4" />}
       {children}
       {iconRight && <Icon name={iconRight} className="h-4 w-4" />}
@@ -26,9 +27,8 @@ export function Button({ variant = 'primary', size = 'md', icon, iconRight, clas
 }
 
 export function LinkButton({ href, variant = 'primary', size = 'md', className, children, icon, iconRight, ...rest }: { href: string; variant?: Variant; size?: 'sm' | 'md' | 'lg'; className?: string; children: ReactNode; icon?: IconName; iconRight?: IconName; target?: string; rel?: string; onClick?: () => void }) {
-  const sz = size === 'sm' ? 'h-9 px-3.5 text-[13px] gap-1.5' : size === 'lg' ? 'h-[52px] px-7 text-[15px] gap-2.5' : 'h-11 px-5 text-sm gap-2';
   return (
-    <a href={href} className={cx('inline-flex items-center justify-center rounded-[40px] font-normal tracking-[-.008em] no-underline transition duration-200 active:scale-[.98]', sz, VARIANTS[variant], className)} {...rest}>
+    <a href={href} className={cx(BTN, 'no-underline', SIZES[size], VARIANTS[variant], className)} {...rest}>
       {icon && <Icon name={icon} className="h-4 w-4" />}
       {children}
       {iconRight && <Icon name={iconRight} className="h-4 w-4" />}
@@ -38,7 +38,7 @@ export function LinkButton({ href, variant = 'primary', size = 'md', className, 
 
 export function IconButton({ icon, label, className, ...rest }: ButtonHTMLAttributes<HTMLButtonElement> & { icon: IconName; label: string }) {
   return (
-    <button type="button" aria-label={label} title={label} className={cx('inline-grid h-9 w-9 place-items-center rounded-full text-brun-2 transition hover:bg-white/10 hover:text-white disabled:opacity-30', className)} {...rest}>
+    <button type="button" aria-label={label} title={label} className={cx('inline-grid h-9 w-9 place-items-center rounded-ctl text-brun-2 transition hover:bg-white/10 hover:text-white disabled:opacity-30', className)} {...rest}>
       <Icon name={icon} />
     </button>
   );
@@ -51,7 +51,7 @@ export function Field({ label, hint, error, children, className, required }: { l
   const by = [hintId, errId].filter(Boolean).join(' ') || undefined;
   return (
     <div className={className}>
-      <label htmlFor={id} className="mb-1.5 block text-[13px] font-medium text-brun-2">
+      <label htmlFor={id} className="mono mb-2 block text-ash">
         {label}{required && <span className="text-brand" aria-hidden="true"> *</span>}
       </label>
       {children(id, by)}
@@ -61,7 +61,7 @@ export function Field({ label, hint, error, children, className, required }: { l
   );
 }
 
-const inputCls = 'w-full rounded-none border border-line bg-[#0E0E0E] px-3.5 text-[15px] text-white placeholder:text-smoke transition focus:border-white/70 focus:outline-none focus:ring-0 aria-[invalid=true]:border-danger [color-scheme:dark]';
+const inputCls = 'w-full rounded-ctl border border-frost/20 bg-[#0B0B0B] px-3.5 text-[15px] text-white placeholder:text-smoke transition focus:border-frost focus:outline-none focus:ring-0 aria-[invalid=true]:border-danger [color-scheme:dark]';
 export const Input = ({ className, ...p }: InputHTMLAttributes<HTMLInputElement>) => <input className={cx(inputCls, 'h-11', className)} {...p} />;
 export const Select = ({ className, children, ...p }: SelectHTMLAttributes<HTMLSelectElement>) => <select className={cx(inputCls, 'h-11 pr-8', className)} {...p}>{children}</select>;
 export const Textarea = ({ className, ...p }: TextareaHTMLAttributes<HTMLTextAreaElement>) => <textarea className={cx(inputCls, 'min-h-[96px] py-2.5 leading-relaxed', className)} {...p} />;
@@ -69,7 +69,7 @@ export const Textarea = ({ className, ...p }: TextareaHTMLAttributes<HTMLTextAre
 export function Toggle({ checked, onChange, label }: { checked: boolean; onChange: (v: boolean) => void; label: string }) {
   return (
     <button type="button" role="switch" aria-checked={checked} aria-label={label} onClick={() => onChange(!checked)}
-      className={cx('relative inline-flex h-6 w-11 shrink-0 items-center rounded-full ring-1 ring-inset transition', checked ? 'bg-white ring-white' : 'bg-transparent ring-smoke')}>
+      className={cx('relative inline-flex h-6 w-11 shrink-0 items-center rounded-full ring-1 ring-inset transition', checked ? 'bg-brand ring-brand' : 'bg-transparent ring-smoke')}>
       <span className={cx('inline-block h-4 w-4 rounded-full transition', checked ? 'translate-x-[24px] bg-black' : 'translate-x-1 bg-smoke')} />
     </button>
   );
@@ -77,22 +77,22 @@ export function Toggle({ checked, onChange, label }: { checked: boolean; onChang
 
 export function Badge({ children, tone = 'neutral', className }: { children: ReactNode; tone?: 'neutral' | 'brand' | 'ok' | 'warn' | 'danger' | 'demo'; className?: string }) {
   const t = {
-    neutral: 'text-brun-2 ring-line',
-    brand: 'text-white ring-white/60',
+    neutral: 'text-brun-2 ring-frost/20',
+    brand: 'text-brand ring-brand/60',
     ok: 'text-ok ring-ok/40',
     warn: 'text-warn ring-warn/40',
     danger: 'text-danger ring-danger/40',
     demo: 'text-smoke ring-smoke/60',
   }[tone];
-  return <span className={cx('inline-flex items-center gap-1 whitespace-nowrap rounded-[44px] px-2.5 py-0.5 text-[11.5px] font-normal ring-1 ring-inset', t, className)}>{children}</span>;
+  return <span className={cx('mono inline-flex items-center gap-1 whitespace-nowrap rounded-ctl px-2 py-[3px] !text-[10.5px] ring-1 ring-inset', t, className)}>{children}</span>;
 }
 
 export const FictifBadge = () => <Badge tone="demo">Fictif</Badge>;
 
 export function EmptyState({ icon = 'info', title, children, action }: { icon?: IconName; title: string; children?: ReactNode; action?: ReactNode }) {
   return (
-    <div className="grid place-items-center border border-dashed border-line px-6 py-10 text-center">
-      <span className="mb-3 grid h-11 w-11 place-items-center rounded-full ring-1 ring-line text-white"><Icon name={icon} /></span>
+    <div className="grid place-items-center rounded-card border border-dashed border-frost/20 px-6 py-10 text-center">
+      <span className="mb-3 grid h-11 w-11 place-items-center rounded-ctl ring-1 ring-frost/30 text-brand"><Icon name={icon} /></span>
       <p className="text-xl text-brun">{title}</p>
       {children && <div className="mt-1 max-w-md text-sm text-brun-2">{children}</div>}
       {action && <div className="mt-4">{action}</div>}
@@ -130,9 +130,9 @@ export function Modal({ open, onClose, title, children, footer, size = 'md', sid
     <div className="fixed inset-0 z-[70] flex items-end justify-center sm:items-center" role="presentation">
       <div className="absolute inset-0 bg-black/75 animate-fade" onClick={onClose} />
       <div ref={ref} role="dialog" aria-modal="true" aria-labelledby={titleId}
-        className={cx('relative flex max-h-[92dvh] w-full flex-col overflow-hidden border border-line bg-black animate-rise', w, side && 'sm:ml-auto sm:mr-0 sm:h-[100dvh] sm:max-h-none sm:border-y-0 sm:border-r-0')}>
+        className={cx('relative flex max-h-[92dvh] w-full flex-col overflow-hidden rounded-t-card border border-frost/20 bg-black animate-rise sm:rounded-card', w, side && 'sm:ml-auto sm:mr-0 sm:h-[100dvh] sm:max-h-none sm:rounded-none sm:border-y-0 sm:border-r-0')}>
         <div className="flex items-center justify-between gap-3 border-b border-line px-5 py-4 sm:px-6">
-          <h2 id={titleId} className="text-[22px] font-normal leading-tight tracking-[-.01em] text-brun">{title}</h2>
+          <h2 id={titleId} className="text-[22px] font-normal leading-tight tracking-[-.03em] text-brun">{title}</h2>
           <IconButton icon="x" label="Fermer" onClick={onClose} />
         </div>
         <div className="flex-1 overflow-y-auto px-5 py-5 sm:px-6">{children}</div>
@@ -172,7 +172,7 @@ export function FeedbackProvider({ children }: { children: ReactNode }) {
         </Modal>
         <div className="pointer-events-none fixed inset-x-0 bottom-4 z-[90] flex flex-col items-center gap-2 px-4" aria-live="polite">
           {toasts.map((t) => (
-            <div key={t.id} className={cx('pointer-events-auto flex max-w-md items-center gap-2.5 rounded-[44px] px-5 py-3 text-sm animate-rise', t.tone === 'error' ? 'bg-danger text-black' : 'bg-white text-black')}>
+            <div key={t.id} className={cx('pointer-events-auto flex max-w-md items-center gap-2.5 rounded-ctl border px-5 py-3 text-sm animate-rise', t.tone === 'error' ? 'border-danger bg-danger text-black' : 'border-frost bg-charcoal text-white')}>
               <Icon name={t.tone === 'error' ? 'info' : 'check'} className="h-4 w-4 shrink-0" />{t.text}
             </div>
           ))}
@@ -182,18 +182,26 @@ export function FeedbackProvider({ children }: { children: ReactNode }) {
   );
 }
 
+/** Titre d'affiche : une ligne par élément, chacune soulignée d'un trait court. */
+export function Display({ lines, as: H = 'h2', className, id, marks = [44, 32, 48, 38], brand, hidden }: { lines: ReactNode[]; as?: 'h1' | 'h2' | 'h3' | 'p'; className?: string; id?: string; marks?: number[]; brand?: number; hidden?: boolean }) {
+  return (
+    <H id={id} className={cx('display', className)} aria-hidden={hidden || undefined}>
+      {lines.map((l, i) => <span key={i} className={cx('mark', brand === i && 'mark-brand')} style={{ ['--mark' as string]: `${marks[i % marks.length]}%` }}>{l}{' '}</span>)}
+    </H>
+  );
+}
+
 export function SectionTitle({ eyebrow, title, children, align = 'left', as: H = 'h2' }: { eyebrow?: string; title: ReactNode; children?: ReactNode; align?: 'left' | 'center'; as?: 'h1' | 'h2' }) {
   return (
     <div className={cx('max-w-2xl', align === 'center' && 'mx-auto text-center')}>
-      {eyebrow && <p className="thin mb-4 text-[14px] text-brun">{eyebrow}</p>}
-      <H className="font-serif text-[2.6rem] font-normal leading-[1.02] text-brun sm:text-[56px]">{title}</H>
-      {children && <div className={cx('mt-5 max-w-[600px] text-[17px] leading-[1.4] text-brun-2', align === 'center' && 'mx-auto')}>{children}</div>}
+      {eyebrow && <p className="mono mb-4 text-ash">{eyebrow}</p>}
+      <H className="text-[2.6rem] font-normal leading-[.92] tracking-[-.04em] text-brun sm:text-[56px]">{title}</H>
+      {children && <div className={cx('mt-5 max-w-[600px] text-[17px] leading-[1.45] text-brun-2', align === 'center' && 'mx-auto')}>{children}</div>}
     </div>
   );
 }
 
-export const Ornament = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 120 12" className={cx('h-3 w-28 text-champagne-deep', className)} aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1">
-    <path d="M0 6h48M72 6h48" /><path d="M60 1l5 5-5 5-5-5z" /><circle cx="52" cy="6" r="1" fill="currentColor" /><circle cx="68" cy="6" r="1" fill="currentColor" />
-  </svg>
+/** Repère d'index en chasse fixe : « 01 — Libellé ». */
+export const Eyebrow = ({ n, children, className }: { n?: number | string; children: ReactNode; className?: string }) => (
+  <p className={cx('mono flex items-center gap-2 text-ash', className)}>{n != null && <span className="text-brand">{typeof n === 'number' ? String(n).padStart(2, '0') : n}</span>}{n != null && <span aria-hidden="true" className="h-px w-6 bg-frost/50" />}<span>{children}</span></p>
 );

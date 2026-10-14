@@ -161,14 +161,14 @@ export function ProspectDrawer() {
         </div>
 
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
-          <div className="rounded-none bg-panel p-4 ring-1 ring-line">
+          <div className="rounded-card bg-panel p-4 ring-1 ring-line">
             <h3 className="text-xs font-semibold uppercase tracking-[.14em] text-brun-3">Coordonnées</h3>
             <p className="mt-2 flex items-center gap-2 text-sm text-brun"><Icon name="mail" className="h-4 w-4 text-brun-3" />{p.email || 'Non renseigné'}</p>
             <p className="mt-1.5 flex items-center gap-2 text-sm text-brun"><Icon name="phone" className="h-4 w-4 text-brun-3" />{p.phone || 'Non renseigné'}</p>
             <p className="mt-3 text-xs text-brun-3">Dernier contact : {p.lastContact ? fmtDate(p.lastContact) : 'aucun'}</p>
             <button type="button" className="mt-1 text-xs font-medium text-brand hover:underline" onClick={() => { mut((x) => { x.lastContact = todayISO(); addHistory(x, 'Contact noté aujourd’hui.'); }); toast('Dernier contact : aujourd’hui.'); }}>Noter un contact aujourd’hui</button>
           </div>
-          <div className="rounded-none bg-panel p-4 ring-1 ring-line">
+          <div className="rounded-card bg-panel p-4 ring-1 ring-line">
             <h3 className="text-xs font-semibold uppercase tracking-[.14em] text-brun-3">Événement</h3>
             <p className="mt-2 text-sm font-medium text-brun">{p.eventType}{p.guests ? ` · ${p.guests} invités` : ''}</p>
             <p className="mt-1 text-sm text-brun-2">{fmtDate(p.eventDate)}{dd != null && (dd >= 0 ? ` · J-${dd}` : ' · passé')}</p>
@@ -177,16 +177,16 @@ export function ProspectDrawer() {
           </div>
         </div>
 
-        <div className="mt-4 rounded-none bg-panel p-4 ring-1 ring-line">
+        <div className="mt-4 rounded-card bg-panel p-4 ring-1 ring-line">
           <h3 className="text-xs font-semibold uppercase tracking-[.14em] text-brun-3">Prestations et besoins</h3>
           <div className="mt-2 flex flex-wrap gap-1.5">{p.services.length ? p.services.map((s: ServiceKey) => <span key={s} className="rounded-full bg-ivoire px-2.5 py-1 text-xs text-brun-2">{SERVICE_LABELS[s]}</span>) : <span className="text-sm text-brun-3">Aucune prestation précisée</span>}</div>
           {p.needs && <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-brun-2">{p.needs}</p>}
           {p.inspirationIds.length > 0 && (
-            <div className="mt-3 grid grid-cols-4 gap-2">{p.inspirationIds.map((k) => images.get(k) ? <img key={k} src={images.get(k)} alt="Photo d'inspiration du client" className="aspect-square w-full rounded-none object-cover" /> : <span key={k} className="grid aspect-square place-items-center rounded-none bg-ivoire text-[10px] text-brun-3">Photo indisponible</span>)}</div>
+            <div className="mt-3 grid grid-cols-4 gap-2">{p.inspirationIds.map((k) => images.get(k) ? <img key={k} src={images.get(k)} alt="Photo d'inspiration du client" className="aspect-square w-full rounded-card object-cover" /> : <span key={k} className="grid aspect-square place-items-center rounded-card bg-ivoire text-[10px] text-brun-3">Photo indisponible</span>)}</div>
           )}
         </div>
 
-        <form className="mt-4 rounded-none bg-panel p-4 ring-1 ring-line" onSubmit={(e) => { e.preventDefault(); mut((x) => { x.nextAction = na.text.trim(); x.nextActionDate = na.date; addHistory(x, `Prochaine action : ${na.text.trim() || 'aucune'}.`); }); toast('Prochaine action enregistrée.'); }}>
+        <form className="mt-4 rounded-card bg-panel p-4 ring-1 ring-line" onSubmit={(e) => { e.preventDefault(); mut((x) => { x.nextAction = na.text.trim(); x.nextActionDate = na.date; addHistory(x, `Prochaine action : ${na.text.trim() || 'aucune'}.`); }); toast('Prochaine action enregistrée.'); }}>
           <h3 className="text-xs font-semibold uppercase tracking-[.14em] text-brun-3">Prochaine action</h3>
           <div className="mt-2 grid gap-2 sm:grid-cols-[1fr_160px_auto]">
             <Input aria-label="Prochaine action" value={na.text} onChange={(e) => setNa({ ...na, text: e.target.value })} placeholder="Ex. rappeler pour valider la date" />
@@ -195,7 +195,7 @@ export function ProspectDrawer() {
           </div>
         </form>
 
-        <div className="mt-4 rounded-none bg-panel p-4 ring-1 ring-line">
+        <div className="mt-4 rounded-card bg-panel p-4 ring-1 ring-line">
           <h3 className="text-xs font-semibold uppercase tracking-[.14em] text-brun-3">Notes internes</h3>
           <form className="mt-2 flex gap-2" onSubmit={(e) => { e.preventDefault(); const t = note.trim(); if (!t) return; mut((x) => { x.notes.unshift({ id: uid('n'), at: Date.now(), text: t }); addHistory(x, 'Note interne ajoutée.'); }); setNote(''); }}>
             <Input aria-label="Nouvelle note" value={note} onChange={(e) => setNote(e.target.value)} placeholder="Ajouter une note visible uniquement en interne" />
@@ -203,7 +203,7 @@ export function ProspectDrawer() {
           </form>
           <ul className="mt-3 space-y-2">
             {p.notes.map((n) => (
-              <li key={n.id} className="group flex items-start justify-between gap-3 rounded-none bg-cream px-3 py-2 text-sm">
+              <li key={n.id} className="group flex items-start justify-between gap-3 rounded-card bg-cream px-3 py-2 text-sm">
                 <span><span className="text-brun">{n.text}</span><span className="block text-[11px] text-brun-3">{fmtDateTime(n.at)}</span></span>
                 <button type="button" aria-label="Supprimer la note" className="text-brun-3 hover:text-danger" onClick={() => mut((x) => { x.notes = x.notes.filter((y) => y.id !== n.id); })}><Icon name="trash" className="h-4 w-4" /></button>
               </li>
@@ -213,18 +213,18 @@ export function ProspectDrawer() {
         </div>
 
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
-          <div className="rounded-none bg-panel p-4 ring-1 ring-line">
+          <div className="rounded-card bg-panel p-4 ring-1 ring-line">
             <h3 className="text-xs font-semibold uppercase tracking-[.14em] text-brun-3">Devis</h3>
             <ul className="mt-2 space-y-2">
               {quotes.map((q) => (
-                <li key={q.id}><button type="button" className="flex w-full items-center justify-between gap-2 rounded-none px-2 py-1.5 text-left text-sm hover:bg-white/5" onClick={() => { setOpenProspect(null); setEditQuote(q.id); navigate('pro-devis'); }}>
+                <li key={q.id}><button type="button" className="flex w-full items-center justify-between gap-2 rounded-card px-2 py-1.5 text-left text-sm hover:bg-white/5" onClick={() => { setOpenProspect(null); setEditQuote(q.id); navigate('pro-devis'); }}>
                   <span><span className="font-medium text-brun">{q.number}</span><span className="block text-xs text-brun-3">{QUOTE_STATUS[q.status]}</span></span><span className="tabular text-brun">{eur(quoteTotals(q).known)}</span>
                 </button></li>
               ))}
               {!quotes.length && <li className="text-sm text-brun-3">Aucun devis.</li>}
             </ul>
           </div>
-          <div className="rounded-none bg-panel p-4 ring-1 ring-line">
+          <div className="rounded-card bg-panel p-4 ring-1 ring-line">
             <h3 className="text-xs font-semibold uppercase tracking-[.14em] text-brun-3">Calendrier et tâches</h3>
             <ul className="mt-2 space-y-1.5 text-sm">
               {events.map((e) => <li key={e.id} className="flex items-center gap-2 text-brun"><Icon name="calendar" className="h-4 w-4 text-brun-3" />{fmtShort(e.date)} · {e.status === 'confirme' ? 'Confirmé (simulation)' : e.status === 'option' ? 'Option' : 'Terminé'}</li>)}
@@ -234,7 +234,7 @@ export function ProspectDrawer() {
           </div>
         </div>
 
-        <div className="mt-4 rounded-none bg-panel p-4 ring-1 ring-line">
+        <div className="mt-4 rounded-card bg-panel p-4 ring-1 ring-line">
           <h3 className="text-xs font-semibold uppercase tracking-[.14em] text-brun-3">Historique</h3>
           <ol className="mt-3 space-y-2.5 border-l border-line pl-4">
             {p.history.map((h) => <li key={h.id} className="relative text-sm text-brun-2"><span className="absolute -left-[21px] top-1.5 h-2 w-2 rounded-full bg-champagne-deep" />{h.text}<span className="block text-[11px] text-brun-3">{fmtDateTime(h.at)}</span></li>)}
@@ -289,7 +289,7 @@ export default function Prospects() {
         </EmptyState>
       ) : (
         <>
-          <div className="hidden overflow-hidden rounded-none border border-line bg-panel md:block">
+          <div className="hidden overflow-hidden rounded-card border border-line bg-panel md:block">
             <table className="w-full text-left text-[13.5px]">
               <thead className="bg-cream text-xs uppercase tracking-[.08em] text-brun-3">
                 <tr><th className="px-4 py-3 font-medium">Client</th><th className="px-4 py-3 font-medium">Événement</th><th className="px-4 py-3 font-medium">Date</th><th className="px-4 py-3 font-medium">Statut</th><th className="px-4 py-3 font-medium">Prochaine action</th><th className="px-4 py-3 font-medium">Dernier contact</th></tr>
@@ -311,7 +311,7 @@ export default function Prospects() {
           <ul className="space-y-3 md:hidden">
             {list.map((p) => (
               <li key={p.id}>
-                <button type="button" onClick={() => setOpenProspect(p.id)} className={cx('w-full rounded-none border border-line bg-panel p-4 text-left', highlight === p.id && 'ring-2 ring-brand/30')}>
+                <button type="button" onClick={() => setOpenProspect(p.id)} className={cx('w-full rounded-card border border-line bg-panel p-4 text-left', highlight === p.id && 'ring-2 ring-brand/30')}>
                   <span className="flex items-start justify-between gap-3"><span className="font-medium text-brun">{fullName(p)}</span><StageBadge stage={p.stage} /></span>
                   <span className="mt-1 block text-sm text-brun-2">{p.eventType} · {p.eventDate ? fmtShort(p.eventDate) : 'date à définir'}{p.guests ? ` · ${p.guests} inv.` : ''}</span>
                   {p.nextAction && <span className="mt-2 block text-xs text-brun-3">→ {p.nextAction}</span>}

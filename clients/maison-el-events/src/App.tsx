@@ -6,7 +6,7 @@ import { DataProvider } from './lib/store';
 import { UiProvider } from './lib/ui';
 import { ProApp } from './pro/ProApp';
 import Home from './site/Home';
-import { Gallery, Legal, MenuPage, Services } from './site/Pages';
+import { Faq, Gallery, Legal, MenuPage, Services } from './site/Pages';
 import Presentation from './site/Presentation';
 import Pricing from './site/Pricing';
 import QuoteRequest from './site/QuoteRequest';
@@ -19,6 +19,7 @@ function PublicPage({ route }: { route: Route }) {
     case 'menu': return <MenuPage />;
     case 'galerie': return <Gallery />;
     case 'tarifs': return <Pricing />;
+    case 'faq': return <Faq />;
     case 'devis': return <QuoteRequest />;
     case 'presentation': return <Presentation />;
     case 'mentions': return <Legal />;

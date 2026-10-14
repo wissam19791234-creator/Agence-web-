@@ -179,7 +179,12 @@ export interface Settings {
   address: string;
   instagram: string;
   tiktok: string;
-  hours: string;
+  /** Horaires d'accueil par jour ; vide = « à confirmer ». */
+  openingHours: { day: string; hours: string }[];
+  /** Créneaux des prestations traiteur (livraison, installation). */
+  cateringHours: string;
+  bookingLead: string;
+  zone: string;
   colorBrand: string;
   colorChampagne: string;
   legalForm: string;
@@ -195,6 +200,8 @@ export interface Settings {
 
 export interface MediaAlt { [key: string]: string }
 
+export interface FaqItem { id: string; q: string; a: string; active: boolean }
+
 export interface Data {
   version: number;
   settings: Settings;
@@ -207,5 +214,6 @@ export interface Data {
   expenses: Expense[];
   gallery: GalleryItem[];
   activity: Activity[];
+  faq: FaqItem[];
   alts: MediaAlt;
 }

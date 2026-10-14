@@ -1,13 +1,13 @@
 import type { EventStatus, EventType, Priority, QuoteStatus, ServiceKey, StageKey } from './types';
 
 export const STAGES: { key: StageKey; label: string; short: string; dot: string }[] = [
-  { key: 'nouveau', label: 'Nouveau prospect', short: 'Nouveau', dot: '#5C5C5C' },
-  { key: 'qualifier', label: 'Demande à qualifier', short: 'À qualifier', dot: '#7A7A7A' },
-  { key: 'preparer', label: 'Devis à préparer', short: 'Devis à préparer', dot: '#999999' },
-  { key: 'envoye', label: 'Devis envoyé — simulation', short: 'Devis envoyé (simulation)', dot: '#B8B8B8' },
-  { key: 'relance', label: 'Relance à effectuer', short: 'Relance', dot: '#E0E0E0' },
+  { key: 'nouveau', label: 'Nouveau prospect', short: 'Nouveau', dot: '#6EA8FE' },
+  { key: 'qualifier', label: 'Demande à qualifier', short: 'À qualifier', dot: '#A78BFA' },
+  { key: 'preparer', label: 'Devis à préparer', short: 'Devis à préparer', dot: '#F0B95B' },
+  { key: 'envoye', label: 'Devis envoyé — simulation', short: 'Devis envoyé (simulation)', dot: '#4FD1C5' },
+  { key: 'relance', label: 'Relance à effectuer', short: 'Relance', dot: '#FF8A65' },
   { key: 'reservation', label: 'Réservation confirmée — simulation', short: 'Réservation (simulation)', dot: '#EB516D' },
-  { key: 'termine', label: 'Événement terminé', short: 'Terminé', dot: '#4A4A4A' },
+  { key: 'termine', label: 'Événement terminé', short: 'Terminé', dot: '#8C8D8E' },
 ];
 export const stageLabel = (k: StageKey) => STAGES.find((s) => s.key === k)?.label ?? k;
 export const stageDot = (k: StageKey) => STAGES.find((s) => s.key === k)?.dot ?? '#808080';

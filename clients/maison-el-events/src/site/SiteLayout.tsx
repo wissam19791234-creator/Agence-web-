@@ -11,6 +11,7 @@ const NAV: { r: Route; label: string }[] = [
   { r: 'menu', label: 'Menu' },
   { r: 'galerie', label: 'Galerie' },
   { r: 'tarifs', label: 'Tarifs' },
+  { r: 'faq', label: 'FAQ' },
 ];
 
 export function Logo() {
@@ -19,19 +20,25 @@ export function Logo() {
   const logo = get('logo');
   return (
     <span className="flex items-center gap-3">
-      {logo && <img src={logo} alt={`Logo ${data.settings.businessName}`} className="h-9 w-9 rounded-full object-cover" />}
-      <span className="font-serif text-[24px] leading-none tracking-[-.01em] text-white">{data.settings.businessName}</span>
+      {logo ? <img src={logo} alt={`Logo ${data.settings.businessName}`} className="h-8 w-8 rounded-ctl object-cover" /> : <span aria-hidden="true" className="grid h-8 w-8 place-items-center rounded-ctl border border-frost/70 bg-charcoal text-[12px] font-medium tracking-[-.02em] text-white">EL</span>}
+      <span className="text-[17px] font-medium leading-none tracking-[-.035em] text-white">{data.settings.businessName}</span>
     </span>
   );
 }
 
-/** Mise en page éditoriale : toile noire, liens fantômes, filets gris, un seul accent corail par écran. */
+/** Mise en page « galerie de nuit » : barre de navigation transparente et collante, sections en plein cadre, pied de page minimal. */
 export function SiteLayout({ route, children }: { route: Route; children: ReactNode }) {
   const { data } = useStore();
   const { startTour } = useUi();
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const s = data.settings;
   useEffect(() => setOpen(false), [route]);
+  useEffect(() => {
+    const on = () => setScrolled(window.scrollY > 40);
+    on(); window.addEventListener('scroll', on, { passive: true });
+    return () => window.removeEventListener('scroll', on);
+  }, []);
   useEffect(() => {
     if (!open) return;
     const k = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false);
@@ -42,94 +49,75 @@ export function SiteLayout({ route, children }: { route: Route; children: ReactN
 
   return (
     <div className="min-h-screen overflow-x-clip bg-black text-white">
-      <button type="button" onClick={() => document.getElementById('contenu')?.focus()} className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[80] focus:rounded-[40px] focus:bg-white focus:px-4 focus:py-2 focus:text-black">Aller au contenu</button>
+      <button type="button" onClick={() => document.getElementById('contenu')?.focus()} className="mono sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[80] focus:rounded-ctl focus:bg-white focus:px-4 focus:py-2 focus:text-black">Aller au contenu</button>
 
-      <div className="border-b border-line">
-        <div className="mx-auto flex max-w-site flex-wrap items-center justify-between gap-x-4 gap-y-2 px-5 py-2.5 text-[13px] text-smoke sm:px-6">
-          <p className="thin">Démonstration Scalify · contenus et données fictifs à valider</p>
-          <div className="flex items-center gap-4">
-            <a href="#presentation" className="text-white/80 no-underline hover:text-white">Présentation</a>
-            <button type="button" onClick={startTour} className="inline-flex items-center gap-1.5 rounded-[40px] px-3 py-1 text-white ring-1 ring-inset ring-white/70 transition hover:bg-white hover:text-black"><Icon name="play" className="h-3 w-3" />Découvrir la démo</button>
+      <header className={cx('fixed inset-x-0 top-0 z-40 border-b transition-colors duration-300', scrolled || open ? 'border-frost/15 bg-black/80 backdrop-blur-md' : 'border-frost/10 bg-transparent')}>
+        <div className="border-b border-frost/10">
+          <div className="mx-auto flex h-[30px] max-w-site items-center justify-between gap-4 px-4 sm:px-6">
+            <p className="mono truncate !text-[10px] text-ash"><span className="text-brand">●</span> Démonstration Scalify<span className="hidden sm:inline"> · contenus et données fictifs à valider</span></p>
+            <div className="flex shrink-0 items-center gap-4">
+              <a href="#presentation" className="mono hidden !text-[10px] text-ash no-underline hover:text-white sm:inline">Présentation</a>
+              <button type="button" onClick={startTour} className="mono inline-flex items-center gap-1.5 !text-[10px] text-white hover:text-brand"><Icon name="play" className="h-2.5 w-2.5" />Découvrir la démo</button>
+            </div>
           </div>
         </div>
-      </div>
-
-      <header className="relative z-30">
-        <div className="mx-auto flex h-20 max-w-site items-center justify-between gap-6 px-5 sm:px-6">
+        <div className="mx-auto flex h-[58px] max-w-site items-center justify-between gap-6 px-4 sm:px-6">
           <a href="#accueil" className="no-underline" aria-label={`${s.businessName}, accueil`}><Logo /></a>
           <nav aria-label="Navigation principale" className="hidden lg:block">
-            <ul className="flex items-center gap-7 text-[15px]">
-              {NAV.map((n) => (
-                <li key={n.r}><a href={`#${n.r}`} aria-current={route === n.r ? 'page' : undefined} className={cx('no-underline transition', route === n.r ? 'text-white underline decoration-1 underline-offset-[6px]' : 'text-white/75 hover:text-white')}>{n.label}</a></li>
+            <ul className="flex items-center gap-7">
+              {NAV.map((n, i) => (
+                <li key={n.r}><a href={`#${n.r}`} aria-current={route === n.r ? 'page' : undefined} className={cx('mono mono-lg no-underline transition', route === n.r ? 'text-white' : 'text-ash hover:text-white')}><span className={cx('mr-1.5', route === n.r ? 'text-brand' : 'text-smoke')}>{String(i + 1).padStart(2, '0')}</span>{n.label}</a></li>
               ))}
-              <li><a href="#pro" className="text-white/75 no-underline hover:text-white">Espace professionnel</a></li>
+              <li><a href="#pro" className="mono mono-lg text-ash no-underline hover:text-white">Espace pro</a></li>
             </ul>
           </nav>
-          <div className="flex items-center gap-3">
-            <LinkButton href="#devis" size="sm" variant="secondary" className="hidden sm:inline-flex">Demander un devis</LinkButton>
-            <button type="button" className="h-11 rounded-[40px] px-4 text-[15px] text-white ring-1 ring-inset ring-white/40 lg:hidden" aria-expanded={open} onClick={() => setOpen(true)}>Menu</button>
+          <div className="flex items-center gap-2">
+            <LinkButton href="#devis" size="sm" variant="primary" className="hidden sm:inline-flex">Demander un devis</LinkButton>
+            <button type="button" className="mono mono-lg h-9 rounded-ctl border border-frost/60 bg-charcoal px-3.5 text-white lg:hidden" aria-expanded={open} onClick={() => setOpen(true)}>Menu</button>
           </div>
         </div>
       </header>
 
       {open && (
-        <div className="fixed inset-0 z-[60] flex flex-col bg-black px-5 pb-8 pt-5 animate-fade lg:hidden" role="dialog" aria-modal="true" aria-label="Menu">
-          <div className="flex items-center justify-between"><Logo /><button type="button" className="h-11 rounded-[40px] px-4 text-[15px] ring-1 ring-inset ring-white/40" onClick={() => setOpen(false)}>Fermer</button></div>
-          <nav className="mt-12" aria-label="Navigation mobile">
-            <ul className="divide-y divide-line border-y border-line">
+        <div className="fixed inset-0 z-[60] flex flex-col bg-black px-4 pb-8 pt-4 animate-fade lg:hidden" role="dialog" aria-modal="true" aria-label="Menu">
+          <div className="flex items-center justify-between"><Logo /><button type="button" className="mono mono-lg h-9 rounded-ctl border border-frost/60 bg-charcoal px-3.5" onClick={() => setOpen(false)}>Fermer</button></div>
+          <nav className="mt-10" aria-label="Navigation mobile">
+            <ul className="border-t border-frost/15">
               {[{ r: 'accueil' as Route, label: 'Accueil' }, ...NAV, { r: 'devis' as Route, label: 'Demander un devis' }].map((n, i) => (
-                <li key={n.r}><a href={`#${n.r}`} className="flex items-baseline justify-between py-4 no-underline"><span className="font-serif text-[40px] leading-none">{n.label}</span><span className="thin text-[13px] text-smoke">{String(i + 1).padStart(2, '0')}</span></a></li>
+                <li key={n.r} className="border-b border-frost/15"><a href={`#${n.r}`} className="flex items-end justify-between py-4 no-underline"><span className="display text-[44px]">{n.label}</span><span className="mono text-brand">{String(i + 1).padStart(2, '0')}</span></a></li>
               ))}
             </ul>
           </nav>
-          <div className="mt-auto grid gap-3">
+          <div className="mt-auto grid gap-2.5 pt-6">
             <LinkButton href="#devis" size="lg" variant="primary" className="w-full">Demander un devis</LinkButton>
-            <LinkButton href="#pro" variant="secondary" className="w-full">Espace professionnel</LinkButton>
+            <LinkButton href="#pro" size="lg" variant="secondary" className="w-full">Espace professionnel</LinkButton>
           </div>
         </div>
       )}
 
       <main id="contenu" tabIndex={-1} className="outline-none">{children}</main>
 
-      <footer className="mt-[120px] border-t border-smoke/60">
-        <div className="mx-auto grid max-w-site gap-10 px-5 py-14 sm:px-6 md:grid-cols-[1.3fr_1fr_1fr_1fr]">
-          <div>
-            <p className="thin text-[14px]">{s.tagline}</p>
-            <p className="mt-4 max-w-xs text-[15px] leading-[1.4] text-brun-2">Mariages, henné, anniversaires, baptêmes et réceptions à {s.city} et alentours.</p>
+      <footer className="mt-24 border-t border-frost/15">
+        <div className="mx-auto flex max-w-site flex-wrap items-start justify-between gap-x-10 gap-y-8 px-4 py-10 sm:px-6">
+          <div className="max-w-xs">
+            <Logo />
+            <p className="mono mt-4 text-ash">{s.tagline} · {s.city}</p>
           </div>
-          <div>
-            <h2 className="thin mb-4 text-[14px] text-smoke">Coordonnées</h2>
-            <ul className="space-y-2 text-[15px]">
-              <li>{s.address ? `${s.address}, ${s.city}` : <>{s.city} <span className="text-smoke">· adresse à compléter</span></>}</li>
-              <li>{s.phone || <span className="text-smoke">Téléphone à compléter</span>}</li>
-              <li>{s.email || <span className="text-smoke">E-mail à compléter</span>}</li>
-              {s.hours && <li>{s.hours}</li>}
+          <nav aria-label="Pied de page">
+            <ul className="mono mono-lg grid grid-cols-2 gap-x-10 gap-y-2.5 sm:grid-cols-3">
+              {NAV.map((n) => <li key={n.r}><a href={`#${n.r}`} className="text-ash no-underline hover:text-white">{n.label}</a></li>)}
+              <li><a href="#devis" className="text-ash no-underline hover:text-white">Devis</a></li>
+              {s.tiktok && <li><a href={`https://www.tiktok.com/@${s.tiktok}`} target="_blank" rel="noopener" className="text-ash no-underline hover:text-white">TikTok ↗</a></li>}
+              {s.instagram && <li><a href={`https://www.instagram.com/${s.instagram}`} target="_blank" rel="noopener" className="text-ash no-underline hover:text-white">Instagram ↗</a></li>}
+              <li><a href="#mentions" className="text-ash no-underline hover:text-white">Mentions légales</a></li>
+              <li><a href="#pro" className="text-ash no-underline hover:text-white">Espace pro</a></li>
             </ul>
-          </div>
-          <div>
-            <h2 className="thin mb-4 text-[14px] text-smoke">Découvrir</h2>
-            <ul className="space-y-2 text-[15px]">
-              {NAV.map((n) => <li key={n.r}><a href={`#${n.r}`} className="no-underline hover:text-smoke">{n.label}</a></li>)}
-              <li><a href="#devis" className="no-underline hover:text-smoke">Demander un devis</a></li>
-            </ul>
-          </div>
-          <div>
-            <h2 className="thin mb-4 text-[14px] text-smoke">Suivre</h2>
-            <ul className="space-y-2 text-[15px]">
-              {s.tiktok && <li><a href={`https://www.tiktok.com/@${s.tiktok}`} target="_blank" rel="noopener" className="no-underline hover:text-smoke">TikTok · @{s.tiktok}</a></li>}
-              {s.instagram ? <li><a href={`https://www.instagram.com/${s.instagram}`} target="_blank" rel="noopener" className="no-underline hover:text-smoke">Instagram · @{s.instagram}</a></li> : <li className="text-smoke">Instagram à compléter</li>}
-              <li><a href="#mentions" className="no-underline hover:text-smoke">Mentions légales</a></li>
-              <li><a href="#pro" className="no-underline hover:text-smoke">Espace professionnel</a></li>
-            </ul>
-          </div>
+          </nav>
         </div>
-        <div className="overflow-hidden px-3" aria-hidden="true">
-          <p className="display -mb-[0.16em] whitespace-nowrap text-center text-[21vw] text-[#1C1C1C]">{s.businessName}</p>
-        </div>
-        <div className="border-t border-line">
-          <div className="mx-auto flex max-w-site flex-wrap justify-between gap-2 px-5 py-5 text-[13px] text-smoke sm:px-6">
-            <span>© {new Date().getFullYear()} {s.businessName} · {s.city}</span>
-            <span className="thin">Démonstration conçue par Scalify</span>
+        <div className="border-t border-frost/10">
+          <div className="mx-auto flex max-w-site flex-wrap justify-between gap-x-6 gap-y-1 px-4 py-4 sm:px-6">
+            <span className="mono !text-[10px] text-smoke">© {new Date().getFullYear()} {s.businessName} · {[s.address, s.phone, s.email].some(Boolean) ? [s.address && `${s.address}, ${s.city}`, s.phone, s.email].filter(Boolean).join(' · ') : 'Coordonnées à compléter'}</span>
+            <span className="mono !text-[10px] text-smoke">Démonstration conçue par Scalify</span>
           </div>
         </div>
       </footer>

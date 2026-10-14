@@ -1,12 +1,12 @@
 import { useRef, useState } from 'react';
-import { DEMO_PHOTOS } from '../lib/demoPhotos';
+import { demoImage, demoLabel } from '../lib/demoPhotos';
 import { useImages } from '../lib/images';
 import type { ArtKind } from '../lib/types';
 import { Icon } from './Icon';
 import { Button, cx, useToast } from './ui';
 
 // Illustrations au trait, utilisées tant que la propriétaire n'a pas importé ses photos.
-const G = '#6E6E6E', B = '#EB516D', S = '#4A4A4A';
+const G = '#6E6E6E', B = '#EB516D', S = '#4A4A4A'; // B : accent rose
 function Art({ kind }: { kind: ArtKind }) {
   const common = { fill: 'none', stroke: G, strokeWidth: 1.4, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const };
   const flowers = (cx: number, cy: number, r = 9) => (
@@ -123,21 +123,38 @@ export function ArtSvg({ kind, className }: { kind: ArtKind; className?: string 
   );
 }
 
-/** Emplacement d'image : photo importée si elle existe, sinon visuel temporaire signalé comme tel. */
-export function Visual({ imageKey, art, alt, className, badge = true, rounded = 'rounded-2xl' }: { imageKey?: string; art: ArtKind; alt: string; className?: string; badge?: boolean; rounded?: string }) {
+/** Emplacement d'image : photo importée si elle existe, sinon visuel de démonstration signalé comme tel. */
+export function Visual({ imageKey, art, alt, className, badge = true, rounded = 'rounded-card', eager = false, badgePos = 'bl' }: { imageKey?: string; art: ArtKind; alt: string; className?: string; badge?: boolean; rounded?: string; eager?: boolean; badgePos?: 'bl' | 'br' | 'tr' | 'trh' }) {
   const { get } = useImages();
   const own = get(imageKey);
-  const demo = !own && imageKey ? DEMO_PHOTOS[imageKey] : undefined;
-  const url = own || demo;
+  const demo = own ? undefined : demoImage(imageKey);
+  const img = 'h-full w-full object-cover';
+  const load = eager ? 'eager' : 'lazy';
   return (
     <div className={cx('relative overflow-hidden bg-ivoire', rounded, className)}>
-      {url ? <img src={url} alt={demo ? `${alt} (photo de démonstration)` : alt} className="h-full w-full object-cover" loading="lazy" decoding="async" /> : (
-        <>
-          <ArtSvg kind={art} className="h-full w-full" />
-          <span className="sr-only">{alt} (visuel temporaire)</span>
-        </>
-      )}
-      {badge && !own && <span className="thin absolute bottom-3 left-3 text-[12px] text-white/80 [text-shadow:0_1px_8px_rgba(0,0,0,.8)]">{demo ? 'Photo de démonstration' : 'Photo à venir'}</span>}
+      {own ? <img src={own} alt={alt} className={img} loading={load} decoding="async" />
+        : demo ? (
+          <picture className="block h-full w-full">
+            {demo.mobile && <source media="(max-width: 700px)" srcSet={demo.mobile} />}
+            <img src={demo.url} alt={`${alt} (${demoLabel(demo).toLowerCase()})`} className={img} loading={load} decoding="async" />
+          </picture>
+        ) : (
+          <>
+            <ArtSvg kind={art} className="h-full w-full" />
+            <span className="sr-only">{alt} (visuel temporaire)</span>
+          </>
+        )}
+      {badge && !own && <span className={cx('mono absolute !text-[10px] text-white/85 [text-shadow:0_1px_8px_rgba(0,0,0,.9)]', { bl: 'bottom-3 left-3', br: 'bottom-4 right-4 text-right', tr: 'right-4 top-4 text-right', trh: 'right-4 top-[calc(var(--hdr)+14px)] text-right sm:right-6' }[badgePos])}>{demo ? demoLabel(demo) : 'Photo à venir'}</span>}
+    </div>
+  );
+}
+
+/** Fond plein cadre d'une section : image, voile dégradé pour la lisibilité du texte posé en bas à gauche. */
+export function Backdrop({ imageKey, art, alt, eager, badgePos = 'tr', strong }: { imageKey: string; art: ArtKind; alt: string; eager?: boolean; badgePos?: 'bl' | 'br' | 'tr' | 'trh'; strong?: boolean }) {
+  return (
+    <div className="absolute inset-0" aria-hidden={false}>
+      <Visual imageKey={imageKey} art={art} alt={alt} className="h-full w-full" rounded="" eager={eager} badgePos={badgePos} />
+      <div className={cx('pointer-events-none absolute inset-0 scrim-b', strong && 'bg-black/30')} />
     </div>
   );
 }
@@ -157,17 +174,17 @@ export function ImageSlotEditor({ imageKey, art, label }: { imageKey: string; ar
     finally { setBusy(false); if (input.current) input.current.value = ''; }
   };
   return (
-    <div className="border border-line p-3">
-      <Visual imageKey={imageKey} art={art} alt={label} className="aspect-[4/3]" rounded="rounded-none" />
+    <div className="rounded-card border border-line p-3">
+      <Visual imageKey={imageKey} art={art} alt={label} className="aspect-[4/3]" rounded="rounded-[6px]" />
       <div className="mt-3 flex items-center justify-between gap-2">
         <div className="min-w-0">
           <p className="truncate text-sm font-medium text-brun">{label}</p>
-          <p className="text-xs text-brun-3">{has ? 'Photo importée' : DEMO_PHOTOS[imageKey] ? 'Photo de démonstration' : 'Visuel temporaire'}</p>
+          <p className="text-xs text-brun-3">{has ? 'Photo importée' : (() => { const d = demoImage(imageKey); return d ? demoLabel(d) : 'Visuel temporaire'; })()}</p>
         </div>
         <div className="flex shrink-0 gap-1">
           <input ref={input} type="file" accept="image/*" className="sr-only" onChange={(e) => onFile(e.target.files?.[0])} aria-label={`Importer une photo pour ${label}`} />
           <Button size="sm" variant="secondary" icon="upload" disabled={busy} onClick={() => input.current?.click()}>{busy ? 'Import…' : has ? 'Remplacer' : 'Importer'}</Button>
-          {has && <button type="button" className="grid h-9 w-9 place-items-center rounded-full text-brun-3 hover:bg-white/10 hover:text-danger" aria-label={`Retirer la photo ${label}`} onClick={() => { remove(imageKey); toast('Photo retirée : le visuel temporaire est rétabli.', 'info'); }}><Icon name="trash" className="h-4 w-4" /></button>}
+          {has && <button type="button" className="grid h-9 w-9 place-items-center rounded-ctl text-brun-3 hover:bg-white/10 hover:text-danger" aria-label={`Retirer la photo ${label}`} onClick={() => { remove(imageKey); toast('Photo retirée : le visuel temporaire est rétabli.', 'info'); }}><Icon name="trash" className="h-4 w-4" /></button>}
         </div>
       </div>
     </div>

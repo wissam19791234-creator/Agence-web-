@@ -57,7 +57,7 @@ export default function Pipeline() {
               <li key={s.key}
                 onDragOver={(e) => { e.preventDefault(); setOver(s.key); }} onDragLeave={() => setOver((o) => (o === s.key ? null : o))}
                 onDrop={(e) => { e.preventDefault(); setOver(null); const p = data.prospects.find((x) => x.id === (drag ?? e.dataTransfer.getData('text/plain'))); if (p) move(p, s.key); setDrag(null); }}
-                className={cx('flex min-h-[420px] flex-col rounded-none border p-2.5 transition', over === s.key ? 'border-brand/50 bg-brand-soft' : 'border-line bg-[#0E0E0E]/50')}>
+                className={cx('flex min-h-[420px] flex-col rounded-card border p-2.5 transition', over === s.key ? 'border-brand/50 bg-brand-soft' : 'border-line bg-[#0E0E0E]/50')}>
                 <div className="px-1.5 pb-2.5 pt-1">
                   <h2 className="flex items-center gap-2 text-[13px] font-semibold text-brun"><span className="h-2.5 w-2.5 rounded-full" style={{ background: s.dot }} />{s.label}</h2>
                   <p className="mt-1 text-xs text-brun-3 tabular">{cards.length} carte{cards.length > 1 ? 's' : ''} · {eur(sum, true)} estimés</p>
@@ -67,7 +67,7 @@ export default function Pipeline() {
                     const est = estimateFor(p, data.quotes, data.catalog);
                     return (
                       <li key={p.id} draggable onDragStart={(e) => { setDrag(p.id); e.dataTransfer.setData('text/plain', p.id); e.dataTransfer.effectAllowed = 'move'; }} onDragEnd={() => { setDrag(null); setOver(null); }}
-                        className={cx('cursor-grab rounded-none border border-line bg-panel p-3 shadow-[0_1px_0_rgba(48,35,31,.04)] transition hover: active:cursor-grabbing', drag === p.id && 'opacity-50', highlight === p.id && 'animate-glow ring-2 ring-brand/30')}>
+                        className={cx('cursor-grab rounded-card border border-line bg-panel p-3 shadow-[0_1px_0_rgba(48,35,31,.04)] transition hover: active:cursor-grabbing', drag === p.id && 'opacity-50', highlight === p.id && 'animate-glow ring-2 ring-brand/30')}>
                         <div className="flex items-start justify-between gap-2">
                           <button type="button" className="text-left text-sm font-medium leading-snug text-brun hover:text-brand" onClick={() => setOpenProspect(p.id)}>{fullName(p)}</button>
                           <FictifBadge />
@@ -84,7 +84,7 @@ export default function Pipeline() {
                       </li>
                     );
                   })}
-                  {!cards.length && <li className="grid h-24 place-items-center rounded-none border border-dashed border-line text-xs text-brun-3">Déposez une carte ici</li>}
+                  {!cards.length && <li className="grid h-24 place-items-center rounded-card border border-dashed border-line text-xs text-brun-3">Déposez une carte ici</li>}
                 </ul>
               </li>
             );

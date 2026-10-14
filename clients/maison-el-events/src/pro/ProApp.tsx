@@ -36,7 +36,7 @@ export function ProHeader({ title, sub, actions }: { title: string; sub?: ReactN
   return (
     <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
       <div className="min-w-0">
-        <h1 className="font-serif text-[36px] font-normal leading-[1.05] text-brun sm:text-[44px]">{title}</h1>
+        <h1 className="text-[36px] font-normal leading-[.95] tracking-[-.045em] text-brun sm:text-[48px]">{title}</h1>
         {sub && <p className="mt-1 text-sm text-brun-2">{sub}</p>}
       </div>
       {actions && <div className="flex flex-wrap gap-2">{actions}</div>}
@@ -45,8 +45,8 @@ export function ProHeader({ title, sub, actions }: { title: string; sub?: ReactN
 }
 
 export const Panel = ({ title, actions, children, className }: { title?: string; actions?: ReactNode; children: ReactNode; className?: string }) => (
-  <section className={cx('min-w-0 border border-line bg-panel p-5', className)}>
-    {(title || actions) && <div className="mb-4 flex items-center justify-between gap-3">{title && <h2 className="text-[15px] font-medium text-brun">{title}</h2>}{actions}</div>}
+  <section className={cx('min-w-0 rounded-card border border-line bg-panel p-5', className)}>
+    {(title || actions) && <div className="mb-4 flex items-center justify-between gap-3">{title && <h2 className="mono mono-lg text-ash">{title}</h2>}{actions}</div>}
     {children}
   </section>
 );
@@ -71,7 +71,7 @@ function Search() {
     <div ref={box} className="relative w-full max-w-md">
       <Icon name="search" className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-brun-3" />
       <input type="search" value={q} onChange={(e) => { setQ(e.target.value); setOpen(true); }} onFocus={() => setOpen(true)} onKeyDown={(e) => e.key === 'Escape' && setOpen(false)}
-        placeholder="Rechercher un client, un e-mail, un lieu…" aria-label="Rechercher un prospect" className="h-10 w-full rounded-[40px] border border-line bg-[#0E0E0E] pl-10 pr-4 text-sm text-white outline-none transition placeholder:text-smoke focus:border-white/60" />
+        placeholder="Rechercher un client, un e-mail, un lieu…" aria-label="Rechercher un prospect" className="h-10 w-full rounded-ctl border border-frost/20 bg-[#0B0B0B] pl-10 pr-4 text-sm text-white outline-none transition placeholder:text-smoke focus:border-white/60" />
       {open && q.trim().length >= 2 && (
         <div className="absolute left-0 right-0 top-12 z-50 overflow-hidden border border-line bg-black">
           {res.length ? res.map((p) => (
@@ -121,8 +121,8 @@ export function ProApp({ route }: { route: Route }) {
   const nav = (
     <nav aria-label="Espace professionnel" className="flex h-full flex-col">
       <a href="#pro" className="flex items-center gap-3 px-4 py-5 no-underline">
-        {logo ? <img src={logo} alt="" className="h-9 w-9 shrink-0 rounded-full object-cover" /> : <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full font-serif text-sm text-white ring-1 ring-white/70">EL</span>}
-        {!collapsed && <span className="min-w-0"><span className="block truncate text-lg leading-tight text-white">{data.settings.businessName}</span><span className="thin block text-[12px] text-smoke">Espace professionnel</span></span>}
+        {logo ? <img src={logo} alt="" className="h-9 w-9 shrink-0 rounded-full object-cover" /> : <span className="grid h-9 w-9 shrink-0 place-items-center rounded-ctl border border-frost/70 bg-charcoal text-sm text-white">EL</span>}
+        {!collapsed && <span className="min-w-0"><span className="block truncate text-lg leading-tight text-white">{data.settings.businessName}</span><span className="mono block text-smoke">Espace professionnel</span></span>}
       </a>
       <ul className="flex-1 space-y-0.5 overflow-y-auto px-2.5">
         {NAV.map((n) => {
@@ -130,24 +130,24 @@ export function ProApp({ route }: { route: Route }) {
           return (
             <li key={n.r}>
               <a href={`#${n.r}`} aria-current={on ? 'page' : undefined} title={collapsed ? n.label : undefined}
-                className={cx('flex items-center gap-3 rounded-none px-3 py-2.5 text-[13.5px] no-underline transition', on ? 'bg-white/10 text-white ring-1 ring-inset ring-white/15' : 'text-white/70 hover:bg-white/5 hover:text-white', collapsed && 'justify-center px-0')}>
-                <Icon name={n.icon} className="h-[18px] w-[18px] shrink-0" />{!collapsed && n.label}
+                className={cx('flex items-center gap-3 rounded-card px-3 py-2.5 text-[13.5px] no-underline transition', on ? 'bg-charcoal text-white ring-1 ring-inset ring-frost/40' : 'text-white/70 hover:bg-white/5 hover:text-white', collapsed && 'justify-center px-0')}>
+                <Icon name={n.icon} className={cx('h-[18px] w-[18px] shrink-0', on && 'text-brand')} />{!collapsed && n.label}
               </a>
             </li>
           );
         })}
       </ul>
       <div className="space-y-1 border-t border-cream/10 p-2.5">
-        <button type="button" onClick={startTour} className={cx('flex w-full items-center gap-3 rounded-none px-3 py-2.5 text-[13.5px] text-white hover:bg-white/5', collapsed && 'justify-center px-0')} title="Découvrir la démo"><Icon name="play" className="h-4 w-4 shrink-0" />{!collapsed && 'Découvrir la démo'}</button>
-        <button type="button" onClick={doReset} className={cx('flex w-full items-center gap-3 rounded-none px-3 py-2.5 text-[13.5px] text-white/70 hover:bg-white/5 hover:text-white', collapsed && 'justify-center px-0')} title="Réinitialiser les données"><Icon name="refresh" className="h-4 w-4 shrink-0" />{!collapsed && 'Réinitialiser les données'}</button>
-        <a href="#accueil" className={cx('flex items-center gap-3 rounded-none px-3 py-2.5 text-[13.5px] text-white/70 no-underline hover:bg-white/5 hover:text-white', collapsed && 'justify-center px-0')} title="Voir le site"><Icon name="external" className="h-4 w-4 shrink-0" />{!collapsed && 'Voir le site public'}</a>
+        <button type="button" onClick={startTour} className={cx('flex w-full items-center gap-3 rounded-card px-3 py-2.5 text-[13.5px] text-white hover:bg-white/5', collapsed && 'justify-center px-0')} title="Découvrir la démo"><Icon name="play" className="h-4 w-4 shrink-0" />{!collapsed && 'Découvrir la démo'}</button>
+        <button type="button" onClick={doReset} className={cx('flex w-full items-center gap-3 rounded-card px-3 py-2.5 text-[13.5px] text-white/70 hover:bg-white/5 hover:text-white', collapsed && 'justify-center px-0')} title="Réinitialiser les données"><Icon name="refresh" className="h-4 w-4 shrink-0" />{!collapsed && 'Réinitialiser les données'}</button>
+        <a href="#accueil" className={cx('flex items-center gap-3 rounded-card px-3 py-2.5 text-[13.5px] text-white/70 no-underline hover:bg-white/5 hover:text-white', collapsed && 'justify-center px-0')} title="Voir le site"><Icon name="external" className="h-4 w-4 shrink-0" />{!collapsed && 'Voir le site public'}</a>
       </div>
     </nav>
   );
 
   return (
     <div className="min-h-screen bg-black text-brun">
-      <div className="sticky top-0 z-50 bg-brand px-4 py-1.5 text-center text-[12px] tracking-[.02em] text-white" role="note">{DEMO_BANNER}</div>
+      <div className="mono sticky top-0 z-50 bg-brand px-4 py-1.5 text-center !text-[10.5px] text-black" role="note">{DEMO_BANNER}</div>
       <div className="flex">
         <aside className={cx('sticky top-[29px] hidden h-[calc(100vh-29px)] shrink-0 border-r border-line bg-black transition-[width] duration-200 lg:block', collapsed ? 'w-[72px]' : 'w-64')}>{nav}</aside>
         {navOpen && (
@@ -162,10 +162,10 @@ export function ProApp({ route }: { route: Route }) {
             <IconButton icon={collapsed ? 'right' : 'left'} label={collapsed ? 'Déplier le menu latéral' : 'Replier le menu latéral'} className="hidden lg:inline-grid" onClick={() => setCollapsed(!collapsed)} />
             <Search />
             <div className="ml-auto hidden items-center gap-2 sm:flex">
-              <button type="button" onClick={startTour} className="inline-flex h-10 items-center gap-2 rounded-[40px] px-4 text-[13px] text-white ring-1 ring-inset ring-white/70 hover:bg-white hover:text-black"><Icon name="play" className="h-3.5 w-3.5" />Découvrir la démo</button>
+              <button type="button" onClick={startTour} className="mono mono-lg inline-flex h-10 items-center gap-2 rounded-ctl border border-frost/70 bg-charcoal px-4 text-white hover:bg-white hover:text-black"><Icon name="play" className="h-3.5 w-3.5" />Découvrir la démo</button>
             </div>
           </header>
-          {!storageOk && <p className="mx-4 mt-4 rounded-none bg-[#2A2112] px-4 py-2.5 text-sm text-warn sm:mx-6">Le navigateur bloque l’enregistrement local : vos modifications seront perdues à la fermeture de la page.</p>}
+          {!storageOk && <p className="mx-4 mt-4 rounded-card bg-[#2A2112] px-4 py-2.5 text-sm text-warn sm:mx-6">Le navigateur bloque l’enregistrement local : vos modifications seront perdues à la fermeture de la page.</p>}
           <main className="mx-auto max-w-[1400px] px-4 py-6 sm:px-6 lg:py-8">
             {editQuote ? <QuoteEditor id={editQuote} onClose={() => setEditQuote(null)} /> : <Page route={route} />}
           </main>

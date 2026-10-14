@@ -76,7 +76,7 @@ export default function Tasks() {
         ))}
       </div>
       {list.length ? (
-        <ul className="divide-y divide-line overflow-hidden rounded-none border border-line bg-panel">
+        <ul className="divide-y divide-line overflow-hidden rounded-card border border-line bg-panel">
           {list.map((t) => {
             const p = data.prospects.find((x) => x.id === t.prospectId);
             return (

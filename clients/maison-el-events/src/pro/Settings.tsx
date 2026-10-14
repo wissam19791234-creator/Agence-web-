@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { ImageSlotEditor } from '../components/Visual';
-import { Button, Field, Input, Textarea, useConfirm, useToast } from '../components/ui';
+import { Button, Field, IconButton, Input, Textarea, Toggle, useConfirm, useToast } from '../components/ui';
 import { log } from '../lib/actions';
 import { PRICE_IDS } from '../lib/constants';
-import { eur, hexToRgbTriplet, isEmail, isPhone } from '../lib/format';
+import { FAQ_VARS, faqText } from '../lib/faq';
+import { eur, hexToRgbTriplet, isEmail, isPhone, uid } from '../lib/format';
 import { useStore } from '../lib/store';
 import type { Settings as S } from '../lib/types';
 import { Panel, ProHeader } from './ProApp';
@@ -60,8 +61,8 @@ export default function Settings() {
             {text('tagline', 'Accroche')}
             {text('city', 'Ville')}
             <div className="sm:row-span-2"><ImageSlotEditor imageKey="logo" art="salon" label="Logo" /></div>
-            <Field label="Couleur principale" error={err.colorBrand}>{(id, by) => <div className="flex gap-2"><input type="color" aria-label="Choisir la couleur principale" value={hexToRgbTriplet(s.colorBrand) ? s.colorBrand : '#65172D'} onChange={(e) => set('colorBrand', e.target.value)} className="h-11 w-12 shrink-0 cursor-pointer rounded-none border border-line bg-panel p-1" /><Input id={id} value={s.colorBrand} aria-invalid={!!err.colorBrand} aria-describedby={by} onChange={(e) => set('colorBrand', e.target.value)} /></div>}</Field>
-            <Field label="Couleur d’accent" error={err.colorChampagne}>{(id, by) => <div className="flex gap-2"><input type="color" aria-label="Choisir la couleur d'accent" value={hexToRgbTriplet(s.colorChampagne) ? s.colorChampagne : '#D8C3A7'} onChange={(e) => set('colorChampagne', e.target.value)} className="h-11 w-12 shrink-0 cursor-pointer rounded-none border border-line bg-panel p-1" /><Input id={id} value={s.colorChampagne} aria-invalid={!!err.colorChampagne} aria-describedby={by} onChange={(e) => set('colorChampagne', e.target.value)} /></div>}</Field>
+            <Field label="Couleur principale" error={err.colorBrand}>{(id, by) => <div className="flex gap-2"><input type="color" aria-label="Choisir la couleur principale" value={hexToRgbTriplet(s.colorBrand) ? s.colorBrand : '#65172D'} onChange={(e) => set('colorBrand', e.target.value)} className="h-11 w-12 shrink-0 cursor-pointer rounded-card border border-line bg-panel p-1" /><Input id={id} value={s.colorBrand} aria-invalid={!!err.colorBrand} aria-describedby={by} onChange={(e) => set('colorBrand', e.target.value)} /></div>}</Field>
+            <Field label="Couleur d’accent" error={err.colorChampagne}>{(id, by) => <div className="flex gap-2"><input type="color" aria-label="Choisir la couleur d'accent" value={hexToRgbTriplet(s.colorChampagne) ? s.colorChampagne : '#D8C3A7'} onChange={(e) => set('colorChampagne', e.target.value)} className="h-11 w-12 shrink-0 cursor-pointer rounded-card border border-line bg-panel p-1" /><Input id={id} value={s.colorChampagne} aria-invalid={!!err.colorChampagne} aria-describedby={by} onChange={(e) => set('colorChampagne', e.target.value)} /></div>}</Field>
           </div>
         </Panel>
         <Panel title="Coordonnées affichées">
@@ -69,9 +70,21 @@ export default function Settings() {
             {text('email', 'E-mail', 'Laisser vide : « à compléter » s’affiche.', 'email')}
             {text('phone', 'Téléphone', undefined, 'tel')}
             {text('address', 'Adresse')}
-            {text('hours', 'Horaires', 'Facultatif')}
             {text('instagram', 'Instagram (identifiant)')}
             {text('tiktok', 'TikTok (identifiant)')}
+          </div>
+        </Panel>
+        <Panel title="Horaires et infos pratiques">
+          <p className="mb-4 text-sm text-brun-2">Laissez vide ce qui n’est pas encore fixé : le site affiche « À confirmer ».</p>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {s.openingHours.map((h, i) => (
+              <Field key={h.day} label={h.day}>{(id) => <Input id={id} placeholder="ex. 9 h – 18 h, ou Fermé" value={h.hours} onChange={(e) => set('openingHours', s.openingHours.map((x, k) => (k === i ? { ...x, hours: e.target.value } : x)))} />}</Field>
+            ))}
+          </div>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            {text('cateringHours', 'Créneaux des prestations traiteur', 'Livraison, installation, service')}
+            {text('bookingLead', 'Délai pour réserver', 'ex. 3 semaines avant l’événement')}
+            {text('zone', 'Zone d’intervention')}
           </div>
         </Panel>
         <Panel title="Tarifs principaux">
@@ -102,6 +115,41 @@ export default function Settings() {
         </Panel>
       </div>
       <div className="mt-6 flex justify-end"><Button size="lg" icon="check" onClick={save}>Enregistrer les paramètres</Button></div>
+      <FaqEditor />
     </>
+  );
+}
+
+/** Questions fréquentes affichées sur le site (enregistrement immédiat). */
+function FaqEditor() {
+  const { data, update } = useStore();
+  const toast = useToast();
+  const confirm = useConfirm();
+  const edit = (id: string, patch: Partial<{ q: string; a: string; active: boolean }>) => update((d) => { const f = d.faq.find((x) => x.id === id); if (f) Object.assign(f, patch); });
+  const move = (i: number, dir: -1 | 1) => update((d) => { const j = i + dir; if (j < 0 || j >= d.faq.length) return; [d.faq[i], d.faq[j]] = [d.faq[j], d.faq[i]]; });
+  return (
+    <Panel title="Questions fréquentes (FAQ)" className="mt-5" actions={<Button size="sm" variant="secondary" icon="plus" onClick={() => { update((d) => { d.faq.push({ id: uid('faq'), q: 'Nouvelle question', a: 'Réponse à rédiger.', active: false }); log(d, 'Question ajoutée à la FAQ.', 'reglages'); }); toast('Question ajoutée (masquée tant que vous ne l’activez pas).'); }}>Ajouter une question</Button>}>
+      <p className="mb-4 text-sm text-brun-2">Les modifications sont enregistrées immédiatement et visibles sur la page FAQ. Variables utilisables : <span className="mono text-ash">{FAQ_VARS}</span></p>
+      <ol className="space-y-3">
+        {data.faq.map((f, i) => (
+          <li key={f.id} className="rounded-card border border-line p-4">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="mono text-brand">{String(i + 1).padStart(2, '0')}</span>
+              <div className="flex items-center gap-1">
+                <span className="mono mr-2 text-ash">{f.active ? 'Affichée' : 'Masquée'}</span>
+                <Toggle checked={f.active} onChange={(v) => edit(f.id, { active: v })} label={`Afficher la question ${i + 1}`} />
+                <IconButton icon="up" label="Monter" disabled={i === 0} onClick={() => move(i, -1)} />
+                <IconButton icon="down" label="Descendre" disabled={i === data.faq.length - 1} onClick={() => move(i, 1)} />
+                <IconButton icon="trash" label="Supprimer la question" onClick={async () => { if (await confirm({ title: 'Supprimer cette question ?', message: f.q, confirm: 'Supprimer', danger: true })) update((d) => { d.faq = d.faq.filter((x) => x.id !== f.id); }); }} />
+              </div>
+            </div>
+            <div className="mt-3 grid gap-3 lg:grid-cols-2">
+              <Field label="Question">{(id) => <Input id={id} value={f.q} onChange={(e) => edit(f.id, { q: e.target.value })} />}</Field>
+              <Field label="Réponse" hint={f.a.includes('{') ? `Aperçu : ${faqText(f.a, data)}` : undefined}>{(id, by) => <Textarea id={id} rows={3} aria-describedby={by} value={f.a} onChange={(e) => edit(f.id, { a: e.target.value })} />}</Field>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </Panel>
   );
 }

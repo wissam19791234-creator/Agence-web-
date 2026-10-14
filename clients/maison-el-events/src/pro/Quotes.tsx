@@ -38,14 +38,14 @@ export function QuoteDocument({ q, data }: { q: Quote; data: Data }) {
         </div>
       </div>
       <div className="relative mt-8 grid gap-6 sm:grid-cols-2">
-        <div className="rounded-none bg-[#F3F3F3] p-4">
+        <div className="rounded-card bg-[#F3F3F3] p-4">
           <p className="text-[10.5px] font-semibold uppercase tracking-[.16em] text-[#777]">Émetteur</p>
           <p className="mt-1 font-medium">{s.businessName}</p>
           <p className="text-[#444]">{s.address ? `${s.address}, ${s.city}` : `${s.city} · adresse à compléter`}</p>
           <p className="text-[#444]">{[s.email, s.phone].filter(Boolean).join(' · ') || 'Coordonnées à compléter'}</p>
           <p className="text-[#444]">SIRET : {s.siret || 'à compléter'}</p>
         </div>
-        <div className="rounded-none bg-[#F3F3F3] p-4">
+        <div className="rounded-card bg-[#F3F3F3] p-4">
           <p className="text-[10.5px] font-semibold uppercase tracking-[.16em] text-[#777]">Client (fictif)</p>
           <p className="mt-1 font-medium">{p ? fullName(p) : 'Client supprimé'}</p>
           {p?.email && <p className="text-[#444]">{p.email}</p>}
@@ -62,7 +62,7 @@ export function QuoteDocument({ q, data }: { q: Quote; data: Data }) {
         </table>
       </div>
       <div className="relative mt-4 flex justify-end">
-        <div className="w-full max-w-xs rounded-none bg-[#F3F3F3] p-4">
+        <div className="w-full max-w-xs rounded-card bg-[#F3F3F3] p-4">
           <div className="flex justify-between font-medium"><span>Total des prestations chiffrées</span><span className="tabular">{eur(t.known)}</span></div>
           {t.unpriced > 0 && <p className="mt-1 text-xs text-[#444]">+ {t.unpriced} ligne(s) à chiffrer</p>}
         </div>
@@ -161,7 +161,7 @@ export function QuoteEditor({ id, onClose }: { id: string; onClose: () => void }
 
       <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_340px]">
         <div className="space-y-5">
-          <section className="rounded-none border border-line bg-panel p-5">
+          <section className="rounded-card border border-line bg-panel p-5">
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               <Field label="Client">{(fid) => <Select id={fid} value={q.prospectId} onChange={(e) => setQ({ ...q, prospectId: e.target.value })}>{data.prospects.map((x) => <option key={x.id} value={x.id}>{fullName(x)}</option>)}</Select>}</Field>
               <Field label="Type d'événement">{(fid) => <Select id={fid} value={q.eventType} onChange={(e) => setQ({ ...q, eventType: e.target.value as EventType })}>{EVENT_TYPES.map((x) => <option key={x}>{x}</option>)}</Select>}</Field>
@@ -170,7 +170,7 @@ export function QuoteEditor({ id, onClose }: { id: string; onClose: () => void }
             </div>
           </section>
 
-          <section className="rounded-none border border-line bg-panel p-5">
+          <section className="rounded-card border border-line bg-panel p-5">
             <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
               <h2 className="text-[15px] font-semibold">Prestations</h2>
               <div className="flex flex-wrap gap-2">
@@ -187,7 +187,7 @@ export function QuoteEditor({ id, onClose }: { id: string; onClose: () => void }
                 <Button size="sm" variant="ghost" icon="refresh" onClick={() => p && setQ({ ...q, lines: suggestedLines(data.catalog, { services: p.services, guests: q.guests }) })} disabled={!p}>Lignes suggérées</Button>
               </div>
             </div>
-            {err && <p className="mb-3 rounded-none bg-[#2A1215] px-3 py-2 text-sm text-danger" role="alert">{err}</p>}
+            {err && <p className="mb-3 rounded-card bg-[#2A1215] px-3 py-2 text-sm text-danger" role="alert">{err}</p>}
             {q.lines.length ? (
               <div className="overflow-x-auto">
                 <table className="w-full min-w-[640px] text-left text-[13px]">
@@ -214,7 +214,7 @@ export function QuoteEditor({ id, onClose }: { id: string; onClose: () => void }
             ) : <EmptyState icon="file" title="Aucune ligne">Ajoutez une prestation du catalogue ou une ligne personnalisée.</EmptyState>}
           </section>
 
-          <section className="grid gap-4 rounded-none border border-line bg-panel p-5 sm:grid-cols-2">
+          <section className="grid gap-4 rounded-card border border-line bg-panel p-5 sm:grid-cols-2">
             <Field label="Frais supplémentaires à confirmer">{(fid) => <Textarea id={fid} rows={3} value={q.extraFees} onChange={(e) => setQ({ ...q, extraFees: e.target.value })} />}</Field>
             <Field label="Conditions">{(fid) => <Textarea id={fid} rows={3} value={q.conditions} onChange={(e) => setQ({ ...q, conditions: e.target.value })} />}</Field>
             <Field label="Notes" className="sm:col-span-2">{(fid) => <Textarea id={fid} rows={2} value={q.notes} onChange={(e) => setQ({ ...q, notes: e.target.value })} />}</Field>
@@ -222,20 +222,20 @@ export function QuoteEditor({ id, onClose }: { id: string; onClose: () => void }
         </div>
 
         <aside className="space-y-4 xl:sticky xl:top-28 xl:self-start">
-          <div className="rounded-none border border-champagne bg-panel p-5">
+          <div className="rounded-card border border-champagne bg-panel p-5">
             <p className="text-[11px] font-semibold uppercase tracking-[.16em] text-brun-3">Total des prestations chiffrées</p>
             <p className="mt-2 font-serif text-[40px] leading-none text-brand tabular">{eur(t.known)}</p>
             {t.unpriced > 0 && <p className="mt-2 text-sm text-brun-2">{t.unpriced} ligne(s) à chiffrer sur devis</p>}
             <p className="mt-3 text-xs text-brun-3">Frais d’installation et de déplacement à confirmer. Montants recalculés à chaque modification.</p>
           </div>
-          <div className="rounded-none border border-line bg-panel p-5">
+          <div className="rounded-card border border-line bg-panel p-5">
             <Field label="Statut du devis">{(fid) => <Select id={fid} value={q.status} onChange={(e) => setQ({ ...q, status: e.target.value as QuoteStatus })}>{Object.entries(QUOTE_STATUS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</Select>}</Field>
             <p className="mt-2 text-xs text-brun-3">« Envoyé » et « accepté » sont des statuts simulés : aucun envoi réel.</p>
             {tour.active && tour.step === 5 && q.status === 'brouillon' && (
               <Button className="mt-3 w-full" icon="arrow" onClick={() => { setQ({ ...q, status: 'envoye' }); }}>Passer en « envoyé — simulation »</Button>
             )}
           </div>
-          <div className="rounded-none border border-line bg-panel p-5 text-sm">
+          <div className="rounded-card border border-line bg-panel p-5 text-sm">
             <p className="font-medium text-brun">Impression et PDF</p>
             {canPrint() ? <Button className="mt-3 w-full" variant="secondary" icon="file" onClick={() => { setPreview(true); setTimeout(() => window.print(), 300); }}>Imprimer ou enregistrer en PDF</Button>
               : <p className="mt-1 text-xs text-brun-3">Indisponibles dans cet aperçu en ligne : ils fonctionneront sur la version hébergée du site. Utilisez « Prévisualiser » pour voir le document.</p>}
@@ -280,7 +280,7 @@ export default function Quotes() {
             const t = quoteTotals(q);
             return (
               <li key={q.id}>
-                <button type="button" onClick={() => setEditQuote(q.id)} className="block w-full rounded-none border border-line bg-panel p-5 text-left transition hover:-translate-y-0.5 hover:">
+                <button type="button" onClick={() => setEditQuote(q.id)} className="block w-full rounded-card border border-line bg-panel p-5 text-left transition hover:-translate-y-0.5 hover:">
                   <span className="flex items-start justify-between gap-3"><span className="font-medium text-brun">{q.number}</span><Badge tone={statusTone(q.status)}>{QUOTE_STATUS[q.status]}</Badge></span>
                   <span className="mt-1 block text-sm text-brun-2">{p ? fullName(p) : 'Client supprimé'} · {q.eventType}</span>
                   <span className="mt-0.5 block text-xs text-brun-3">{fmtDate(q.eventDate)}{q.guests ? ` · ${q.guests} invités` : ''}</span>

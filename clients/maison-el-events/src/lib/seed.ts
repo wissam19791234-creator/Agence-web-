@@ -2,9 +2,9 @@
 import { suggestedLines } from './calc';
 import { PRICE_IDS } from './constants';
 import { addDays, todayISO, uid } from './format';
-import type { CalEvent, CatalogItem, Data, EventType, Expense, GalleryItem, Prospect, Quote, ServiceKey, SiteService, StageKey, Task } from './types';
+import type { CalEvent, CatalogItem, Data, EventType, Expense, FaqItem, GalleryItem, Prospect, Quote, ServiceKey, SiteService, StageKey, Task } from './types';
 
-export const DATA_VERSION = 4;
+export const DATA_VERSION = 5;
 
 export function seedCatalog(): CatalogItem[] {
   const base = (o: Partial<CatalogItem> & Pick<CatalogItem, 'id' | 'name' | 'category' | 'price' | 'unit'>): CatalogItem => ({
@@ -49,6 +49,33 @@ export function seedServices(): SiteService[] {
     { id: 'traiteur', title: 'Prestations traiteur', description: 'Une offre traiteur à composer selon votre événement et vos invités.', priceNote: 'Sur devis', active: true, imageKey: 'svc-traiteur' },
     { id: 'mignardises', title: 'Mignardises sucrées et salées', description: 'Verrines, tartelettes, makis, wraps, mini burgers… à choisir dans notre menu.', priceNote: '1 € la pièce', active: true, imageKey: 'menu-sucre' },
     { id: 'mocktails', title: 'Mocktails et boissons sans alcool', description: 'Matcha fraise, thé glacé pêche citron, mocktail violet citron.', priceNote: '4 € la pièce', active: true, imageKey: 'menu-mocktail' },
+  ];
+}
+
+export const WEEK = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+
+/**
+ * Questions fréquentes construites uniquement à partir des informations communiquées par l'entreprise.
+ * Les variables entre accolades sont remplacées à l'affichage par les valeurs du catalogue et des paramètres :
+ * {deco} {coin} {sucree} {salee} {boisson} {ville} {acompte} {menu-sucre} {menu-sale} {menu-mocktail} {tiktok}.
+ */
+export function seedFaq(): FaqItem[] {
+  const f = (id: string, q: string, a: string): FaqItem => ({ id, q, a, active: true });
+  return [
+    f('faq-prestations', 'Quelles prestations proposez-vous ?', 'Décoration de tables, décoration de mariage et espace mariés, décoration de buffets, location de matériel et d’éléments décoratifs, prestations traiteur, mignardises sucrées et salées, mocktails et boissons sans alcool.'),
+    f('faq-table', 'Combien coûte la décoration de table ?', '{deco} par personne. Elle comprend le linge de table, la vaisselle, des décorations diverses et les cartes de bienvenue ou de remerciement.'),
+    f('faq-coin', 'Que comprend le coin mariés ?', 'Le coin mariés est proposé à {coin}. Il comprend des bougeoirs de plus d’un mètre, ainsi que les housses et les draps du canapé de style henné.'),
+    f('faq-prix', 'Quel est le prix des mignardises et des mocktails ?', 'Mignardises sucrées : {sucree} la pièce. Mignardises salées : {salee} la pièce. Cocktails et mocktails : {boisson} la pièce.'),
+    f('faq-menu', 'Que contient le menu ?', 'Côté sucré : {menu-sucre}. Côté salé : {menu-sale}. Côté boissons : {menu-mocktail}.'),
+    f('faq-mesure', 'Peut-on composer un menu sur mesure ?', 'Oui. Indiquez vos préférences et le nombre d’invités dans votre demande : la composition vous est proposée sur devis.'),
+    f('faq-installation', 'L’installation et le déplacement sont-ils compris ?', 'Non. Les frais d’installation et de déplacement sont établis sur devis, selon le lieu de la réception.'),
+    f('faq-devis', 'La décoration de buffet, la location et le traiteur ont-ils un prix fixe ?', 'Ces prestations sont établies sur devis, selon votre événement et le nombre d’invités.'),
+    f('faq-acompte', 'Faut-il verser un acompte ?', '{acompte} Il permet de confirmer la réservation de votre date.'),
+    f('faq-evenements', 'Pour quels événements intervenez-vous ?', 'Mariages, henné, fiançailles, anniversaires, baptêmes, baby showers, événements d’entreprise et autres réceptions.'),
+    f('faq-zone', 'Où intervenez-vous ?', 'Maison EL Events est basée à {ville}. Pour une réception ailleurs, précisez le lieu dans votre demande : le déplacement est chiffré sur devis.'),
+    f('faq-horaires', 'Quels sont vos horaires ?', 'Les horaires d’accueil et les créneaux des prestations traiteur sont indiqués dans la rubrique « Horaires et infos pratiques ». Vous pouvez envoyer une demande de devis à tout moment depuis le site.'),
+    f('faq-obtenir', 'Comment obtenir un devis ?', 'Remplissez la demande en cinq étapes (événement, date et lieu, prestations, besoins, coordonnées) ou estimez d’abord votre budget avec le simulateur de la page Tarifs.'),
+    f('faq-allergenes', 'Comment sont pris en compte les allergies et régimes alimentaires ?', 'Les ingrédients principaux sont indiqués dans le menu. Signalez toute allergie ou restriction alimentaire dans votre demande pour qu’elle soit prise en compte dans la proposition.'),
   ];
 }
 
@@ -164,13 +191,14 @@ export function seed(): Data {
     version: DATA_VERSION,
     settings: {
       businessName: 'Maison EL Events', tagline: 'Décoration événementielle & traiteur', city: 'Orléans',
-      email: '', phone: '', address: '', instagram: '', tiktok: 'maisonelevents', hours: '',
-      colorBrand: '#EB516D', colorChampagne: '#808080',
+      email: '', phone: '', address: '', instagram: '', tiktok: 'maisonelevents',
+      openingHours: WEEK.map((day) => ({ day, hours: '' })), cateringHours: '', bookingLead: '', zone: 'Orléans',
+      colorBrand: '#EB516D', colorChampagne: '#D9B46A',
       legalForm: '', siret: '', publisher: '', host: '',
       conditions: "Les tarifs s'appliquent aux prestations listées. Les frais d'installation et de déplacement sont établis sur devis. Un acompte peut être demandé pour confirmer la réservation.",
       quoteFooter: 'Devis établi par Maison EL Events, Orléans.',
       quoteValidityDays: 0, depositText: 'Un acompte peut être demandé.', nextQuoteNumber: n,
     },
-    prospects, quotes, events, catalog, services: seedServices(), tasks, expenses, gallery: seedGallery(), activity, alts: {},
+    prospects, quotes, events, catalog, services: seedServices(), tasks, expenses, gallery: seedGallery(), activity, faq: seedFaq(), alts: {},
   };
 }

@@ -12,7 +12,7 @@ import { Panel, ProHeader } from './ProApp';
 function Kpi({ label, value, sub, icon, href, id }: { label: string; value: string; sub?: string; icon: IconName; href: string; id: string }) {
   const { highlight } = useUi();
   return (
-    <a href={href} data-kpi={id} className={cx('group block min-w-0 rounded-none border border-line bg-panel p-4 sm:p-5 no-underline transition hover:-translate-y-0.5 hover:', highlight === 'kpis' && 'animate-glow')}>
+    <a href={href} data-kpi={id} className={cx('group block min-w-0 rounded-card border border-line bg-panel p-4 sm:p-5 no-underline transition hover:-translate-y-0.5 hover:', highlight === 'kpis' && 'animate-glow')}>
       <div className="flex items-start justify-between gap-3">
         <p className="text-[12.5px] leading-snug text-brun-2 sm:text-[13px]">{label}</p>
         <Icon name={icon} className="h-4 w-4 shrink-0 text-smoke" />

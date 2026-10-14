@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 
 // Couleurs de données validées (contraste, daltonisme) sur fond blanc.
-// Fond noir : une seule couleur chromatique (corail) et un neutre clair, séparés de plus de 22 ΔE (contrôlé).
-export const DATA_COLORS = { a: '#EB516D', b: '#D9D9D9' };
-const SINGLE = '#E6E6E6';
-const GRID = '#262626', AXIS = '#808080', INK = '#FFFFFF', INK2 = '#A3A3A3';
+// Fond noir : rose de la marque et or champagne, bien distincts (teinte et clarté).
+export const DATA_COLORS = { a: '#EB516D', b: '#D9B46A' };
+const SINGLE = '#EB516D';
+const GRID = '#262626', AXIS = '#8C8D8E', INK = '#FFFFFF', INK2 = '#B8BAB9';
 
 function useWidth<T extends HTMLElement>(): [React.RefObject<T>, number] {
   const ref = useRef<T>(null);
