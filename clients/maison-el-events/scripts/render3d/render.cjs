@@ -34,8 +34,8 @@ function loadPlaywright() {
 
   for (const name of list) {
     const portrait = name.endsWith('@m');
-    const [W, H] = portrait ? [900, 1500] : [1600, 1000];
-    const scale = preview ? 0.5 : 1.25;
+    const [W, H] = portrait ? [720, 1200] : [1280, 800];
+    const scale = preview ? 0.625 : 1.5;
     const w = Math.round(W * scale), h = Math.round(H * scale);
     const t0 = Date.now();
     await page.close(); page = await browser.newPage({ viewport: { width: 400, height: 300 } });
@@ -45,8 +45,10 @@ function loadPlaywright() {
     await page.addScriptTag({ content: bundle });
     const url = await page.evaluate(([n, a, b]) => window.R3D.render(n, a, b), [name, w, h]);
     const png = Buffer.from(url.split(',')[1], 'base64');
-    const file = path.join(out, `${name}.jpg`);
-    await sharp(png).resize(preview ? w : W, preview ? h : H, { kernel: 'lanczos3' }).jpeg({ quality: preview ? 80 : 74, mozjpeg: true, chromaSubsampling: '4:2:0' }).toFile(file);
+    // WebP : environ trois fois plus léger que le JPEG, pour que la page unique s'ouvre vite sur téléphone.
+    const file = path.join(out, `${name}.${preview ? 'jpg' : 'webp'}`);
+    const img = sharp(png).resize(preview ? w : W, preview ? h : H, { kernel: 'lanczos3' });
+    await (preview ? img.jpeg({ quality: 80 }) : img.webp({ quality: 62, effort: 6 })).toFile(file);
     console.log(`${name} → ${path.relative(root, file)} (${Math.round(fs.statSync(file).size / 1024)} Ko, ${((Date.now() - t0) / 1000).toFixed(1)} s)`);
   }
   await browser.close();

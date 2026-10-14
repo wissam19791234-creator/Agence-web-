@@ -16,9 +16,9 @@ Ordre de priorité pour chaque emplacement (cover, coin-maries, svc-deco-tables,
 
 1. photo importée dans l'espace pro (Photos et galerie) ;
 2. vraie photo déposée dans `src/assets/demo/<emplacement>.jpg`, affichée avec la mention « Photo de démonstration » ;
-3. visuel 3D de `src/assets/demo3d/<emplacement>.jpg`, affiché avec la mention « Visuel 3D de démonstration ».
+3. visuel 3D de `src/assets/demo3d/<emplacement>.webp`, affiché avec la mention « Visuel 3D de démonstration ».
 
-Une variante `<emplacement>@m.jpg` (portrait) est servie aux écrans étroits.
+Une variante `<emplacement>@m` (portrait) est servie aux écrans étroits.
 
 - `node scripts/render3d/render.cjs` refait les visuels 3D (three.js dans Chromium sans affichage ; `--preview` pour des aperçus rapides dans `.render-preview/`, ou un nom de prise pour n'en refaire qu'une).
 - `node scripts/fetch-demo-photos.mjs` récupère et compresse les photos générées pour la démo (accès réseau au domaine des images requis).
