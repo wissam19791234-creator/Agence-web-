@@ -8,6 +8,7 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "artifact": "tsc --noEmit && vite build --mode artifact && node scripts/to-artifact.mjs",
+    "pages": "tsc --noEmit && vite build --mode artifact && node scripts/to-pages.mjs",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
