@@ -38,7 +38,8 @@ export function useReveal(root: RefObject<HTMLElement>, deps: unknown[] = []) {
     if (!root.current || reducedMotion()) return;
     const ctx = gsap.context(() => {
       const els = gsap.utils.toArray<HTMLElement>('[data-reveal]');
-      gsap.set(els, { opacity: 0, y: 36 });
+      // Point de départ visible (jamais totalement transparent) : la page reste lisible sans défilement.
+      gsap.set(els, { opacity: 0.35, y: 32 });
       ScrollTrigger.batch(els, {
         start: 'top 88%',
         once: true,

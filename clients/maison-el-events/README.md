@@ -36,7 +36,7 @@ communiquées ; elle se modifie dans Paramètres, et ses variables (`{deco}`, `{
 npm install
 npm run dev        # développement
 npm run build      # vérification TypeScript + build en un seul fichier (dist/index.html)
-npm run artifact   # build + fragment pour l'aperçu hébergé (artifact/index.html)
+npm run artifact   # page hébergée légère : artifact/index.html + photos à côté (artifact/assets, liste dans artifact/files.json)
 ```
 
 ## Structure

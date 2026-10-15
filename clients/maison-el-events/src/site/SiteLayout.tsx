@@ -71,7 +71,7 @@ export function SiteLayout({ route, children }: { route: Route; children: ReactN
     <div className="min-h-screen overflow-x-clip bg-navy text-white">
       <button type="button" onClick={() => document.getElementById('contenu')?.focus()} className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[80] focus:rounded-full focus:bg-brand focus:px-4 focus:py-2 focus:text-navy">Aller au contenu</button>
 
-      <header className={cx('fixed inset-x-0 top-0 z-[1000] transition-all duration-500 ease-lux', scrolled || open ? 'border-b border-brand/20 bg-navy/[.88] shadow-[0_10px_30px_rgba(0,0,0,.35)] backdrop-blur-xl' : 'border-b border-transparent')}>
+      <header className={cx('fixed inset-x-0 top-0 z-[1000] pt-[env(safe-area-inset-top,0px)] transition-all duration-500 ease-lux', scrolled || open ? 'border-b border-brand/20 bg-navy/[.88] shadow-[0_10px_30px_rgba(0,0,0,.35)] backdrop-blur-xl' : 'border-b border-transparent')}>
         <div className={cx('flex items-center justify-center gap-3 overflow-hidden px-4 text-center text-[10.5px] tracking-[.06em] text-white/70 transition-all duration-500', scrolled ? 'h-0 opacity-0' : 'h-7 border-b border-white/10 opacity-100')}>
           <span className="truncate">Démonstration Scalify · visuels et données fictifs</span>
           <button type="button" onClick={startTour} className="hidden shrink-0 items-center gap-1 font-semibold text-brand hover:text-gold-light sm:inline-flex"><Icon name="play" className="h-2.5 w-2.5" />Visite guidée</button>
